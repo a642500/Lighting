@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package co.yishun.lighting.view;
+package co.yishun.lighting.ui.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
