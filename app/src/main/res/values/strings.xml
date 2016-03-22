@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Lighting</string>
+    <string name="app_name">Light Up</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
