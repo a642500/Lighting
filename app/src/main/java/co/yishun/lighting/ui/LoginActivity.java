@@ -1,4 +1,4 @@
-package co.yishun.lighting;
+package co.yishun.lighting.ui;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -29,6 +29,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import co.yishun.lighting.R;
 
 import static android.Manifest.permission.READ_CONTACTS;
 

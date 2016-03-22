@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_drawer"
-    tools:context="co.yishun.lighting.MainActivity">
+    tools:context=".ui.MainActivity">
 
     <include layout="@layout/layout_navigation_drawer" />
 

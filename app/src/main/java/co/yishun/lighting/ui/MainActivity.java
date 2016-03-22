@@ -1,4 +1,4 @@
-package co.yishun.lighting;
+package co.yishun.lighting.ui;
 
 import android.annotation.SuppressLint;
 import android.content.pm.ApplicationInfo;
@@ -12,6 +12,7 @@ import android.webkit.WebView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import co.yishun.lighting.R;
 import co.yishun.lighting.util.FileUtil;
 import co.yishun.lighting.web.LUWebViewClient;
 
