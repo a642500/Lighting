@@ -14,5 +14,6 @@
         completions."
     </string>
 
+    <string name="progress_loading_msg">Loading…</string>
 
 </resources>

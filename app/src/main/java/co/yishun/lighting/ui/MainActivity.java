@@ -5,7 +5,6 @@ import android.content.pm.ApplicationInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.webkit.WebView;
@@ -17,7 +16,7 @@ import co.yishun.lighting.util.FileUtil;
 import co.yishun.lighting.web.LUWebViewClient;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -39,6 +38,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         setWebView();
+    }
+
+    @Override
+    public String getPageInfo() {
+        return "MainActivity";
     }
 
     @SuppressLint("SetJavaScriptEnabled")
