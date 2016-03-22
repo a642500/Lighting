@@ -6,13 +6,4 @@
     </item>
 
     <item android:drawable="@drawable/pic_drawer_line" />
-    <item
-        android:drawable="@color/colorPressed"
-        android:state_pressed="true" />
-    <item
-        android:drawable="@color/colorPressed"
-        android:state_checked="true" />
-    <item
-        android:drawable="@color/colorPressed"
-        android:state_selected="true" />
 </ripple>

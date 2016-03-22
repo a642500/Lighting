@@ -6,13 +6,4 @@
     </item>
 
     <item android:drawable="@android:color/transparent" />
-    <item
-        android:drawable="@color/colorPressed"
-        android:state_pressed="true" />
-    <item
-        android:drawable="@color/colorPressed"
-        android:state_checked="true" />
-    <item
-        android:drawable="@color/colorPressed"
-        android:state_selected="true" />
 </ripple>
