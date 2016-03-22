@@ -85,8 +85,9 @@ public class ResideLayout extends ViewGroup {
     private int mSliderFadeColor = 0x99000000;
     /**
      * The fade color used for the panel covered by the slider. 0 = no fading.
+     * 0xcc000000
      */
-    private int mCoveredFadeColor = 0xcc000000;
+    private int mCoveredFadeColor = 0;
     /**
      * True if a panel can slide with the current measurements
      */
