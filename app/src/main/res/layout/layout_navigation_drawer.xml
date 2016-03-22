@@ -40,7 +40,6 @@
         android:drawablePadding="32dp"
         android:onClick="onNavigationItemClicked"
         android:padding="16dp"
-        android:stateListAnimator="@anim/btn_elevation"
         android:text="@string/activity_main_navigation_item_lightup"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
@@ -53,7 +52,6 @@
         android:drawablePadding="32dp"
         android:onClick="onNavigationItemClicked"
         android:padding="16dp"
-        android:stateListAnimator="@anim/btn_elevation"
         android:text="@string/activity_main_navigation_item_message"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
@@ -66,7 +64,6 @@
         android:drawablePadding="32dp"
         android:onClick="onNavigationItemClicked"
         android:padding="16dp"
-        android:stateListAnimator="@anim/btn_elevation"
         android:text="@string/activity_main_navigation_item_profile"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
@@ -80,7 +77,6 @@
         android:drawablePadding="32dp"
         android:onClick="onNavigationItemClicked"
         android:padding="16dp"
-        android:stateListAnimator="@anim/btn_elevation"
         android:text="@string/activity_main_navigation_item_settings"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 </LinearLayout>
