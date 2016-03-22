@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_main_navigation_item_lightup">Light Up</string>
+    <string name="activity_main_navigation_item_message">Message</string>
+    <string name="activity_main_navigation_item_profile">Profile</string>
+    <string name="activity_main_navigation_item_settings">Settings</string>
+</resources>

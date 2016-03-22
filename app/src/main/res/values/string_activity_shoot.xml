@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_shoot_redo">Redo</string>
+    <string name="activity_shoot_import">Import</string>
+    <string name="activity_shoot_finish">Save</string>
+</resources>
