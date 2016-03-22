@@ -1,60 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginEnd="128dp"
-    android:layout_marginRight="128dp"
-    android:background="@color/colorAccent"
+    android:background="@null"
     android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingLeft="48dp"
+    android:paddingRight="128dp"
+    android:paddingTop="54dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="56dp"
-        android:layout_height="56dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="16dp"
         android:src="@drawable/pic_profile_default"
         app:civ_border_color="@android:color/white"
-        app:civ_border_width="1dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:inputType="text"
-        android:maxLines="1"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textStyle="bold"
-        tools:text="Jaqucline" />
+        app:civ_border_width="2dp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/bg_btn_underline"
+        android:gravity="center_horizontal"
+        android:inputType="text"
+        android:maxLines="1"
         android:padding="16dp"
+        android:text="Jaqucline"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/navigation_item_lightup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_btn_underline"
+        android:drawableLeft="@drawable/ic_drawer_lightup"
+        android:drawablePadding="32dp"
+        android:onClick="onNavigationItemClicked"
+        android:padding="16dp"
+        android:stateListAnimator="@anim/btn_elevation"
         android:text="@string/activity_main_navigation_item_lightup"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
     <TextView
+        android:id="@+id/navigation_item_mssage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/bg_btn_underline"
+        android:drawableLeft="@drawable/ic_drawer_message"
+        android:drawablePadding="32dp"
+        android:onClick="onNavigationItemClicked"
         android:padding="16dp"
+        android:stateListAnimator="@anim/btn_elevation"
         android:text="@string/activity_main_navigation_item_message"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
     <TextView
+        android:id="@+id/navigation_item_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/bg_btn_underline"
+        android:drawableLeft="@drawable/ic_drawer_profile"
+        android:drawablePadding="32dp"
+        android:onClick="onNavigationItemClicked"
         android:padding="16dp"
+        android:stateListAnimator="@anim/btn_elevation"
         android:text="@string/activity_main_navigation_item_profile"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
     <TextView
+        android:id="@+id/navigation_item_settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="90dp"
+        android:background="@drawable/bg_btn_transparent"
+        android:drawableLeft="@drawable/ic_drawer_setting"
+        android:drawablePadding="32dp"
+        android:onClick="onNavigationItemClicked"
         android:padding="16dp"
+        android:stateListAnimator="@anim/btn_elevation"
         android:text="@string/activity_main_navigation_item_settings"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 </LinearLayout>
