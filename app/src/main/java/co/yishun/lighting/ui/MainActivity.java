@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.pm.ApplicationInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.webkit.WebView;
@@ -12,6 +11,7 @@ import android.webkit.WebView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.yishun.lighting.R;
+import co.yishun.lighting.ui.view.ResideLayout;
 import co.yishun.lighting.util.FileUtil;
 import co.yishun.lighting.web.LUWebViewClient;
 
@@ -22,6 +22,8 @@ public class MainActivity extends BaseActivity {
     Toolbar toolbar;
     @Bind(R.id.webView)
     WebView webView;
+    @Bind(R.id.reside_layout)
+    ResideLayout resideLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +32,13 @@ public class MainActivity extends BaseActivity {
 
         ButterKnife.bind(this);
 
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayShowHomeEnabled(true);
-        }
 
-
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resideLayout.openPane();
+            }
+        });
         setWebView();
     }
 
