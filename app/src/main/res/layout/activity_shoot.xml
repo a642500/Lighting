@@ -20,5 +20,5 @@
             android:layout_height="match_parent" />
     </co.yishun.lighting.ui.view.SquareFrameLayout>
 
-
+    <include layout="@layout/layout_record_btn" />
 </LinearLayout>
