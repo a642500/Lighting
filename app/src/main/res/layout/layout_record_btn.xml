@@ -13,7 +13,9 @@
         android:gravity="center"
         android:minHeight="48dp"
         android:minWidth="48dp"
-        android:text="@string/activity_shoot_redo" />
+        android:text="@string/activity_shoot_redo"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/shootBtn"
@@ -30,5 +32,7 @@
         android:gravity="center"
         android:minHeight="48dp"
         android:minWidth="48dp"
-        android:text="@string/activity_shoot_import" />
+        android:text="@string/activity_shoot_import"
+        android:textColor="@color/colorAccent"
+        android:textStyle="bold" />
 </LinearLayout>
