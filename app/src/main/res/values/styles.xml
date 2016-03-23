@@ -8,7 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:colorForeground">@android:color/white</item>
         <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:textColorPrimaryInverse">#363636</item>
+        <item name="android:textColorPrimaryInverse">@color/textColorPrimaryInverse</item>
         <item name="android:textColorSecondary">#8b8b8b</item>
         <item name="android:textColorSecondaryInverse">#8b8b8b</item>
         <item name="android:colorBackground">#22252a</item>
