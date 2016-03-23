@@ -11,9 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="0dp"
+        android:background="@color/colorPrimary"
         app:navigationIcon="@drawable/ic_capture_close">
 
         <ImageView
+            android:id="@+id/flashlightSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
@@ -21,6 +23,7 @@
             android:src="@drawable/ic_capture_change" />
 
         <ImageView
+            android:id="@+id/cameraSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"

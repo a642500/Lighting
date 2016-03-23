@@ -77,6 +77,15 @@ public class MainActivity extends BaseActivity {
             case R.id.navigation_item_lightup:
                 view.setSelected(true);
                 break;
+            case R.id.navigation_item_mssage:
+
+                break;
+            case R.id.navigation_item_profile:
+                ShootActivity_.intent(this).start();
+                break;
+            case R.id.navigation_item_settings:
+
+                break;
         }
     }
 }
