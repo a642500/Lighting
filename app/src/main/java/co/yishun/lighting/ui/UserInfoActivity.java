@@ -12,12 +12,14 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.soundcloud.android.crop.Crop;
+import com.squareup.picasso.Picasso;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -47,8 +49,8 @@ public class UserInfoActivity extends PickCropActivity implements AccountManager
     Toolbar toolbar;
     @ViewById
     RelativeLayout avatarLayout;
-    //    @ViewById
-//    ImageView avatarImage;
+    @ViewById
+    ImageView avatarImage;
     @FragmentById
     ItemFragment nicknameFragment;
     @FragmentById
@@ -221,7 +223,7 @@ public class UserInfoActivity extends PickCropActivity implements AccountManager
             return;
         }
         LogUtil.i(TAG, "user info: " + user);
-//        Picasso.with(this).load(user.avatarUrl).into(avatarImage);
+        Picasso.with(this).load(user.avatarUrl).into(avatarImage);
 
         nicknameFragment.setContent(user.nickname);
         String weiboID;

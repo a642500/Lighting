@@ -172,6 +172,12 @@ public class AccountManager {
         context = context.getApplicationContext();
         if (mUser == null) {
             loadUserInfo(context.getApplicationContext());
+            //TODO remove this test user info
+            mUser = new User();
+            mUser._id = "3242234324";
+            mUser.nickname = "testUserName";
+            mUser.avatarUrl = "http://ss.bdimg.com/static/superman/img/logo/bd_logo1_31bdc765.png";
+            mUser.location = "";
         }
         return mUser;
     }
