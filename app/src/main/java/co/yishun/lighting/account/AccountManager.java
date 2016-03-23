@@ -25,7 +25,7 @@ import co.yishun.lighting.util.LogUtil;
  * Created by Carlos on 2015/8/13.
  */
 public class AccountManager {
-    public static final String ACCOUNT_TYPE = "co.yishun.onemoment.app";
+    public static final String ACCOUNT_TYPE = "co.yishun.lighting";
     public static final String ACCOUNT_ID_KEY = "id";
     private static final String TAG = "AccountManager";
     public static android.accounts.AccountManager accountManager;

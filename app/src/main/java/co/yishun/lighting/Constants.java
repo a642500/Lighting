@@ -18,4 +18,7 @@ public class Constants {
     public static final String TIEM_FORMAT_EXPORT = "yyyyMMdd_HHmmss";
     public static final String PROFILE_PREFIX = "avatar-";
     public static final String PROFILE_SUFFIX = ".png";
+    public static final int VIDEO_HEIGHT = 480;
+    public static final int VIDEO_WIDTH = 480;
+    public static final int VIDEO_FPS = 30;
 }
