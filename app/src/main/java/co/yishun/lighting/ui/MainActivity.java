@@ -84,7 +84,7 @@ public class MainActivity extends BaseActivity {
                 ShootActivity_.intent(this).start();
                 break;
             case R.id.navigation_item_settings:
-
+                UserInfoActivity_.intent(this).start();
                 break;
         }
     }

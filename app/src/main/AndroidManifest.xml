@@ -44,6 +44,8 @@
             android:label="@string/app_name" />
 
         <activity android:name=".ui.ShootActivity_" />
+        <activity android:name=".ui.SplashActivity_" />
+        <activity android:name=".ui.UserInfoActivity_" />
     </application>
 
 </manifest>
