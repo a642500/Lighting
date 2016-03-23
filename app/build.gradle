@@ -1,4 +1,12 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+
+retrolambda {
+    javaVersion JavaVersion.VERSION_1_7
+    // Note: due to a limitation in retrolamba, this will set incremental to false. The default is false.
+    defaultMethods false
+    incremental true
+}
 
 android {
     compileSdkVersion 23
@@ -16,6 +24,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
     }
 }
 apply plugin: 'android-apt'
