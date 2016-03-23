@@ -4,4 +4,8 @@
     <color name="colorPrimaryDark">#22252a</color>
     <color name="colorAccent">#f5407e</color>
     <color name="colorPressed">#22b5b5b5</color>
+
+    <color name="colorDivider">#dcdcdc</color>
+
+    <color name="textColorPrimaryInverse">#363636</color>
 </resources>
