@@ -1,6 +1,7 @@
 package co.yishun.lighting.ui;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.yishun.lighting.R;
 import co.yishun.lighting.ui.view.ResideLayout;
+import co.yishun.lighting.ui.view.SettingsActivity;
 import co.yishun.lighting.util.FileUtil;
 import co.yishun.lighting.web.LUWebViewClient;
 
@@ -78,13 +80,13 @@ public class MainActivity extends BaseActivity {
                 view.setSelected(true);
                 break;
             case R.id.navigation_item_mssage:
-
-                break;
-            case R.id.navigation_item_profile:
                 ShootActivity_.intent(this).start();
                 break;
-            case R.id.navigation_item_settings:
+            case R.id.navigation_item_profile:
                 UserInfoActivity_.intent(this).start();
+                break;
+            case R.id.navigation_item_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
                 break;
         }
     }

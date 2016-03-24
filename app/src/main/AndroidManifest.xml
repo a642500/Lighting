@@ -46,6 +46,7 @@
         <activity android:name=".ui.ShootActivity_" />
         <activity android:name=".ui.SplashActivity_" />
         <activity android:name=".ui.UserInfoActivity_" />
+        <activity android:name=".ui.view.SettingsActivity" />
     </application>
 
 </manifest>
