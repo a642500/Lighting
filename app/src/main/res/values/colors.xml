@@ -8,4 +8,5 @@
     <color name="colorDivider">#dcdcdc</color>
 
     <color name="textColorPrimaryInverse">#363636</color>
+    <color name="textColorPrimary">#ffffff</color>
 </resources>
