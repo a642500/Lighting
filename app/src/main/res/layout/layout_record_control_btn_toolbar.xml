@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
+    contentInsetLeft="0dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="0dp"
+    android:background="@color/colorPrimary"
+    app:navigationIcon="@drawable/ic_capture_close">
+
+    <ImageView
+        android:id="@+id/cameraSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:padding="16dp"
+        android:src="@drawable/ic_capture_change" />
+
+    <ImageSwitcher
+        android:id="@+id/recordFlashSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:minWidth="48dp">
+
+        <co.yishun.lighting.ui.view.TintableImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/ripple_only"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_capture_flashoff"
+            app:tintColorStateList="@drawable/bg_normal_color_selector"
+            app:tintUpdateDelay="1000" />
+
+        <co.yishun.lighting.ui.view.TintableImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/ripple_only"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_capture_flashon"
+            app:tintColorStateList="@drawable/bg_normal_color_selector"
+            app:tintUpdateDelay="1000" />
+    </ImageSwitcher>
+</android.support.v7.widget.Toolbar>
