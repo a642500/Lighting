@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">亮灯</string>
-    <string name="action_sign_in"></string>
-    <string name="error_field_required"></string>
     <string name="activity_main_navigation_item_lightup">亮灯</string>
     <string name="activity_main_navigation_item_message">消息</string>
     <string name="activity_main_navigation_item_profile">个人主页</string>

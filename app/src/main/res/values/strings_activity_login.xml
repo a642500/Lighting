@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_login_divider_text">Sign In/Up</string>
+    <string name="activity_login_hint_phone">Phone</string>
+    <string name="activity_login_hint_password">Password</string>
+    <string name="activity_login_action_forget_password">Forget Password?</string>
+    <string name="activity_login_action_sign_up">Sign Up</string>
+    <string name="activity_login_action_sign_in">Sign In</string>
+
+    <string name="activity_login_error_invalid_phone">This phone is invalid</string>
+    <string name="activity_login_error_short_password">This password is too short</string>
+    <string name="activity_login_error_incorrect_password">This password is incorrect</string>
+</resources>
