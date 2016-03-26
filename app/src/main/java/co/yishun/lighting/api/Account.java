@@ -1,11 +1,38 @@
 package co.yishun.lighting.api;
 
+import android.support.annotation.Nullable;
+import android.support.annotation.StringDef;
+
 import com.google.gson.annotations.SerializedName;
+
+import co.yishun.lighting.api.model.User;
+import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 /**
  * Created by Carlos on 2016/3/23.
  */
 public interface Account {
+
+
+    @POST("/register")
+    @FormUrlEncoded
+    void regiter(@Path("phone_number") String phoneNum, @Path("password") String password);
+
+    @POST("/validate_sms")
+    @FormUrlEncoded
+    void validateSMS(@Path("phone_number") String phoneNum,
+                     @Path("validate_code") String validateCode, @Path("validate_type") @ValidateType String type);
+
+    @POST("/login")
+    @FormUrlEncoded
+    User login(@Path("phone_number") String phoneNum,
+               @Path("login_type") @LoginType String loginType,
+               @Path("password") @Nullable String password,
+               @Path("access_token") @Nullable String token
+    );
+
 
     enum Gender {
         @SerializedName("f")
@@ -13,7 +40,7 @@ public interface Account {
         @SerializedName("m")
         MALE,
         @SerializedName("n")
-        OTHER;
+        OTHER,;
 
         public static Gender format(String s) {
             switch (s) {
@@ -60,5 +87,13 @@ public interface Account {
             }
         }
 
+    }
+
+    @StringDef({"register", "change_password"})
+    @interface ValidateType {
+    }
+
+    @StringDef({"password", "access_token"})
+    @interface LoginType {
     }
 }

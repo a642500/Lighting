@@ -64,7 +64,7 @@ public class AccountManager {
         context = context.getApplicationContext();
         Account newAccount = new Account(user.nickname, ACCOUNT_TYPE);
         Bundle bundle = new Bundle();
-        bundle.putString(ACCOUNT_ID_KEY, user._id);
+        bundle.putString(ACCOUNT_ID_KEY, user.id);
         getAccountManager(context).addAccountExplicitly(newAccount, null, bundle);
         updateOrCreateUserInfo(context, user);
 //        SyncManager.notifySyncSettingsChange(context);
@@ -89,13 +89,13 @@ public class AccountManager {
 
     /**
      * delete account create in version 1.x because {@link Account#name} of account in 1.x equals
-     * {@link User#_id}, while {@link Account#name} of account in 1.x equals {@link User#nickname}.
+     * {@link User#id}, while {@link Account#name} of account in 1.x equals {@link User#nickname}.
      */
     public static void deleteOldAccount(Context context, User user) {
         context = context.getApplicationContext();
         Account[] accounts = getAccountManager(context).getAccountsByType(ACCOUNT_TYPE);
         for (Account a : accounts) {
-            if (TextUtils.equals(a.name, user._id)) {
+            if (TextUtils.equals(a.name, user.id)) {
                 getAccountManager(context).removeAccount(a, null, null);
                 break;
             }
@@ -174,7 +174,7 @@ public class AccountManager {
             loadUserInfo(context.getApplicationContext());
             //TODO remove this test user info
             mUser = new User();
-            mUser._id = "3242234324";
+            mUser.id = "3242234324";
             mUser.nickname = "testUserName";
             mUser.avatarUrl = "http://ss.bdimg.com/static/superman/img/logo/bd_logo1_31bdc765.png";
             mUser.location = "";
