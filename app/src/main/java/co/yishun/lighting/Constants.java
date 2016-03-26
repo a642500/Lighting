@@ -22,6 +22,10 @@ public class Constants {
     public static final int VIDEO_WIDTH = 640;
     public static final int VIDEO_FPS = 30;
 
-    public static final String BASE_URL = "";
+    public static final String BASE_URL;
+
+    static {
+        BASE_URL = SANDBOX ? "http://devlightup.hustonline.net/v1" : "http://lightup.hustonline.net/v1";
+    }
 
 }
