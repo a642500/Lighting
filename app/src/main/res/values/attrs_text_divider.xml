@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TextDivider">
+        <attr name="td_lineColor" format="color" />
+        <attr name="td_lineSize" format="dimension" />
+        <attr name="td_textColor" format="color" />
+        <attr name="td_textPadding" format="dimension" />
+        <attr name="td_dividerText" format="string" />
+        <attr name="td_textSize" format="dimension" />
+    </declare-styleable>
+</resources>
