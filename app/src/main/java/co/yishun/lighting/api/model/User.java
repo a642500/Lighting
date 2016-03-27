@@ -2,6 +2,8 @@ package co.yishun.lighting.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import co.yishun.lighting.api.Account;
+
 /**
  * Bean contains user info. <p> Created by Carlos on 2015/8/4.
  */
@@ -45,4 +47,8 @@ public class User {
 
     public String avatarUrl;//TODO lack
 
+
+    public Account.Gender getGender() {
+        return Account.Gender.FEMALE;
+    }
 }

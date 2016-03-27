@@ -123,7 +123,7 @@ public class UserInfoActivity extends PickCropActivity implements AccountManager
                         (MaterialDialog dialog, CharSequence input) -> {
                             if (TextUtils.equals(input, AccountManager.getUserInfo(this).nickname))
                                 return;
-                            updateUserInfo(AccountManager.getUserInfo(this)._id, input.toString(), null, null, null);
+                            updateUserInfo(AccountManager.getUserInfo(this).id, input.toString(), null, null, null);
                         })
                 .build().show();
     }
@@ -172,16 +172,16 @@ public class UserInfoActivity extends PickCropActivity implements AccountManager
 //    }
 
     void genderClicked(View view) {
-        Account.Gender mSelectGender = AccountManager.getUserInfo(this).gender;
+        Account.Gender mSelectGender = AccountManager.getUserInfo(this).getGender();
         new MaterialDialog.Builder(this)
                 .theme(Theme.LIGHT)
                 .title(R.string.view_gender_spinner_title)
                 .items(R.array.view_gender_spinner_items)
                 .itemsCallbackSingleChoice(mSelectGender.toInt() % 2, (dialog, view1, which, text) -> {
                     Account.Gender gender = Account.Gender.format(which);
-                    if (gender == AccountManager.getUserInfo(this).gender)
+                    if (gender == AccountManager.getUserInfo(this).getGender())
                         return true;
-                    updateUserInfo(AccountManager.getUserInfo(this)._id, null, gender, null, null);
+                    updateUserInfo(AccountManager.getUserInfo(this).id, null, gender, null, null);
                     return true; // allow selection
                 })
                 .positiveText(R.string.view_gender_spinner_positive_btn)
@@ -194,7 +194,7 @@ public class UserInfoActivity extends PickCropActivity implements AccountManager
                 .setLocationSelectedListener((String location, Pair<String, String> provinceAndDistrict) -> {
                     if (TextUtils.equals(location, AccountManager.getUserInfo(this).location))
                         return;
-                    updateUserInfo(AccountManager.getUserInfo(this)._id, null, null, null, location);
+                    updateUserInfo(AccountManager.getUserInfo(this).id, null, null, null, location);
                 })
                 .show();
     }
@@ -234,9 +234,9 @@ public class UserInfoActivity extends PickCropActivity implements AccountManager
         }
         weiboFragment.setContent(weiboID);
         String gender;
-        Account.Gender orin = user.gender;
+        Account.Gender orin = user.getGender();
         if (orin != null)
-            switch (user.gender) {
+            switch (user.getGender()) {
                 case FEMALE:
                     gender = "♀";
                     break;
@@ -271,7 +271,7 @@ public class UserInfoActivity extends PickCropActivity implements AccountManager
     @Override
     public void onPictureCropped(Uri uri) {
         croppedProfileUri = uri;
-        updateAvatar(AccountManager.getUserInfo(this)._id);
+        updateAvatar(AccountManager.getUserInfo(this).id);
 //        Picasso.with(this).load(uri).memoryPolicy(MemoryPolicy.NO_STORE).memoryPolicy(MemoryPolicy.NO_CACHE).into(avatarImage);
     }
 
@@ -343,7 +343,7 @@ public class UserInfoActivity extends PickCropActivity implements AccountManager
 //        UserInfo userInfo = new WeiboHelper(this).getUserInfo(token);
 //
 //        Account account = OneMomentV3.createAdapter().create(Account.class);
-//        User user = account.bindWeibo(AccountManager.getUserInfo(this)._id, userInfo.id, userInfo.name);
+//        User user = account.bindWeibo(AccountManager.getUserInfo(this).id, userInfo.id, userInfo.name);
 //        if (user.code <= 0) {
 //            LogUtil.i(TAG, "bind weibo failed: " + user.msg);
 //            if (user.errorCode == Constants.ErrorCode.ACCOUNT_EXISTS) {
@@ -357,7 +357,7 @@ public class UserInfoActivity extends PickCropActivity implements AccountManager
 //    @Background
 //    void unbindWeibo(String weiboUid) {
 //        Account account = OneMomentV3.createAdapter().create(Account.class);
-//        User user = account.unbindWeibo(AccountManager.getUserInfo(this)._id, weiboUid);
+//        User user = account.unbindWeibo(AccountManager.getUserInfo(this).id, weiboUid);
 //        if (user.code <= 0) {
 //            LogUtil.i(TAG, "unbind weibo failed: " + user.msg);
 //        } else {
