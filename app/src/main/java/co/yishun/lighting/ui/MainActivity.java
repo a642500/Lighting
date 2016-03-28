@@ -9,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.webkit.WebView;
 
+import org.androidannotations.annotations.EActivity;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.yishun.lighting.R;
@@ -18,6 +20,7 @@ import co.yishun.lighting.util.FileUtil;
 import co.yishun.lighting.web.LUWebViewClient;
 
 
+@EActivity
 public class MainActivity extends BaseActivity {
 
     @Bind(R.id.toolbar)
