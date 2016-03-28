@@ -75,18 +75,18 @@ public class QuestionView extends RelativeLayout {
     public void setQuestion(@NonNull IQuestion question) {
         mQuestion = question;
         questionTextView.setText(question.getQuestionName());
-        deleteBtn.setOnClickListener(mQuestion::onDeleteAnswer);
-        playBtn.setOnClickListener(mQuestion::onPlayAnswer);
+        deleteBtn.setOnClickListener(v -> mQuestion.onDeleteAnswer(getContext()));
+        playBtn.setOnClickListener(v -> mQuestion.onPlayAnswer(getContext()));
 
         if (question.isAnswered()) {
-            deleteBtn.setVisibilty(View.VISIBLE);
-            playBtn.setVisibilty(View.VISIBLE);
-            arrowIcon.setVisibilty(View.INVISIBLE);
+            deleteBtn.setVisibility(View.VISIBLE);
+            playBtn.setVisibility(View.VISIBLE);
+            arrowIcon.setVisibility(View.INVISIBLE);
             questionTextView.setTextColor(mAccentColor);
         } else {
-            deleteBtn.setVisibilty(View.INVISIBLE);
-            playBtn.setVisibilty(View.INVISIBLE);
-            arrowIcon.setVisibilty(View.VISIBLE)
+            deleteBtn.setVisibility(View.INVISIBLE);
+            playBtn.setVisibility(View.INVISIBLE);
+            arrowIcon.setVisibility(View.VISIBLE);
             questionTextView.setTextColor(mPrimaryColor);
         }
     }
@@ -98,7 +98,7 @@ public class QuestionView extends RelativeLayout {
     public interface IQuestion {
         int getQuestionOrder();
 
-        boolen isAnswered();
+        boolean isAnswered();
 
         String getQuestionName();
 
