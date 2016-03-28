@@ -19,7 +19,7 @@ public interface Account {
 
     @POST("/register")
     @FormUrlEncoded
-    void regiter(@Path("phone_number") String phoneNum, @Path("password") String password);
+    void register(@Path("phone_number") String phoneNum, @Path("password") String password);
 
     @POST("/validate_sms")
     @FormUrlEncoded
