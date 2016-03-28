@@ -7,9 +7,9 @@ import com.google.gson.annotations.SerializedName;
 
 import co.yishun.lighting.api.model.User;
 import retrofit2.Call;
+import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 
 /**
  * Created by Carlos on 2016/3/23.
@@ -19,19 +19,19 @@ public interface Account {
 
     @POST("/register")
     @FormUrlEncoded
-    void register(@Path("phone_number") String phoneNum, @Path("password") String password);
+    void register(@Field("phone_number") String phoneNum, @Field("password") String password);
 
     @POST("/validate_sms")
     @FormUrlEncoded
-    void validateSMS(@Path("phone_number") String phoneNum,
-                     @Path("validate_code") String validateCode, @Path("validate_type") @ValidateType String type);
+    void validateSMS(@Field("phone_number") String phoneNum,
+                     @Field("validate_code") String validateCode, @Field("validate_type") @ValidateType String type);
 
     @POST("/login")
     @FormUrlEncoded
-    Call<User> login(@Path("phone_number") String phoneNum,
-                     @Path("login_type") @LoginType String loginType,
-                     @Path("password") @Nullable String password,
-                     @Path("access_token") @Nullable String token
+    Call<User> login(@Field("phone_number") String phoneNum,
+                     @Field("login_type") @LoginType String loginType,
+                     @Field("password") @Nullable String password,
+                     @Field("access_token") @Nullable String token
     );
 
 
