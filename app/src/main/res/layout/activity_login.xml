@@ -20,7 +20,6 @@
         android:src="@drawable/pic_login_title" />
 
     <LinearLayout
-        android:id="@+id/email_login_form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -65,7 +64,7 @@
             android:paddingRight="32dp">
 
             <EditText
-                android:id="@+id/phone"
+                android:id="@+id/phoneEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/activity_login_hint_phone"
@@ -82,7 +81,7 @@
             android:paddingRight="32dp">
 
             <EditText
-                android:id="@+id/password"
+                android:id="@+id/passwordEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/activity_login_hint_password"
@@ -120,7 +119,7 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/email_sign_in_button"
+                android:id="@+id/signInBtn"
                 style="?android:textAppearanceSmall"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
