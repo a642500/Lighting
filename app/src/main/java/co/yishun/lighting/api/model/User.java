@@ -44,9 +44,27 @@ public class User {
     public String accessToken;
     public String wechatNickname;
     public String portrait;
-
     public String avatarUrl;//TODO lack
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "nickname='" + nickname + '\'' +
+                ", id='" + id + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", weiboNickname='" + weiboNickname + '\'' +
+                ", location='" + location + '\'' +
+                ", sex='" + sex + '\'' +
+                ", loveSex='" + loveSex + '\'' +
+                ", wechatUid='" + wechatUid + '\'' +
+                ", weiboUid='" + weiboUid + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", accessToken='" + accessToken + '\'' +
+                ", wechatNickname='" + wechatNickname + '\'' +
+                ", portrait='" + portrait + '\'' +
+                ", avatarUrl='" + avatarUrl + '\'' +
+                '}';
+    }
 
     public Account.Gender getGender() {
         return Account.Gender.FEMALE;

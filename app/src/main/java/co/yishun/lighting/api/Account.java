@@ -6,6 +6,7 @@ import android.support.annotation.StringDef;
 import com.google.gson.annotations.SerializedName;
 
 import co.yishun.lighting.api.model.User;
+import retrofit2.Call;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -27,10 +28,10 @@ public interface Account {
 
     @POST("/login")
     @FormUrlEncoded
-    User login(@Path("phone_number") String phoneNum,
-               @Path("login_type") @LoginType String loginType,
-               @Path("password") @Nullable String password,
-               @Path("access_token") @Nullable String token
+    Call<User> login(@Path("phone_number") String phoneNum,
+                     @Path("login_type") @LoginType String loginType,
+                     @Path("password") @Nullable String password,
+                     @Path("access_token") @Nullable String token
     );
 
 

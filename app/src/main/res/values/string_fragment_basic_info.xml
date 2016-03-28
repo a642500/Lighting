@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fragment_basic_info_question_title">Record a audio to answer</string>
+    <string name="fragment_basic_info_finish">Finish and Upload</string>
+    <string name="fragment_basic_info_title">Basic Information</string>
+
+</resources>

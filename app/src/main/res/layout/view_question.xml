@@ -4,17 +4,29 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
+    android:background="@color/colorPrimary"
     android:gravity="center_vertical"
-    android:minHeight="64dp"
-    android:orientation="horizontal"
+    android:padding="18dp">
 
-    >
+    <TextView
+        android:id="@+id/orderTextView"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_centerVertical="true"
+        android:layout_margin="4dp"
+        android:background="@drawable/bg_circular_order"
+        android:gravity="center"
+        tools:text="1" />
+
 
     <TextView
         android:id="@+id/questionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/orderTextView"
+        android:gravity="center_vertical"
+        android:textColor="@color/colorAccent"
         tools:text="Test question" />
 
     <ImageView
@@ -22,7 +34,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:padding="12dp"
         android:src="@drawable/ic_basic_delete" />
 
     <ImageView
@@ -30,13 +41,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/deleteBtn"
-        android:padding="12dp"
+        android:paddingRight="16dp"
         android:src="@drawable/ic_basic_play" />
 
 
     <ImageView
         android:id="@+id/arrowIcon"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="12dp" />
+        android:layout_height="wrap_content" />
 </RelativeLayout>

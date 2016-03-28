@@ -25,7 +25,7 @@ public class Constants {
     public static final String BASE_URL;
 
     static {
-        BASE_URL = SANDBOX ? "http://devlightup.hustonline.net/v1" : "http://lightup.hustonline.net/v1";
+        BASE_URL = SANDBOX ? "http://devlightup.hustonline.net/v1/" : "http://lightup.hustonline.net/v1/";
     }
 
 }
