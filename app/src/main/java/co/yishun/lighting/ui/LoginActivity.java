@@ -1,13 +1,11 @@
 package co.yishun.lighting.ui;
 
 import android.annotation.TargetApi;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -25,8 +23,10 @@ import org.androidannotations.annotations.EditorAction;
 import org.androidannotations.annotations.ViewById;
 
 import co.yishun.lighting.R;
+import co.yishun.lighting.account.AccountManager;
 import co.yishun.lighting.api.APIFactory;
 import co.yishun.lighting.api.model.User;
+import co.yishun.lighting.util.LogUtil;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -34,8 +34,9 @@ import retrofit2.Response;
  * A login screen that offers login via email/password.
  */
 @EActivity(R.layout.activity_login)
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
+    private static final java.lang.String TAG = "LoginActivity";
     @ViewById
     ViewPager viewPager;
     @ViewById
@@ -45,9 +46,12 @@ public class LoginActivity extends AppCompatActivity {
     @ViewById
     EditText passwordEditText;
     /**
-     * Keep track of the login task to ensure we can cancel it if requested.
+     * Attempts to sign in or register the account specified by the login form.
+     * If there are form errors (invalid email, missing fields, etc.), the
+     * errors are presented and no actual login attempt is made.
      */
-    private UserLoginTask mAuthTask = null;
+
+    private int status = 0;
 
     @EditorAction(R.id.passwordEditText)
     boolean passwordEditTextEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -95,16 +99,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
-
     @Click(R.id.signInBtn)
     void attemptLogin() {
-        if (mAuthTask != null) {
+        if (status > 0) {
             return;
         }
 
@@ -113,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = phoneEditText.getText().toString();
+        String phone = phoneEditText.getText().toString();
         String password = passwordEditText.getText().toString();
 
         boolean cancel = false;
@@ -127,11 +124,11 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
+        if (TextUtils.isEmpty(phone)) {
             phoneEditText.setError(getString(R.string.activity_login_error_short_password));
             focusView = phoneEditText;
             cancel = true;
-        } else if (!isPhoneValid(email)) {
+        } else if (!isPhoneValid(phone)) {
             phoneEditText.setError(getString(R.string.activity_login_error_short_password));
             focusView = phoneEditText;
             cancel = true;
@@ -145,8 +142,8 @@ public class LoginActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            status = 1;
+            login(phone, password);
         }
     }
 
@@ -187,55 +184,31 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    void login(String phone, String password) {
+        try {
+            Call<User> call = APIFactory.getAccountAPI().login(phone, "password", password, null);
+            Response<User> userResponse = call.execute();
+            if (userResponse.isSuccessful()) {
+                User user = userResponse.body();
+                LogUtil.i(TAG, user.toString());
+                AccountManager.saveAccount(LoginActivity.this, user);
+                showSnackMsg(R.string.activity_login_msg_success);
 
-        private final String mPhone;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mPhone = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-
-            try {
-                Call<User> call = APIFactory.getAccountAPI().login(mPhone, "password", mPassword, null);
-                Response<User> userResponse = call.execute();
-                if (userResponse.isSuccessful()) {
-                    System.out.println(userResponse.body().toString());
-                    return true;
-                } else
-                    return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                finish();
-            } else {
-                passwordEditText.setError(getString(R.string.activity_login_error_incorrect_password));
+                /*
+                                passwordEditText.setError(getString(R.string.activity_login_error_incorrect_password));
                 passwordEditText.requestFocus();
+                 */
+            } else {
+                showSnackMsg(R.string.activity_login_error_server_unavaiable);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
 
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
+    @Override
+    public String getPageInfo() {
+        return TAG;
     }
 }
 
