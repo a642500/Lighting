@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/textColorPrimary"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_toolbar" />
+
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:paddingLeft="8dp"
+        android:paddingTop="8dp"
+        android:text="@string/fragment_basic_info_question_title"
+        android:textColor="@color/textColorPrimaryInverse" />
+
+    <co.yishun.lighting.ui.view.QuestionView
+        android:id="@+id/question0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titleText"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" />
+
+    <co.yishun.lighting.ui.view.QuestionView
+        android:id="@+id/question1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/question0"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" />
+
+    <co.yishun.lighting.ui.view.QuestionView
+        android:id="@+id/question2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/question1"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp" />
+
+    <Button
+        android:id="@+id/finishBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/fragment_basic_info_finish" />
+</RelativeLayout>
