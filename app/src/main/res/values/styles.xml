@@ -6,12 +6,13 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:colorForeground">@android:color/white</item>
+        <item name="android:colorForeground">@color/colorForeground</item>
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorPrimaryInverse">@color/textColorPrimaryInverse</item>
         <item name="android:textColorSecondary">#8b8b8b</item>
         <item name="android:textColorSecondaryInverse">#8b8b8b</item>
         <item name="android:colorBackground">#22252a</item>
+        <item name="android:windowBackground">?android:colorForeground</item>
     </style>
 
 </resources>

@@ -9,4 +9,6 @@
 
     <color name="textColorPrimaryInverse">#363636</color>
     <color name="textColorPrimary">#ffffff</color>
+
+    <color name="colorForeground">#f4f0f0</color>
 </resources>
