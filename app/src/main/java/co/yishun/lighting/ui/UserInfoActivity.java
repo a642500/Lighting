@@ -223,7 +223,7 @@ public class UserInfoActivity extends PickCropActivity implements AccountManager
             return;
         }
         LogUtil.i(TAG, "user info: " + user);
-        Picasso.with(this).load(user.avatarUrl).into(avatarImage);
+        Picasso.with(this).load(user.avatar).into(avatarImage);
 
         nicknameFragment.setContent(user.nickname);
         String weiboID;

@@ -176,7 +176,7 @@ public class AccountManager {
             mUser = new User();
             mUser.id = "3242234324";
             mUser.nickname = "testUserName";
-            mUser.avatarUrl = "http://ss.bdimg.com/static/superman/img/logo/bd_logo1_31bdc765.png";
+            mUser.avatar = "http://ss.bdimg.com/static/superman/img/logo/bd_logo1_31bdc765.png";
             mUser.location = "";
         }
         return mUser;
