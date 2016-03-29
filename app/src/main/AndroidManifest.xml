@@ -47,6 +47,7 @@
         <activity android:name=".ui.ShootActivity_" />
         <activity android:name=".ui.UserInfoActivity_" />
         <activity android:name=".ui.view.SettingsActivity" />
+        <activity android:name=".ui.IntegrateInfoActivity_" />
     </application>
 
 </manifest>

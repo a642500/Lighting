@@ -241,6 +241,7 @@ public class LoginActivity extends BaseActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        IntegrateInfoActivity_.intent(this).start();
     }
 
     @Override
