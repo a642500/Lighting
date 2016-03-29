@@ -59,6 +59,8 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shoot);
 
+        setResult(RESULT_CANCELED);
+
 
         shootView = (IShootView) findViewById(R.id.shootView);
         toolbar.setNavigationOnClickListener(v -> exitClicked());
@@ -140,9 +142,9 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
     @Override
     public void accept(File file) {
         LogUtil.i(TAG, "accept: " + file);
-        if (shootView instanceof CameraGLSurfaceView)
-            delayStart(file);
-        else {
+        if (shootView instanceof CameraGLSurfaceView) {
+            videoOK(file);
+        } else {
             showProgress();
             delayAccept(file);
         }
@@ -155,7 +157,7 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
             @Override
             public void onSuccess(VideoCommand.VideoCommandType type) {
                 file.delete();
-                delayStart(newFile);
+                videoOK(newFile);
                 hideProgress();
             }
 
@@ -164,11 +166,12 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
                 hideProgress();
             }
         }).start();
+
     }
 
-    @UiThread(delay = 200)
-    void delayStart(File file) {
-//        TagCreateActivity_.intent(this).forDiary(forDiary).forWorld(forWorld).forToday(forToday).world(world).videoPath(file.getPath()).start();
+    @UiThread
+    void videoOK(File file) {
+        setResult(RESULT_OK, new Intent().setData(Uri.fromFile(file)));
         this.finish();
     }
 
