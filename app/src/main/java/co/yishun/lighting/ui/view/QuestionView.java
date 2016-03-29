@@ -82,7 +82,7 @@ public class QuestionView extends RelativeLayout {
         orderTextView.setTextColor(question.getQuestionOrder());
         deleteBtn.setOnClickListener(v -> mQuestion.onDeleteAnswer(getContext()));
         playBtn.setOnClickListener(v -> mQuestion.onPlayAnswer(getContext()));
-
+        this.setOnClickListener(v -> mQuestion.onRecordAnswer(getContext()));
         if (question.isAnswered()) {
             deleteBtn.setVisibility(View.VISIBLE);
             playBtn.setVisibility(View.VISIBLE);
@@ -110,6 +110,8 @@ public class QuestionView extends RelativeLayout {
         void onPlayAnswer(Context context);
 
         void onDeleteAnswer(Context context);
+
+        void onRecordAnswer(Context context);
     }
 
 }

@@ -6,6 +6,7 @@ import android.net.Uri;
 
 import java.io.File;
 
+import co.yishun.lighting.ui.ShootActivity_;
 import co.yishun.lighting.ui.view.QuestionView;
 import co.yishun.lighting.util.FileUtil;
 
@@ -22,6 +23,11 @@ public class AudioQuestion implements QuestionView.IQuestion {
         this.mOrder = mOrder;
         this.mQuestion = mQuestion;
         this.mAnswer = mAnswer;
+    }
+
+    @Override
+    public void onRecordAnswer(Context context) {
+        ShootActivity_.intent(context).start();
     }
 
     @Override
