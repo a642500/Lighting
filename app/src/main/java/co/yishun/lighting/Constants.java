@@ -9,6 +9,7 @@ public class Constants {
 
     public static final String MIME_TYPE = "video/mp4";
     public static final String VIDEO_FILE_SUFFIX = ".mp4";
+    public static final String AUDIO_FILE_SUFFIX = ".mp3";
     public static final String THUMB_FILE_SUFFIX = ".png";
     public static final String URL_HYPHEN = "-";
 

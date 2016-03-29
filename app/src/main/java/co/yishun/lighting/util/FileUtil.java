@@ -5,6 +5,8 @@ import android.os.Environment;
 
 import java.io.File;
 
+import co.yishun.lighting.Constants;
+
 /**
  * Created by Carlos on 2016/3/22.
  */
@@ -20,6 +22,10 @@ public class FileUtil {
 
     public static File getVideoCacheFile(Context context) {
         return new File(getCacheDirectory(context, false), "video-" + System.currentTimeMillis() + ".mp4");
+    }
+
+    public static File getAudioStoreFile(Context context, int order) {
+        return new File(getCacheDirectory(context, false), "audioq" + Constants.URL_HYPHEN + order + Constants.AUDIO_FILE_SUFFIX);
     }
 
 
