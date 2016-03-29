@@ -49,7 +49,27 @@ public class CameraUtil {
             }
             LogUtil.v("iter height", "width: " + size.width + ", height: " + size.height + ", ratio: " + sizeRatio);
         }
-        LogUtil.i("selected size", "width: " + optimalSize.width + ", height: " + optimalSize.height);
+
+        // if the height and width of each in sizes list is small than the target, optimalSize will be null
+        if (optimalSize != null) {
+            LogUtil.i("selected size", "width: " + optimalSize.width + ", height: " + optimalSize.height);
+            return optimalSize;
+        }
+
+        for (Camera.Size size : sizes) {
+            //select whose ratio is the most close
+            double sizeRatio = ((float) size.width) / size.height;
+            double ratioDiff = Math.abs(sizeRatio - ratio);
+            if (ratioDiff < minRatioDiff) {
+                minRatioDiff = ratioDiff;
+                optimalSize = size;
+            } else if (ratioDiff == minRatioDiff && size.height > optimalSize.height) {
+                //if ratio is the same, select whose height is the most close
+                optimalSize = size;
+            }
+            LogUtil.v("iter height", "width: " + size.width + ", height: " + size.height + ", ratio: " + sizeRatio);
+        }
+
         return optimalSize;
     }
 
