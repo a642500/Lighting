@@ -1,8 +1,10 @@
 package co.yishun.lighting.ui;
 
+import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -49,6 +51,11 @@ public class BasicInfoFragment extends BaseFragment {
             mQuestions[i] = new AudioQuestion(i + 1, "Test", null);
             questionViews[i].setQuestion(mQuestions[i]);
         }
+    }
+
+    @Click
+    void finishBtnClicked(View view) {
+        MainActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
     }
 
 }
