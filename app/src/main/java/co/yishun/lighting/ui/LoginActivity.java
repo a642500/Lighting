@@ -20,6 +20,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.EditorAction;
+import org.androidannotations.annotations.Fullscreen;
 import org.androidannotations.annotations.ViewById;
 
 import co.yishun.lighting.R;
@@ -33,6 +34,7 @@ import retrofit2.Response;
 /**
  * A login screen that offers login via email/password.
  */
+@Fullscreen
 @EActivity(R.layout.activity_login)
 public class LoginActivity extends BaseActivity {
 
@@ -103,6 +105,7 @@ public class LoginActivity extends BaseActivity {
                 container.removeView(((View) object));
             }
         });
+        viewPager.setOverScrollMode(View.OVER_SCROLL_NEVER);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(final int position, float positionOffset, int positionOffsetPixels) {
