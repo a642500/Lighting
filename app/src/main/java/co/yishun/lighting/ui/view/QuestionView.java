@@ -21,6 +21,7 @@ import co.yishun.lighting.R;
 @SuppressWarnings("unused")
 public class QuestionView extends RelativeLayout {
     TextView questionTextView;
+    TextView orderTextView;
     View deleteBtn;
     View arrowIcon;
     View playBtn;
@@ -54,9 +55,12 @@ public class QuestionView extends RelativeLayout {
     private void init() {
         mAccentColor = getResources().getColor(R.color.colorAccent);
         mPrimaryColor = getResources().getColor(R.color.textColorPrimary);
+        this.setBackgroundResource(R.drawable.ic_basic_item);
+        setGravity(CENTER_VERTICAL);
 
         LayoutInflater.from(getContext()).inflate(R.layout.view_question, this, true);
         questionTextView = ((TextView) findViewById(R.id.questionTextView));
+        orderTextView = ((TextView) findViewById(R.id.orderTextView));
         deleteBtn = findViewById(R.id.deleteBtn);
         playBtn = findViewById(R.id.playBtn);
         arrowIcon = findViewById(R.id.arrowIcon);
@@ -75,6 +79,7 @@ public class QuestionView extends RelativeLayout {
     public void setQuestion(@NonNull IQuestion question) {
         mQuestion = question;
         questionTextView.setText(question.getQuestionName());
+        orderTextView.setTextColor(question.getQuestionOrder());
         deleteBtn.setOnClickListener(v -> mQuestion.onDeleteAnswer(getContext()));
         playBtn.setOnClickListener(v -> mQuestion.onPlayAnswer(getContext()));
 
