@@ -43,11 +43,13 @@ public class Util {
 
     public static String joinString(@NonNull final String forNull, final @NonNull String divider, @NonNull String... values) {
         StringBuilder buffer = new StringBuilder();
-        buffer.append(values[0]);
-        for (int i = 1; i < values.length; i++) {
-            String value = values[i];
-            buffer.append(divider);
-            buffer.append(value == null ? forNull : value);
+        if (values.length > 0) {
+            buffer.append(values[0]);
+            for (int i = 1; i < values.length; i++) {
+                String value = values[i];
+                buffer.append(divider);
+                buffer.append(value == null ? forNull : value);
+            }
         }
         return buffer.toString();
     }
