@@ -1,13 +1,17 @@
 package co.yishun.lighting.ui;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageSwitcher;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
@@ -35,6 +39,9 @@ import co.yishun.lighting.util.video.VideoConvert;
  */
 @EActivity
 public class ShootActivity extends BaseActivity implements Callback, Consumer<File>, IShootView.SecurityExceptionHandler {
+    public static final int STATUS_PERPARE = 0;
+    public static final int STATUS_RECORDING = 1;
+    public static final int STATUS_RECORDED = 2;
     private static final String TAG = "ShootActivity";
     @ViewById
     Toolbar toolbar;
@@ -45,9 +52,56 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
     View cameraSwitch;
     @ViewById
     ImageSwitcher recordFlashSwitch;
+    @ViewById
+    View leftBtn;
+    @ViewById
+    TextView rightBtn;
+    private int status;
     @Nullable
     private CameraGLSurfaceView mCameraGLSurfaceView;
     private boolean flashOn = false;
+
+    @Click
+    void leftBtnClicked(View view) {
+        switch (status) {
+            case STATUS_RECORDED:
+                redoBtnClicked(view);
+                break;
+            case STATUS_PERPARE:
+            case STATUS_RECORDING:
+                break;
+        }
+    }
+
+    @Click
+    void rightBtnClicked(View view) {
+        switch (status) {
+            case STATUS_RECORDED:
+                finishBtnClicked(view);
+                break;
+            case STATUS_PERPARE:
+                importVideoBtnClicked(view);
+                break;
+            case STATUS_RECORDING:
+                break;
+        }
+    }
+
+    private void finishBtnClicked(View view) {
+
+    }
+
+    private void redoBtnClicked(View view) {
+        leftBtn.setVisibility(View.VISIBLE);
+        leftBtn.animate().alpha(1).setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime)).start();
+
+        rightBtn.setText(R.string.activity_shoot_finish);
+    }
+
+    private void importVideoBtnClicked(View view) {
+
+    }
+
 
     @Override
     public String getPageInfo() {
@@ -79,8 +133,14 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
 
     @Click
     void shootBtnClicked() {
+        status = STATUS_RECORDING;
         shootView.record(this, this);
-        //TODO update record btn and other btns
+        rightBtn.animate().alpha(0).setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime)).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                rightBtn.setVisibility(View.INVISIBLE);
+            }
+        }).start();
     }
 
     private void setControlBtn() {
@@ -129,19 +189,24 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
         super.onDestroy();
     }
 
-
     void exitClicked() {
         this.finish();
     }
 
     @Override
     public void call() {
+        //TODO animation btn
         LogUtil.i(TAG, "start record callback");
     }
 
     @Override
     public void accept(File file) {
         LogUtil.i(TAG, "accept: " + file);
+        rightBtn.setText(R.string.activity_shoot_finish);
+        leftBtn.setVisibility(View.VISIBLE);
+        rightBtn.setVisibility(View.VISIBLE);
+        leftBtn.animate().alpha(1).setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime)).start();
+
         if (shootView instanceof CameraGLSurfaceView) {
             videoOK(file);
         } else {
@@ -211,5 +276,9 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
         }
         builder.show();
         //TODO add help btn to guide user to how enable permission for three-party rom
+    }
+
+    @IntDef({STATUS_PERPARE, STATUS_RECORDING, STATUS_RECORDED})
+    private @interface Status {
     }
 }
