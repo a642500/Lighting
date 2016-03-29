@@ -16,15 +16,31 @@
         android:minWidth="48dp"
         android:text="@string/activity_shoot_redo"
         android:textColor="@color/colorAccent"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:visibility="invisible" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <RelativeLayout
         android:id="@+id/shootBtn"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:minHeight="64dp"
-        android:minWidth="64dp"
-        android:src="@color/colorAccent" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_capture_capture"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            android:src="@drawable/ic_capture_begin"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            android:src="@drawable/ic_capture_stop" />
+
+    </RelativeLayout>
+
 
     <TextView
         android:id="@+id/rightBtn"

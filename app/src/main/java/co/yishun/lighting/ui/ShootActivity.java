@@ -200,12 +200,30 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
     }
 
     @Override
+    @UiThread
     public void accept(File file) {
         LogUtil.i(TAG, "accept: " + file);
         rightBtn.setText(R.string.activity_shoot_finish);
         leftBtn.setVisibility(View.VISIBLE);
         rightBtn.setVisibility(View.VISIBLE);
-        leftBtn.animate().alpha(1).setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime)).start();
+        rightBtn.setAlpha(0);
+        leftBtn.setAlpha(0);
+        leftBtn.animate().alpha(1).setDuration(getResources().
+                getInteger(android.R.integer.config_shortAnimTime)).
+                setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        leftBtn.setAlpha(1);
+                    }
+                }).start();
+        rightBtn.animate().alpha(1).setDuration(getResources().
+                getInteger(android.R.integer.config_shortAnimTime)).
+                setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        rightBtn.setAlpha(1);
+                    }
+                }).start();
 
         if (shootView instanceof CameraGLSurfaceView) {
             videoOK(file);
@@ -237,7 +255,7 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
     @UiThread
     void videoOK(File file) {
         setResult(RESULT_OK, new Intent().setData(Uri.fromFile(file)));
-        this.finish();
+
     }
 
     @Override

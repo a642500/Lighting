@@ -11,16 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <co.yishun.onemoment.app.ui.view.shoot.ShootView
+        <co.yishun.lighting.ui.view.shoot.ShootView
             android:id="@+id/shootView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <co.yishun.onemoment.app.ui.view.RadioCornerImageView
+        <co.yishun.lighting.ui.view.RadioCornerImageView
             android:id="@+id/maskImageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
             app:rc_cornerRadio="0" />
     </co.yishun.lighting.ui.view.SquareFrameLayout>
 
