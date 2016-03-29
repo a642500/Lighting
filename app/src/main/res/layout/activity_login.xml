@@ -67,6 +67,7 @@
                 android:layout_height="16dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
+                android:paddingBottom="4dp"
                 app:pid_background="@color/colorDotBackground"
                 app:pid_dotRadius="4dp"
                 app:pid_foreground="@color/colorDotForeground"
