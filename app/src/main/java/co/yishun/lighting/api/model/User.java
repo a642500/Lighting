@@ -24,7 +24,7 @@ public class User {
         "location": "",
         "wechat_nickname": "",
         "sex": "",
-        "portrait": ""
+        "avatar": ""
     }
 }
      */
@@ -43,8 +43,7 @@ public class User {
     public String phoneNumber;
     public String accessToken;
     public String wechatNickname;
-    public String portrait;
-    public String avatarUrl;//TODO lack
+    public String avatar;
 
     @Override
     public String toString() {
@@ -61,8 +60,7 @@ public class User {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", accessToken='" + accessToken + '\'' +
                 ", wechatNickname='" + wechatNickname + '\'' +
-                ", portrait='" + portrait + '\'' +
-                ", avatarUrl='" + avatarUrl + '\'' +
+                ", avatar='" + avatar + '\'' +
                 '}';
     }
 
