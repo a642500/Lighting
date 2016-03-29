@@ -2,6 +2,7 @@ package co.yishun.lighting.ui;
 
 import android.content.Intent;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
