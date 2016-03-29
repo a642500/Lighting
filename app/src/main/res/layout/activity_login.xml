@@ -7,10 +7,27 @@
     tools:context=".ui.LoginActivity">
 
     <ImageView
+        android:id="@+id/backgroundImageViewA"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
         android:src="@drawable/bg_login_1" />
+
+    <ImageView
+        android:id="@+id/backgroundImageViewB"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0"
+        android:scaleType="fitXY"
+        android:src="@drawable/bg_login_2" />
+
+    <ImageView
+        android:id="@+id/backgroundImageViewC"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0"
+        android:scaleType="fitXY"
+        android:src="@drawable/bg_login_3" />
 
     <ImageView
         android:layout_width="wrap_content"

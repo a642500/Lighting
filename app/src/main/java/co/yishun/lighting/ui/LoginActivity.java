@@ -45,6 +45,12 @@ public class LoginActivity extends BaseActivity {
     EditText phoneEditText;
     @ViewById
     EditText passwordEditText;
+    @ViewById
+    ImageView backgroundImageViewA;
+    @ViewById
+    ImageView backgroundImageViewB;
+    @ViewById
+    ImageView backgroundImageViewC;
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
@@ -95,6 +101,30 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void destroyItem(ViewGroup container, int position, Object object) {
                 container.removeView(((View) object));
+            }
+        });
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(final int position, float positionOffset, int positionOffsetPixels) {
+                switch (position) {
+                    case 0:
+                        backgroundImageViewA.setAlpha(1 - positionOffset);
+                        backgroundImageViewB.setAlpha(positionOffset);
+                        break;
+                    case 1:
+                        backgroundImageViewB.setAlpha(1 - positionOffset);
+                        backgroundImageViewC.setAlpha(positionOffset);
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
             }
         });
     }
