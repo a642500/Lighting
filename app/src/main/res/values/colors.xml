@@ -11,4 +11,6 @@
     <color name="textColorPrimary">#ffffff</color>
 
     <color name="colorForeground">#f4f0f0</color>
+    <color name="colorDotBackground">#88ffffff</color>
+    <color name="colorDotForeground">#ffffff</color>
 </resources>

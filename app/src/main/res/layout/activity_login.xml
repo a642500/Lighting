@@ -44,10 +44,11 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <FrameLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
+
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewPager"
@@ -59,7 +60,18 @@
                 android:layout_height="match_parent"
                 android:scaleType="center"
                 android:src="@drawable/pic_login_lightup" />
-        </FrameLayout>
+
+            <co.yishun.lighting.ui.view.PageIndicatorDot
+                android:id="@+id/pageIndicatorDot"
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                app:pid_background="@color/colorDotBackground"
+                app:pid_dotRadius="4dp"
+                app:pid_foreground="@color/colorDotForeground"
+                app:pid_num="3" />
+        </RelativeLayout>
 
 
         <co.yishun.lighting.ui.view.TextDivider

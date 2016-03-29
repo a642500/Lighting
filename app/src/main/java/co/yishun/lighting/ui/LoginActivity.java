@@ -27,6 +27,7 @@ import co.yishun.lighting.R;
 import co.yishun.lighting.account.AccountManager;
 import co.yishun.lighting.api.APIFactory;
 import co.yishun.lighting.api.model.User;
+import co.yishun.lighting.ui.view.PageIndicatorDot;
 import co.yishun.lighting.util.LogUtil;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -53,6 +54,8 @@ public class LoginActivity extends BaseActivity {
     ImageView backgroundImageViewB;
     @ViewById
     ImageView backgroundImageViewC;
+    @ViewById
+    PageIndicatorDot pageIndicatorDot;
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
@@ -106,6 +109,7 @@ public class LoginActivity extends BaseActivity {
             }
         });
         viewPager.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        pageIndicatorDot.setViewPager(viewPager);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(final int position, float positionOffset, int positionOffsetPixels) {
