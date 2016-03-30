@@ -15,4 +15,7 @@
         <item name="android:windowBackground">?android:colorForeground</item>
     </style>
 
+    <style name="AppTheme.LoginActivity">
+        <item name="android:colorAccent">@android:color/white</item>
+    </style>
 </resources>
