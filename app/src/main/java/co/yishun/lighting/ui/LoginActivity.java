@@ -64,6 +64,17 @@ public class LoginActivity extends BaseActivity {
 
     private int status = 0;
 
+    public static boolean isPhoneValid(@NonNull String phone) {
+        //TODO: Replace this with your own logic
+        try {
+            //noinspection ResultOfMethodCallIgnored
+            Long.parseLong(phone);
+            return phone.trim().length() == 11;
+        } catch (NumberFormatException ignored) {
+            return false;
+        }
+    }
+
     @EditorAction(R.id.passwordEditText)
     boolean passwordEditTextEditorAction(TextView textView, int id, KeyEvent keyEvent) {
         if (id == R.id.login || id == EditorInfo.IME_NULL) {
@@ -181,17 +192,6 @@ public class LoginActivity extends BaseActivity {
             showProgress(true);
             status = 1;
             login(phone, password);
-        }
-    }
-
-    private boolean isPhoneValid(@NonNull String phone) {
-        //TODO: Replace this with your own logic
-        try {
-            //noinspection ResultOfMethodCallIgnored
-            Long.parseLong(phone);
-            return phone.trim().length() == 11;
-        } catch (NumberFormatException ignored) {
-            return false;
         }
     }
 
