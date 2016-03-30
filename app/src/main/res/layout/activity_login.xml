@@ -116,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/activity_login_hint_password"
                 android:imeActionId="@+id/login"
-                android:imeActionLabel="@string/activity_login_error_short_password"
+                android:imeActionLabel="@string/activity_login_action_sign_in"
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
                 android:maxLines="1"
