@@ -70,10 +70,7 @@ public class QuestionView extends RelativeLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if (mQuestion != null && mQuestion.isAnswered()) {
-            return false;
-        }
-        return super.onInterceptTouchEvent(ev);
+        return !(mQuestion != null && mQuestion.isAnswered()) && super.onInterceptTouchEvent(ev);
     }
 
     public void setQuestion(@NonNull IQuestion question) {
