@@ -76,7 +76,7 @@ public class QuestionView extends RelativeLayout {
     public void setQuestion(@NonNull IQuestion question) {
         mQuestion = question;
         questionTextView.setText(question.getQuestionName());
-        orderTextView.setTextColor(question.getQuestionOrder());
+        orderTextView.setText(question.getQuestionOrder());
         deleteBtn.setOnClickListener(v -> mQuestion.onDeleteAnswer(getContext()));
         playBtn.setOnClickListener(v -> mQuestion.onPlayAnswer(getContext()));
         this.setOnClickListener(v -> mQuestion.onRecordAnswer(getContext()));
