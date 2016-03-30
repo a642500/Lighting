@@ -23,21 +23,23 @@
         android:id="@+id/shootBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_capture_capture"
-        android:gravity="center">
+        android:background="@drawable/ic_capture_capture">
 
         <ImageView
+            android:id="@+id/recordBtnBeginImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="center"
+            android:layout_centerInParent="true"
             android:src="@drawable/ic_capture_begin"
-            android:visibility="invisible" />
+            android:visibility="visible" />
 
         <ImageView
+            android:id="@+id/recordBtnStopImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="center"
-            android:src="@drawable/ic_capture_stop" />
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_capture_stop"
+            android:visibility="invisible" />
 
     </RelativeLayout>
 
@@ -50,7 +52,8 @@
         android:gravity="center"
         android:minHeight="48dp"
         android:minWidth="48dp"
-        android:text="@string/activity_shoot_import"
+        android:text="@string/activity_shoot_finish"
         android:textColor="@color/colorAccent"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:visibility="invisible" />
 </LinearLayout>
