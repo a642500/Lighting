@@ -165,19 +165,23 @@ public class LoginActivity extends BaseActivity {
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (!TextUtils.isEmpty(password)) {
             passwordEditText.setError(getString(R.string.activity_login_error_incorrect_password));
+            focusView = passwordEditText;
+            cancel = true;
+        } else if (!isPasswordValid(password)) {
+            passwordEditText.setError(getString(R.string.activity_login_error_wrong_password_length));
             focusView = passwordEditText;
             cancel = true;
         }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(phone)) {
-            phoneEditText.setError(getString(R.string.activity_login_error_short_password));
+            phoneEditText.setError(getString(R.string.activity_login_error_empty_phone));
             focusView = phoneEditText;
             cancel = true;
         } else if (!isPhoneValid(phone)) {
-            phoneEditText.setError(getString(R.string.activity_login_error_short_password));
+            phoneEditText.setError(getString(R.string.activity_login_error_invalid_phone));
             focusView = phoneEditText;
             cancel = true;
         }
@@ -196,8 +200,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() >= 6 && password.length() <= 30;
     }
 
     /**

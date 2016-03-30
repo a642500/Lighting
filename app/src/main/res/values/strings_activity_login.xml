@@ -8,7 +8,8 @@
     <string name="activity_login_action_sign_in">Sign In</string>
 
     <string name="activity_login_error_invalid_phone">This phone is invalid</string>
-    <string name="activity_login_error_short_password">This password is too short</string>
+    <string name="activity_login_error_empty_phone">Please input your phone number</string>
+    <string name="activity_login_error_wrong_password_length">The length of password must be between 6 and 30.</string>
     <string name="activity_login_error_incorrect_password">This password is incorrect</string>
     <string name="activity_login_error_server_unavaiable">Unable to connect to server, please try later</string>
     <string name="activity_login_msg_success">Login Success</string>
