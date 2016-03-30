@@ -21,7 +21,12 @@ public class Constants {
     public static final String PROFILE_SUFFIX = ".png";
     public static final int VIDEO_HEIGHT = 640;
     public static final int VIDEO_WIDTH = 640;
+    public static final String FILE_URL_PREFIX = "file://";
+    public static final String APP_URL_PREFIX = "lightupjs://";
+
     public static final int VIDEO_FPS = 30;
+    public static final String HYBRD_UNZIP_DIR = "hybrd";
+
 
     public static final String BASE_URL;
 
@@ -29,4 +34,18 @@ public class Constants {
         BASE_URL = SANDBOX ? "http://devlightup.hustonline.net/v1/" : "http://lightup.hustonline.net/v1/";
     }
 
+
+    public static class Perference {
+        public static final String RUNTIME_PREFERENCE = "run_preference";
+        public static final String PREFERENCE_IS_FIRST_LAUNCH = "is_first_launch";
+        public static final String PREFERENCE_SPLASH_UPDATE_TIME = "splash_update_time";
+        public static final String PREFERENCE_SPLASH_COVER_NAME = "splash_cover_name";
+        public static final String PREFERENCE_SPLASH_STAY = "splash_stay";
+        public static final String PREFERENCE_HYBRID_NAME = "hybrid_name";
+        public static final String PREFERENCE_HYBRID_UPDATE_TIME = "hybrid_update_time";
+        public static final String PREFERENCE_HYBRID_MD5 = "hybrid_md5";
+        public static final String PREFERENCE_HYBRID_LENGTH = "hybrid_length";
+        public static final String PREFERENCE_HYBRID_UNZIP_TIME = "hybrd_unzip_time";
+        public static final String DEFAULT_SPLASH_COVER_NAME = "splash_cover_0.png";
+    }
 }

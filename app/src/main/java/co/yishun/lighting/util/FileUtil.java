@@ -3,7 +3,14 @@ package co.yishun.lighting.util;
 import android.content.Context;
 import android.os.Environment;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import co.yishun.lighting.Constants;
 
@@ -70,5 +77,54 @@ public class FileUtil {
         }
 
         return cacheDir;
+    }
+
+    public static File getInternalFile(Context context, String filename) {
+        return new File(context.getFilesDir(), filename);
+    }
+
+    public static boolean unZip(String zipPath, String outputPath) {
+        InputStream inputStream = null;
+        ZipInputStream zipInputStream = null;
+        FileOutputStream fileOutputStream = null;
+        try {
+            String filename;
+            inputStream = new FileInputStream(zipPath);
+            zipInputStream = new ZipInputStream(new BufferedInputStream(inputStream));
+            ZipEntry zipEntry;
+            File entryFile;
+            byte[] buffer = new byte[1024];
+            int count;
+
+            while ((zipEntry = zipInputStream.getNextEntry()) != null) {
+                filename = zipEntry.getName();
+                entryFile = new File(outputPath, filename);
+                if (zipEntry.isDirectory()) {
+                    entryFile.mkdirs();
+                    continue;
+                }
+
+                if (entryFile.exists()) entryFile.delete();
+                fileOutputStream = new FileOutputStream(entryFile);
+                while ((count = zipInputStream.read(buffer)) != -1) {
+                    fileOutputStream.write(buffer, 0, count);
+                }
+                fileOutputStream.close();
+                zipInputStream.closeEntry();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            try {
+                if (inputStream != null) inputStream.close();
+                if (zipInputStream != null) zipInputStream.close();
+                if (fileOutputStream != null) fileOutputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return true;
     }
 }
