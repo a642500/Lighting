@@ -56,6 +56,10 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
     View leftBtn;
     @ViewById
     TextView rightBtn;
+    @ViewById
+    View recordBtnBeginImageView;
+    @ViewById
+    View recordBtnStopImageView;
     private int status;
     @Nullable
     private CameraGLSurfaceView mCameraGLSurfaceView;
@@ -63,14 +67,7 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
 
     @Click
     void leftBtnClicked(View view) {
-        switch (status) {
-            case STATUS_RECORDED:
-                redoBtnClicked(view);
-                break;
-            case STATUS_PERPARE:
-            case STATUS_RECORDING:
-                break;
-        }
+        redoBtnClicked(view);
     }
 
     @Click
@@ -80,8 +77,8 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
                 finishBtnClicked(view);
                 break;
             case STATUS_PERPARE:
-                importVideoBtnClicked(view);
-                break;
+//                importVideoBtnClicked(view);
+//                break;
             case STATUS_RECORDING:
                 break;
         }
@@ -92,16 +89,48 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
     }
 
     private void redoBtnClicked(View view) {
-        leftBtn.setVisibility(View.VISIBLE);
-        leftBtn.animate().alpha(1).setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime)).start();
+        leftBtn.animate().alpha(0).setDuration(getResources()
+                .getInteger(android.R.integer.config_shortAnimTime))
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        leftBtn.setVisibility(View.INVISIBLE);
+                    }
+                }).start();
 
-        rightBtn.setText(R.string.activity_shoot_finish);
+        rightBtn.animate().alpha(0).setDuration(getResources()
+                .getInteger(android.R.integer.config_shortAnimTime))
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        rightBtn.setVisibility(View.INVISIBLE);
+                    }
+                }).start();
+
+
+        recordBtnBeginImageView.animate().alpha(1).setDuration(getResources().
+                getInteger(android.R.integer.config_shortAnimTime))
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        recordBtnBeginImageView.setVisibility(View.VISIBLE);
+                    }
+                }).start();
+        recordBtnStopImageView.setVisibility(View.VISIBLE);
+        recordBtnStopImageView.animate().alpha(0).setDuration(getResources().
+                getInteger(android.R.integer.config_shortAnimTime))
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        recordBtnStopImageView.setAlpha(0);
+                        recordBtnStopImageView.setVisibility(View.INVISIBLE);
+                    }
+                }).start();
     }
 
     private void importVideoBtnClicked(View view) {
 
     }
-
 
     @Override
     public String getPageInfo() {
@@ -135,12 +164,6 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
     void shootBtnClicked() {
         status = STATUS_RECORDING;
         shootView.record(this, this);
-        rightBtn.animate().alpha(0).setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime)).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                rightBtn.setVisibility(View.INVISIBLE);
-            }
-        }).start();
     }
 
     private void setControlBtn() {
@@ -196,6 +219,24 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
     @Override
     public void call() {
         //TODO animation btn
+        recordBtnBeginImageView.animate().alpha(0).setDuration(getResources().
+                getInteger(android.R.integer.config_shortAnimTime))
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        recordBtnBeginImageView.setVisibility(View.INVISIBLE);
+                    }
+                }).start();
+        recordBtnStopImageView.setAlpha(0);
+        recordBtnStopImageView.setVisibility(View.VISIBLE);
+        recordBtnStopImageView.animate().alpha(1).setDuration(getResources().
+                getInteger(android.R.integer.config_shortAnimTime))
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        recordBtnStopImageView.setAlpha(1);
+                    }
+                }).start();
         LogUtil.i(TAG, "start record callback");
     }
 
@@ -203,7 +244,6 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
     @UiThread
     public void accept(File file) {
         LogUtil.i(TAG, "accept: " + file);
-        rightBtn.setText(R.string.activity_shoot_finish);
         leftBtn.setVisibility(View.VISIBLE);
         rightBtn.setVisibility(View.VISIBLE);
         rightBtn.setAlpha(0);
@@ -224,6 +264,8 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
                         rightBtn.setAlpha(1);
                     }
                 }).start();
+
+        recordBtnStopImageView.setEnabled(false);
 
         if (shootView instanceof CameraGLSurfaceView) {
             videoOK(file);
