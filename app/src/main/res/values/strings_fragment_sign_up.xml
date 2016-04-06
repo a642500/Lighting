@@ -6,8 +6,13 @@
     <string name="fragment_sign_up_hint_verification_code">Verification Code</string>
     <string name="fragment_sign_up_title">Sign Up</string>
     <string name="fragment_sign_up_btn_next">Next</string>
+
+    <string name="fragment_sign_up_msg_error_network">Network is not working, please check it</string>
+
     <string name="fragment_sign_up_msg_send_fail">Verification code sent failed, please retry</string>
-    <string name="fragment_sign_up_msg_send_error_network">Network is not working, please check it</string>
     <string name="fragment_sign_up_msg_send_ok">Verification code has been sent, please check it.</string>
+
+    <string name="fragment_sign_up_msg_verify_fail">Verification Code is incorrect.</string>
+    <string name="fragment_sign_up_msg_verify_ok">Verified.</string>
 
 </resources>

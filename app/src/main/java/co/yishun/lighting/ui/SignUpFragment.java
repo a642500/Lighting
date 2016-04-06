@@ -20,6 +20,7 @@ import java.io.IOException;
 
 import co.yishun.lighting.R;
 import co.yishun.lighting.api.APIFactory;
+import co.yishun.lighting.api.model.Token;
 import co.yishun.lighting.ui.view.CountDownResentView;
 import retrofit2.Response;
 
@@ -33,6 +34,8 @@ public class SignUpFragment extends BaseFragment {
     String phone;
     @ViewById
     TextInputEditText phoneEditText;
+    @ViewById
+    TextInputEditText verifyCodeEditText;
     @ViewById
     Toolbar toolbar;
     @ViewById
@@ -71,8 +74,23 @@ public class SignUpFragment extends BaseFragment {
     }
 
     @Click
+    @Background
     void nextBtnClicked() {
-
+        String code = verifyCodeEditText.getText().toString().trim();
+        AccountActivity accountActivity = (AccountActivity) getActivity();
+        try {
+            Response<Token> response = APIFactory.getAccountAPI().validateSMS(phone, code, "register").execute();
+            if (response.isSuccessful()) {
+                accountActivity.showSnackMsg(R.string.fragment_sign_up_msg_verify_ok);
+                Token token = response.body();
+                accountActivity.goToUserInfo(token);
+            } else {
+                accountActivity.showSnackMsg(R.string.fragment_sign_up_msg_verify_fail);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            accountActivity.showSnackMsg(R.string.fragment_sign_up_msg_error_network);
+        }
     }
 
     private void trySendSms() {
@@ -94,7 +112,7 @@ public class SignUpFragment extends BaseFragment {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            ((BaseActivity) getActivity()).showSnackMsg(R.string.fragment_sign_up_msg_send_error_network);
+            ((BaseActivity) getActivity()).showSnackMsg(R.string.fragment_sign_up_msg_error_network);
             onFail();
         }
     }

@@ -7,6 +7,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 
 import co.yishun.lighting.R;
+import co.yishun.lighting.api.model.Token;
 
 /**
  * Created by carlos on 4/6/16.
@@ -16,6 +17,11 @@ public class AccountActivity extends BaseActivity {
     public static final String TAG = "AccountActivity";
     @Extra
     String phone;
+
+    protected void goToUserInfo(Token token) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, UserInfoFragment_
+                .builder().token(token).build()).commitAllowingStateLoss();
+    }
 
     @Override
     public String getPageInfo() {
