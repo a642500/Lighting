@@ -45,11 +45,7 @@ public class SignUpFragment extends BaseFragment {
             phoneEditText.setText(phone);
             phoneEditText.setSelection(phoneEditText.length());
         }
-
-        if (LoginActivity.isPhoneValid(phone)) {
-            resentView.countDown();
-            sendSms(phone);
-        }
+        trySendSms();
     }
 
     @AfterViews
@@ -58,11 +54,16 @@ public class SignUpFragment extends BaseFragment {
 
         resentView.setOnClickListenerWhenEnd(view -> {
             phone = phoneEditText.getText().toString();
-            if (LoginActivity.isPhoneValid(phone)) {
-                sendSms(phone);
-            }
+            trySendSms();
         });
 
+    }
+
+    private void trySendSms() {
+        if (LoginActivity.isPhoneValid(phone)) {
+            resentView.countDown();
+            sendSms(phone);
+        }
     }
 
     @Background
@@ -70,9 +71,9 @@ public class SignUpFragment extends BaseFragment {
         try {
             Response response = APIFactory.getAccountAPI().register(phone).execute();
             if (response.isSuccessful()) {
-                ((BaseActivity) getActivity()).showSnackMsg("OK");
+                ((BaseActivity) getActivity()).showSnackMsg(R.string.fragment_sign_up_msg_send_ok);
             } else {
-                ((BaseActivity) getActivity()).showSnackMsg("Fail");
+                ((BaseActivity) getActivity()).showSnackMsg(R.string.fragment_sign_up_msg_send_fail);
                 onFail();
             }
         } catch (IOException e) {

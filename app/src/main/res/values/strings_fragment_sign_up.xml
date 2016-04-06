@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="fragment_sign_up_send_suffix">second later, send verification code again</string>
-    <!--suppress CheckTagEmptyBody -->
-    <string name="fragment_sign_up_send_end"></string>
+    <string name="fragment_sign_up_send_end">Click to send verification to your phone</string>
     <string name="fragment_sign_up_hint_phone">Phone</string>
     <string name="fragment_sign_up_hint_verification_code">Verification Code</string>
     <string name="fragment_sign_up_title">Sign Up</string>
+    <string name="fragment_sign_up_btn_next">Next</string>
+    <string name="fragment_sign_up_msg_send_fail">Verification code sent failed, please retry</string>
+    <string name="fragment_sign_up_msg_send_ok">Verification code has been sent, please check it.</string>
 
 </resources>
