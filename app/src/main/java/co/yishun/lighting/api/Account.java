@@ -5,6 +5,7 @@ import android.support.annotation.StringDef;
 
 import com.google.gson.annotations.SerializedName;
 
+import co.yishun.lighting.api.model.Token;
 import co.yishun.lighting.api.model.User;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -23,8 +24,9 @@ public interface Account {
 
     @POST("account/validate_sms")
     @FormUrlEncoded
-    void validateSMS(@Field("phone_number") String phoneNum,
-                     @Field("validate_code") String validateCode, @Field("validate_type") @ValidateType String type);
+    Call<Token> validateSMS(@Field("phone_number") String phoneNum,
+                            @Field("validate_code") String validateCode,
+                            @Field("validate_type") @ValidateType String type);
 
     @POST("account/login")
     @FormUrlEncoded
