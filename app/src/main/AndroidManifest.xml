@@ -49,6 +49,9 @@
         <activity android:name=".ui.UserInfoActivity_" />
         <activity android:name=".ui.view.SettingsActivity" />
         <activity android:name=".ui.IntegrateInfoActivity_" />
+        <activity
+            android:name=".ui.AccountActivity_"
+            android:parentActivityName=".ui.LoginActivity_" />
     </application>
 
 </manifest>
