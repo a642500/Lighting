@@ -199,6 +199,11 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    @Click
+    void signUpBtnClicked() {
+        AccountActivity_.intent(this).phone(phoneEditText.getText().toString()).start();
+    }
+
     private boolean isPasswordValid(String password) {
         return password.length() >= 6 && password.length() <= 30;
     }
