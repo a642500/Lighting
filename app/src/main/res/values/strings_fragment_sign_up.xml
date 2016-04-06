@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fragment_sign_up_send_suffix">second later, send verification code again</string>
+    <!--suppress CheckTagEmptyBody -->
+    <string name="fragment_sign_up_send_end"></string>
+    <string name="fragment_sign_up_hint_phone">Phone</string>
+    <string name="fragment_sign_up_hint_verification_code">Verification Code</string>
+    <string name="fragment_sign_up_title">Sign Up</string>
+
+</resources>

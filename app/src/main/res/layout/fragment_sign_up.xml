@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_toolbar" />
-
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="@dimen/toolbar_elevation"
+        app:contentInsetStart="72dp"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:navigationIcon="@drawable/ic_menu"
+        app:title="@string/fragment_sign_up_title" />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:paddingLeft="32dp"
         android:paddingRight="32dp">
 
@@ -17,7 +28,7 @@
             android:id="@+id/phoneEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/activity_login_hint_phone"
+            android:hint="@string/fragment_sign_up_hint_phone"
             android:inputType="phone"
             android:maxLines="1"
             android:singleLine="true" />
@@ -35,10 +46,29 @@
             android:id="@+id/verifyCodeEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/activity_login_hint_phone"
+            android:hint="@string/fragment_sign_up_hint_verification_code"
             android:inputType="numberDecimal"
             android:maxLines="1"
             android:singleLine="true" />
 
     </android.support.design.widget.TextInputLayout>
+
+
+    <co.yishun.lighting.ui.view.CountDownResentView
+        android:id="@+id/resentView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        app:countDownNumColor="@color/colorAccent"
+        app:endText="@string/fragment_sign_up_send_end"
+        app:suffixText="@string/fragment_sign_up_send_suffix" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/bg_btn_circular_white"
+        android:text="Next" />
+
 </LinearLayout>
