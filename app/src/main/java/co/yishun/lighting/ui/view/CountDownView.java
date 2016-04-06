@@ -31,7 +31,8 @@ public class CountDownView extends TextView {
         @Override
         public void run() {
             int text = startNumber.decrementAndGet();
-            CountDownView.this.setText(String.valueOf(startNumber.get()));
+            if (text >= 0)
+                CountDownView.this.setText(String.valueOf(text));
             if (text <= 0) {
                 status = END;
                 onEnd();
@@ -46,11 +47,11 @@ public class CountDownView extends TextView {
         init(null, 0);
     }
 
-
     public CountDownView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs, 0);
     }
+
 
     public CountDownView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -61,6 +62,10 @@ public class CountDownView extends TextView {
     public CountDownView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(attrs, 0);
+    }
+
+    public void reset() {
+        startNumber.set(-1);
     }
 
     private void onEnd() {

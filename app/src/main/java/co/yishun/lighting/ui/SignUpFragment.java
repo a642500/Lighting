@@ -3,10 +3,14 @@ package co.yishun.lighting.ui;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.view.View;
 
+import org.androidannotations.annotations.AfterTextChange;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.UiThread;
@@ -33,6 +37,8 @@ public class SignUpFragment extends BaseFragment {
     Toolbar toolbar;
     @ViewById
     CountDownResentView resentView;
+    @ViewById
+    View nextBtn;
 
     @Override
     public String getPageInfo() {
@@ -59,6 +65,16 @@ public class SignUpFragment extends BaseFragment {
 
     }
 
+    @AfterTextChange(R.id.verifyCodeEditText)
+    void onVerifyCodeEditTextChange(Editable text) {
+        nextBtn.setEnabled(!TextUtils.isEmpty(text));
+    }
+
+    @Click
+    void nextBtnClicked() {
+
+    }
+
     private void trySendSms() {
         if (LoginActivity.isPhoneValid(phone)) {
             resentView.countDown();
@@ -78,12 +94,14 @@ public class SignUpFragment extends BaseFragment {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            ((BaseActivity) getActivity()).showSnackMsg(R.string.fragment_sign_up_msg_send_error_network);
+            onFail();
         }
     }
 
     @UiThread
     void onFail() {
-        resentView.onEnd();
+        resentView.reset();
     }
 
 

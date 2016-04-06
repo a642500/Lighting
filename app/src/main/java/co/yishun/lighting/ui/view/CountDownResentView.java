@@ -134,6 +134,10 @@ public class CountDownResentView extends FrameLayout implements View.OnClickList
         }
     }
 
+    public void reset() {
+        mCountDownView.reset();
+    }
+
     public interface OnClickListenerWhenEnd {
         void onClick(CountDownResentView view);
     }
