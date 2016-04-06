@@ -17,16 +17,16 @@ import retrofit2.http.POST;
 public interface Account {
 
 
-    @POST("/register")
+    @POST("account/register")
     @FormUrlEncoded
-    void register(@Field("phone_number") String phoneNum, @Field("password") String password);
+    Call<Void> register(@Field("phone_number") String phoneNum);
 
-    @POST("/validate_sms")
+    @POST("account/validate_sms")
     @FormUrlEncoded
     void validateSMS(@Field("phone_number") String phoneNum,
                      @Field("validate_code") String validateCode, @Field("validate_type") @ValidateType String type);
 
-    @POST("/login")
+    @POST("account/login")
     @FormUrlEncoded
     Call<User> login(@Field("phone_number") String phoneNum,
                      @Field("login_type") @LoginType String loginType,
