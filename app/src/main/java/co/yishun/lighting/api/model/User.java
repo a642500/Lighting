@@ -2,12 +2,14 @@ package co.yishun.lighting.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import co.yishun.lighting.api.Account;
 
 /**
  * Bean contains user info. <p> Created by Carlos on 2015/8/4.
  */
-public class User {
+public class User implements Serializable {
 
     /*
 {
