@@ -80,13 +80,14 @@ public class SignUpFragment extends BaseFragment {
     @Background
     void nextBtnClicked() {
         String code = verifyCodeEditText.getText().toString().trim();
+        final String phoneVerified = phone;
         AccountActivity accountActivity = (AccountActivity) getActivity();
         try {
-            Response<Token> response = APIFactory.getAccountAPI().validateSMS(phone, code, "register").execute();
+            Response<Token> response = APIFactory.getAccountAPI().validateSMS(phoneVerified, code, "register").execute();
             if (response.isSuccessful()) {
                 accountActivity.showSnackMsg(R.string.fragment_sign_up_msg_verify_ok);
                 Token token = response.body();
-                accountActivity.goToPassword(token);
+                accountActivity.goToPassword(phoneVerified, token);
             } else {
                 accountActivity.showSnackMsg(R.string.fragment_sign_up_msg_verify_fail);
             }
