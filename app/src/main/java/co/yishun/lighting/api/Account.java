@@ -5,6 +5,7 @@ import android.support.annotation.StringDef;
 
 import com.google.gson.annotations.SerializedName;
 
+import co.yishun.lighting.account.UserInfo;
 import co.yishun.lighting.api.model.Token;
 import co.yishun.lighting.api.model.User;
 import retrofit2.Call;
@@ -36,6 +37,18 @@ public interface Account {
                      @Field("access_token") @Nullable String token
     );
 
+    @FormUrlEncoded
+    @POST("account/change_personal_info")
+    Call<Void> changePersonalInfo(
+            @Field("user_id") String userId,
+            @Field("access_token") String accessToken,
+            @Field("personal_info") User userInfo);
+
+    @FormUrlEncoded
+    @POST("account/get_user_info")
+    Call<UserInfo> getUserInfo(@Field("user_id") String userId,
+                               @Field("access_token") String accessToken,
+                               @Field("target_id") String targetId);
 
     enum Gender {
         @SerializedName("f")
