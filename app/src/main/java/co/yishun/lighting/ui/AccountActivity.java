@@ -1,5 +1,6 @@
 package co.yishun.lighting.ui;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -40,5 +41,11 @@ public class AccountActivity extends BaseActivity {
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, SignUpFragment_
                 .builder().phone(phone).build()).commitAllowingStateLoss();
+    }
+
+    public interface PictureCroppedHandler {
+        void onPictureSelectedFailed(Exception e);
+
+        void onPictureCropped(Uri uri);
     }
 }
