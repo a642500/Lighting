@@ -29,6 +29,28 @@ public class User implements Serializable {
         "avatar": ""
     }
 }
+
+{
+    "data": {
+        "wechat_uid": "",
+        "value_concept_light_number": 0,
+        "weibo_uid": "",
+        "nickname": "Coordinate35",
+        "sex": "",
+        "love_sex": "",
+        "emotion_experience_light_number": 0,
+        "birthday": "",
+        "phone_number": "15172354423",
+        "access_token": "87ec2279c7b10a1c6f0a41e60349aa46",
+        "age": 0,
+        "weibo_nickname": "",
+        "location": "",
+        "wechat_nickname": "",
+        "basic_info_light_number": 0,
+        "avatar": ""
+    }
+}
+
      */
 
 
