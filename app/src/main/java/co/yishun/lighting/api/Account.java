@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 import co.yishun.lighting.account.UserInfo;
 import co.yishun.lighting.api.model.Token;
+import co.yishun.lighting.api.model.UploadToken;
 import co.yishun.lighting.api.model.User;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -49,6 +50,40 @@ public interface Account {
     Call<UserInfo> getUserInfo(@Field("user_id") String userId,
                                @Field("access_token") String accessToken,
                                @Field("target_id") String targetId);
+
+    @FormUrlEncoded
+    @POST("account/change_password")
+    Call<Void> changePassword(@Field("phone_number") String phoneNum,
+                              @Field("password") String password
+    );
+
+    @FormUrlEncoded
+    @POST("account/refresh_access_token")
+    Call<Token> refreshToken(@Field("user_id") String userId,
+                             @Field("access_token") String accessToken);
+
+
+    @FormUrlEncoded
+    @POST("account/upload_portrait_request")
+    Call<UploadToken> uploadPortraitRequest(@Field("user_id") String userId,
+                                            @Field("access_token") String accessToken,
+                                            @Field("save_key") String saveKey,
+                                            @Field("expiration") String expiration,
+                                            @Field("bucket") String bucket
+    );
+
+    @FormUrlEncoded
+    @POST("account/upload_portrait_confirm")
+    Call<Void> uploadPortraitConfirm(@Field("user_id") String userId,
+                                     @Field("access_token") String accessToken);
+
+    @FormUrlEncoded
+    @POST("account/refresh_device_token")
+    Call<Void> refreshDeviceToken(@Field("user_id") String userId,
+                                  @Field("access_token") String accessToken,
+                                  @Field("device_token") String deviceToken
+    );
+
 
     enum Gender {
         @SerializedName("f")
