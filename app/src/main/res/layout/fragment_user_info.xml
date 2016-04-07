@@ -85,7 +85,7 @@
                 tools:layout="@layout/fragment_user_info_item" />
 
             <fragment
-                android:id="@+id/sexLoveFragment"
+                android:id="@+id/sexualityFragment"
                 class="co.yishun.lighting.ui.account.UserInfoFragment$ItemFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -2,5 +2,6 @@
 <resources>
     <string name="fragment_user_info_title">Integrate Information</string>
     <string name="fragment_user_info_btn_finish">Finish</string>
-
+    <string name="fragment_user_info_sexuality">Sexuality</string>
+    <string name="fragment_user_info_birthday">BirthDay</string>
 </resources>

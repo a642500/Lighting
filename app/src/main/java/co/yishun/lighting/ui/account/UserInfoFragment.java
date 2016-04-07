@@ -1,5 +1,6 @@
 package co.yishun.lighting.ui.account;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.IOException;
+import java.util.Calendar;
 
 import co.yishun.lighting.Constants;
 import co.yishun.lighting.R;
@@ -63,8 +65,14 @@ public class UserInfoFragment extends BaseFragment
     ItemFragment nicknameFragment;
     @FragmentById(childFragment = true)
     ItemFragment wechatFragment;
+
     @FragmentById(childFragment = true)
     ItemFragment genderFragment;
+    @FragmentById(childFragment = true)
+    ItemFragment sexualityFragment;
+
+    @FragmentById(childFragment = true)
+    ItemFragment birthDayFragment;
     @FragmentById(childFragment = true)
     ItemFragment locationFragment;
 
@@ -94,11 +102,19 @@ public class UserInfoFragment extends BaseFragment
 
         nicknameFragment.setTitle(getString(R.string.activity_user_info_username));
         wechatFragment.setTitle(getString(R.string.activity_user_info_wechat));
+
         genderFragment.setTitle(getString(R.string.activity_user_info_gender));
+        sexualityFragment.setTitle(getString(R.string.fragment_user_info_sexuality));
+
+        birthDayFragment.setTitle(getString(R.string.fragment_user_info_birthday));
         locationFragment.setTitle(getString(R.string.activity_user_info_location));
+
         nicknameFragment.setOnClickListener(this::usernameClicked);
-//        weiboFragment.setOnClickListener(this::weiboClicked);
+
         genderFragment.setOnClickListener(this::genderClicked);
+        sexualityFragment.setOnClickListener(this::genderClicked);
+
+        birthDayFragment.setOnClickListener(this::birthDayClicked);
         locationFragment.setOnClickListener(this::locationClicked);
 
         invalidateUserInfo(AccountManager.getUserInfo(getContext()));
@@ -135,6 +151,15 @@ public class UserInfoFragment extends BaseFragment
                 })
                 .positiveText(R.string.view_gender_spinner_positive_btn)
                 .show();
+    }
+
+    void birthDayClicked(View view) {
+        Calendar calendar = Calendar.getInstance();
+        new DatePickerDialog(view.getContext(), (view1, year, monthOfYear, dayOfMonth) -> {
+
+        }, calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 
     void locationClicked(View view) {
