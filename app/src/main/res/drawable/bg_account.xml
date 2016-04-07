@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/colorPrimary" />
+    <item android:top="96dp">
+        <bitmap
+            android:gravity="top"
+            android:src="@drawable/bg_signup" />
+    </item>
+</layer-list>
