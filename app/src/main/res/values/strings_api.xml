@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="api_gender_display_male">♂</string>
+    <string name="api_gender_display_female">♀</string>
+    <string name="api_gender_display_Unknown">Unknown</string>
+</resources>

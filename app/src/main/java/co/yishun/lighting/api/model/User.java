@@ -90,6 +90,10 @@ public class User implements Serializable {
     }
 
     public Account.Gender getGender() {
+        return Account.Gender.MALE;
+    }
+
+    public Account.Gender getSexuality() {
         return Account.Gender.FEMALE;
     }
 }
