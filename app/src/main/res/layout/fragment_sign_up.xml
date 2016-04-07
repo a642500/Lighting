@@ -14,7 +14,7 @@
         android:elevation="@dimen/toolbar_elevation"
         app:contentInsetStart="72dp"
         app:layout_scrollFlags="scroll|enterAlways"
-        app:navigationIcon="@drawable/ic_menu"
+        app:navigationIcon="@drawable/ic_action_back"
         app:title="@string/fragment_sign_up_title" />
 
     <android.support.design.widget.TextInputLayout
