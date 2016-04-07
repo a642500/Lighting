@@ -9,8 +9,6 @@ import org.androidannotations.annotations.Extra;
 
 import co.yishun.lighting.R;
 import co.yishun.lighting.api.model.Token;
-import co.yishun.lighting.ui.SignUpFragment_;
-import co.yishun.lighting.ui.UserInfoFragment_;
 import co.yishun.lighting.ui.common.BaseActivity;
 
 /**

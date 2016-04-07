@@ -59,13 +59,13 @@ public class UserInfoFragment extends BaseFragment
     RelativeLayout avatarLayout;
     @ViewById
     ImageView avatarImage;
-    @FragmentById
+    @FragmentById(childFragment = true)
     ItemFragment nicknameFragment;
-    @FragmentById
+    @FragmentById(childFragment = true)
     ItemFragment weiboFragment;
-    @FragmentById
+    @FragmentById(childFragment = true)
     ItemFragment genderFragment;
-    @FragmentById
+    @FragmentById(childFragment = true)
     ItemFragment locationFragment;
 
     @FragmentArg

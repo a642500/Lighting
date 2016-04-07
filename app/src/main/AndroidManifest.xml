@@ -50,7 +50,7 @@
         <activity android:name=".ui.SettingsActivity" />
         <activity android:name=".ui.IntegrateInfoActivity_" />
         <activity
-            android:name=".ui.AccountActivity_"
+            android:name=".ui.account.AccountActivity_"
             android:parentActivityName=".ui.LoginActivity_" />
     </application>
 
