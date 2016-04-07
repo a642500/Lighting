@@ -62,7 +62,7 @@ public class UserInfoFragment extends BaseFragment
     @FragmentById(childFragment = true)
     ItemFragment nicknameFragment;
     @FragmentById(childFragment = true)
-    ItemFragment weiboFragment;
+    ItemFragment wechatFragment;
     @FragmentById(childFragment = true)
     ItemFragment genderFragment;
     @FragmentById(childFragment = true)
@@ -93,7 +93,7 @@ public class UserInfoFragment extends BaseFragment
         avatarLayout.setOnClickListener(v -> Crop.pickImage(getActivity()));
 
         nicknameFragment.setTitle(getString(R.string.activity_user_info_username));
-        weiboFragment.setTitle(getString(R.string.activity_user_info_weibo_id));
+        wechatFragment.setTitle(getString(R.string.activity_user_info_wechat));
         genderFragment.setTitle(getString(R.string.activity_user_info_gender));
         locationFragment.setTitle(getString(R.string.activity_user_info_location));
         nicknameFragment.setOnClickListener(this::usernameClicked);
@@ -202,7 +202,7 @@ public class UserInfoFragment extends BaseFragment
         } else {
             weiboID = user.weiboNickname;
         }
-        weiboFragment.setContent(weiboID);
+//        weiboFragment.setContent(weiboID);
         String gender;
         Account.Gender orin = user.getGender();
         if (orin != null)

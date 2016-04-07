@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
-    android:fitsSystemWindows="true"
-    android:orientation="vertical">
+    android:background="@color/colorPrimary">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -19,103 +18,109 @@
         app:navigationIcon="@drawable/ic_action_back"
         app:title="@string/fragment_user_info_title" />
 
-    <RelativeLayout
-        android:id="@+id/avatarLayout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:background="@drawable/bg_btn_white"
-        android:paddingLeft="32dp"
-        android:paddingRight="32dp"
-        android:stateListAnimator="@drawable/btn_elevation">
+        android:layout_height="match_parent"
+        android:layout_above="@id/nextBtn"
+        android:layout_below="@id/toolbar">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/activity_user_info_avatar"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-        <co.yishun.lighting.ui.view.RadioCornerImageView
-            android:id="@+id/avatarImage"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            app:rc_cornerRadio="1" />
-
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorDivider" />
-
-    <fragment
-        android:id="@+id/nicknameFragment"
-        class="co.yishun.lighting.ui.account.UserInfoFragment$ItemFragment"
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        tools:layout="@layout/fragment_user_info_item" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorDivider" />
-
-    <fragment
-        android:id="@+id/weiboFragment"
-        class="co.yishun.lighting.ui.account.UserInfoFragment$ItemFragment"
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        tools:layout="@layout/fragment_user_info_item" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorDivider" />
-
-    <fragment
-        android:id="@+id/genderFragment"
-        class="co.yishun.lighting.ui.account.UserInfoFragment$ItemFragment"
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        tools:layout="@layout/fragment_user_info_item" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorDivider" />
-
-    <fragment
-        android:id="@+id/locationFragment"
-        class="co.yishun.lighting.ui.account.UserInfoFragment$ItemFragment"
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        tools:layout="@layout/fragment_user_info_item" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorDivider" />
-
-    <LinearLayout
-        android:id="@+id/finishBtn"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_marginTop="2dp"
-        android:background="@drawable/bg_btn_white"
-        android:padding="8dp"
-        android:stateListAnimator="@drawable/btn_elevation">
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:padding="12dp"
-            android:text="@string/fragment_user_info_btn_finish"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@android:color/holo_red_light" />
-    </LinearLayout>
-</LinearLayout>
+            android:fitsSystemWindows="true"
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:id="@+id/avatarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_btn_white"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:stateListAnimator="@drawable/btn_elevation">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/activity_user_info_avatar"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+                <co.yishun.lighting.ui.view.RadioCornerImageView
+                    android:id="@+id/avatarImage"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/pic_profile_default"
+                    app:rc_cornerRadio="1" />
+
+            </RelativeLayout>
+
+            <fragment
+                android:id="@+id/nicknameFragment"
+                class="co.yishun.lighting.ui.account.UserInfoFragment$ItemFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                tools:layout="@layout/fragment_user_info_item" />
+
+            <fragment
+                android:id="@+id/wechatFragment"
+                class="co.yishun.lighting.ui.account.UserInfoFragment$ItemFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_user_info_item" />
+
+
+            <fragment
+                android:id="@+id/genderFragment"
+                class="co.yishun.lighting.ui.account.UserInfoFragment$ItemFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                tools:layout="@layout/fragment_user_info_item" />
+
+            <fragment
+                android:id="@+id/sexLoveFragment"
+                class="co.yishun.lighting.ui.account.UserInfoFragment$ItemFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_user_info_item" />
+
+            <fragment
+                android:id="@+id/birthDayFragment"
+                class="co.yishun.lighting.ui.account.UserInfoFragment$ItemFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                tools:layout="@layout/fragment_user_info_item" />
+
+            <fragment
+                android:id="@+id/locationFragment"
+                class="co.yishun.lighting.ui.account.UserInfoFragment$ItemFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_user_info_item" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/finishBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_btn_pink"
+        android:gravity="center"
+        android:minHeight="48dp"
+        android:padding="12dp"
+        android:stateListAnimator="@drawable/btn_elevation"
+        android:text="@string/fragment_user_info_btn_finish"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+</RelativeLayout>
