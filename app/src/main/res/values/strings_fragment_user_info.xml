@@ -4,4 +4,5 @@
     <string name="fragment_user_info_btn_finish">Finish</string>
     <string name="fragment_user_info_sexuality">Sexuality</string>
     <string name="fragment_user_info_birthday">BirthDay</string>
+    <string name="fragment_user_info_birthday_default">Unknown</string>
 </resources>
