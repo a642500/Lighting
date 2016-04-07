@@ -19,8 +19,10 @@ public class AccountActivity extends BaseActivity {
     String phone;
 
     protected void goToUserInfo(Token token) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, UserInfoFragment_
-                .builder().token(token).build()).commitAllowingStateLoss();
+        getSupportFragmentManager().beginTransaction().
+                setCustomAnimations(R.anim.fragment_fade_in, R.anim.fragment_fade_out)
+                .replace(R.id.container, UserInfoFragment_
+                        .builder().token(token).build()).commitAllowingStateLoss();
     }
 
     @Override
