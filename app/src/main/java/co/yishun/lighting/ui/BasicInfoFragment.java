@@ -11,6 +11,7 @@ import org.androidannotations.annotations.ViewById;
 
 import co.yishun.lighting.R;
 import co.yishun.lighting.bean.AudioQuestion;
+import co.yishun.lighting.ui.common.BaseFragment;
 import co.yishun.lighting.ui.view.QuestionView;
 
 /**

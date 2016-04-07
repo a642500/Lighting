@@ -1,4 +1,4 @@
-package co.yishun.lighting.ui;
+package co.yishun.lighting.ui.common;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;

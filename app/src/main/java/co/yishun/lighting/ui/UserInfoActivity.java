@@ -34,6 +34,8 @@ import co.yishun.lighting.R;
 import co.yishun.lighting.account.AccountManager;
 import co.yishun.lighting.api.Account;
 import co.yishun.lighting.api.model.User;
+import co.yishun.lighting.ui.common.BaseFragment;
+import co.yishun.lighting.ui.common.PickCropActivity;
 import co.yishun.lighting.ui.view.LocationChooseDialog;
 import co.yishun.lighting.util.LogUtil;
 import co.yishun.lighting.util.Util;

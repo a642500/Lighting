@@ -1,4 +1,4 @@
-package co.yishun.lighting.ui;
+package co.yishun.lighting.ui.common;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.yishun.lighting.Constants;
+import co.yishun.lighting.ui.ShootActivity_;
 import co.yishun.lighting.util.LogUtil;
 
 

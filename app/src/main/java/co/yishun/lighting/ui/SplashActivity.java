@@ -7,6 +7,7 @@ import org.androidannotations.annotations.UiThread;
 
 import co.yishun.lighting.R;
 import co.yishun.lighting.account.AccountManager;
+import co.yishun.lighting.ui.common.BaseActivity;
 
 /**
  * Created by Carlos on 2016/3/23.

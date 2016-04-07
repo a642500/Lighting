@@ -1,4 +1,4 @@
-package co.yishun.lighting.ui;
+package co.yishun.lighting.ui.common;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;

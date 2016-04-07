@@ -1,4 +1,4 @@
-package co.yishun.lighting.ui;
+package co.yishun.lighting.ui.account;
 
 import android.content.Context;
 import android.net.Uri;
@@ -38,6 +38,7 @@ import co.yishun.lighting.api.APIFactory;
 import co.yishun.lighting.api.Account;
 import co.yishun.lighting.api.model.Token;
 import co.yishun.lighting.api.model.User;
+import co.yishun.lighting.ui.common.BaseFragment;
 import co.yishun.lighting.ui.view.LocationChooseDialog;
 import co.yishun.lighting.util.LogUtil;
 import co.yishun.lighting.util.Util;

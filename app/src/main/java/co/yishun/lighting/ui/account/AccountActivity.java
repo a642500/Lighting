@@ -1,4 +1,4 @@
-package co.yishun.lighting.ui;
+package co.yishun.lighting.ui.account;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +9,9 @@ import org.androidannotations.annotations.Extra;
 
 import co.yishun.lighting.R;
 import co.yishun.lighting.api.model.Token;
+import co.yishun.lighting.ui.SignUpFragment_;
+import co.yishun.lighting.ui.UserInfoFragment_;
+import co.yishun.lighting.ui.common.BaseActivity;
 
 /**
  * Created by carlos on 4/6/16.

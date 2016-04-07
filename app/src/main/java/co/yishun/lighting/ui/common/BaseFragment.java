@@ -1,4 +1,4 @@
-package co.yishun.lighting.ui;
+package co.yishun.lighting.ui.common;
 
 import android.support.v4.app.Fragment;
 

@@ -14,8 +14,8 @@ import org.androidannotations.annotations.EActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.yishun.lighting.R;
+import co.yishun.lighting.ui.common.BaseActivity;
 import co.yishun.lighting.ui.view.ResideLayout;
-import co.yishun.lighting.ui.view.SettingsActivity;
 import co.yishun.lighting.util.FileUtil;
 import co.yishun.lighting.web.LUWebViewClient;
 

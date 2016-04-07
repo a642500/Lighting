@@ -27,6 +27,7 @@ import co.yishun.lighting.R;
 import co.yishun.lighting.account.AccountManager;
 import co.yishun.lighting.api.APIFactory;
 import co.yishun.lighting.api.model.User;
+import co.yishun.lighting.ui.common.BaseActivity;
 import co.yishun.lighting.ui.view.PageIndicatorDot;
 import co.yishun.lighting.util.LogUtil;
 import retrofit2.Call;

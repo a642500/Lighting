@@ -1,11 +1,11 @@
-package co.yishun.lighting.ui.view;
+package co.yishun.lighting.ui;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
 
 import co.yishun.lighting.R;
-import co.yishun.lighting.ui.BaseActivity;
+import co.yishun.lighting.ui.common.BaseActivity;
 
 /**
  * Created by carlos on 3/24/16.

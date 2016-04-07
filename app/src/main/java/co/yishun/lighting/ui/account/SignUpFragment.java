@@ -1,4 +1,4 @@
-package co.yishun.lighting.ui;
+package co.yishun.lighting.ui.account;
 
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.NavUtils;
@@ -21,6 +21,9 @@ import java.io.IOException;
 import co.yishun.lighting.R;
 import co.yishun.lighting.api.APIFactory;
 import co.yishun.lighting.api.model.Token;
+import co.yishun.lighting.ui.LoginActivity;
+import co.yishun.lighting.ui.common.BaseActivity;
+import co.yishun.lighting.ui.common.BaseFragment;
 import co.yishun.lighting.ui.view.CountDownResentView;
 import retrofit2.Response;
 

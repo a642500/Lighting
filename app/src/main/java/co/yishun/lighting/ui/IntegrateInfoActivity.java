@@ -7,6 +7,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import co.yishun.lighting.R;
+import co.yishun.lighting.ui.common.BaseActivity;
 
 /**
  * Created by carlos on 3/29/16.

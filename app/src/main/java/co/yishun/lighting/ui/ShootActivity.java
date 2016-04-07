@@ -25,6 +25,7 @@ import java.io.File;
 import co.yishun.lighting.R;
 import co.yishun.lighting.function.Callback;
 import co.yishun.lighting.function.Consumer;
+import co.yishun.lighting.ui.common.BaseActivity;
 import co.yishun.lighting.ui.view.PageIndicatorDot;
 import co.yishun.lighting.ui.view.shoot.CameraGLSurfaceView;
 import co.yishun.lighting.ui.view.shoot.IShootView;
