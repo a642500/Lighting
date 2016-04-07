@@ -70,6 +70,8 @@ public class UserInfoFragment extends BaseFragment
 
     @FragmentArg
     Token token;
+    @FragmentArg
+    String phone;
     private Uri croppedProfileUri;
 
     @Override

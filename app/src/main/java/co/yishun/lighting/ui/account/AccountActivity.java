@@ -20,18 +20,18 @@ public class AccountActivity extends BaseActivity {
     @Extra
     String phone;
 
-    protected void goToUserInfo(Token token) {
+    protected void goToUserInfo(String phone, Token token) {
         getSupportFragmentManager().beginTransaction().
                 setCustomAnimations(R.anim.fragment_fade_in, R.anim.fragment_fade_out)
                 .replace(R.id.container, UserInfoFragment_
-                        .builder().token(token).build()).commitAllowingStateLoss();
+                        .builder().phone(phone).token(token).build()).commitAllowingStateLoss();
     }
 
-    protected void goToPassword(Token token) {
+    protected void goToPassword(String phone, Token token) {
         getSupportFragmentManager().beginTransaction().
                 setCustomAnimations(R.anim.fragment_fade_in, R.anim.fragment_fade_out)
                 .replace(R.id.container, PasswordFragment_
-                        .builder().token(token).build()).commitAllowingStateLoss();
+                        .builder().phone(phone).token(token).build()).commitAllowingStateLoss();
     }
 
     @Override
