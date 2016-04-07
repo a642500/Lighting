@@ -77,6 +77,10 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    public static boolean isPasswordValid(@NonNull String password) {
+        return password.length() >= 6 && password.length() <= 30;
+    }
+
     @EditorAction(R.id.passwordEditText)
     boolean passwordEditTextEditorAction(TextView textView, int id, KeyEvent keyEvent) {
         if (id == R.id.login || id == EditorInfo.IME_NULL) {
@@ -204,10 +208,6 @@ public class LoginActivity extends BaseActivity {
     @Click
     void signUpBtnClicked() {
         AccountActivity_.intent(this).phone(phoneEditText.getText().toString()).start();
-    }
-
-    private boolean isPasswordValid(String password) {
-        return password.length() >= 6 && password.length() <= 30;
     }
 
     /**

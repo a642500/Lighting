@@ -86,7 +86,7 @@ public class SignUpFragment extends BaseFragment {
             if (response.isSuccessful()) {
                 accountActivity.showSnackMsg(R.string.fragment_sign_up_msg_verify_ok);
                 Token token = response.body();
-                accountActivity.goToUserInfo(token);
+                accountActivity.goToPassword(token);
             } else {
                 accountActivity.showSnackMsg(R.string.fragment_sign_up_msg_verify_fail);
             }

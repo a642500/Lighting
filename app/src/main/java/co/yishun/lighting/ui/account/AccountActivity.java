@@ -27,6 +27,13 @@ public class AccountActivity extends BaseActivity {
                         .builder().token(token).build()).commitAllowingStateLoss();
     }
 
+    protected void goToPassword(Token token) {
+        getSupportFragmentManager().beginTransaction().
+                setCustomAnimations(R.anim.fragment_fade_in, R.anim.fragment_fade_out)
+                .replace(R.id.container, PasswordFragment_
+                        .builder().token(token).build()).commitAllowingStateLoss();
+    }
+
     @Override
     public String getPageInfo() {
         return TAG;
