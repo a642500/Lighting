@@ -44,6 +44,14 @@ public class APIFactory {
         return mRetrofit.create(Account.class);
     }
 
+    public static Procedure getProcedureAPI() {
+        return mRetrofit.create(Procedure.class);
+    }
+
+    public static Media getMediaAPI() {
+        return mRetrofit.create(Media.class);
+    }
+
     public static OkHttpClient getOkHttpClient() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         //noinspection PointlessBooleanExpression

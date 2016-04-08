@@ -2,6 +2,8 @@ package co.yishun.lighting.api;
 
 import android.support.annotation.StringDef;
 
+import java.util.List;
+
 import co.yishun.lighting.api.model.Question;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -18,7 +20,7 @@ public interface Procedure {
 
     @POST("procedure/get_questions")
     @FormUrlEncoded
-    Call<Question> getQuestions(
+    Call<List<Question>> getQuestions(
             @Field("user_id") String userId,
             @Field("access_token") String accessToken,
             @Field("class") @QuestionType String type,
