@@ -110,6 +110,9 @@ public class SignUpFragment extends BaseFragment {
             Response response = APIFactory.getAccountAPI().register(phone).execute();
             if (response.isSuccessful()) {
                 ((BaseActivity) getActivity()).showSnackMsg(R.string.fragment_sign_up_msg_send_ok);
+            } else if (response.code() == 500) {
+                ((BaseActivity) getActivity()).showSnackMsg(R.string.fragment_sign_up_error_registered);
+                onFail();
             } else {
                 ((BaseActivity) getActivity()).showSnackMsg(R.string.fragment_sign_up_msg_send_fail);
                 onFail();

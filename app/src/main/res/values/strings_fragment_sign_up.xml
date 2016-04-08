@@ -9,6 +9,7 @@
 
     <string name="fragment_sign_up_msg_error_network">Network is not working, please check it</string>
 
+    <string name="fragment_sign_up_error_registered">This phone has been registered, please login directly.</string>
     <string name="fragment_sign_up_msg_send_fail">Verification code sent failed, please retry</string>
     <string name="fragment_sign_up_msg_send_ok">Verification code has been sent, please check it.</string>
 
