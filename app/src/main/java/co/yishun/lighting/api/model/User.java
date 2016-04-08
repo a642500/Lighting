@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 
+import co.yishun.lighting.api.APIFactory;
 import co.yishun.lighting.api.Account;
 
 /**
@@ -84,21 +85,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" +
-                "nickname='" + nickname + '\'' +
-                ", id='" + id + '\'' +
-                ", birthday='" + birthday + '\'' +
-                ", weiboNickname='" + weiboNickname + '\'' +
-                ", location='" + location + '\'' +
-                ", sex='" + sex + '\'' +
-                ", sexuality='" + sexuality + '\'' +
-                ", wechatUid='" + wechatUid + '\'' +
-                ", weiboUid='" + weiboUid + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", accessToken='" + accessToken + '\'' +
-                ", wechatNickname='" + wechatNickname + '\'' +
-                ", portrait='" + portrait + '\'' +
-                '}';
+        return APIFactory.getGson().toJson(this);
     }
 
     public Account.Gender getSex() {

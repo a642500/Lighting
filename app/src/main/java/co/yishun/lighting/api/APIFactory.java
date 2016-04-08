@@ -33,7 +33,12 @@ public class APIFactory {
             .create();
 
     private static Retrofit mRetrofit = new Retrofit.Builder().baseUrl(Constants.BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create(mDeserializerGson)).client(getOkHttpClient()).build();
+            .addConverterFactory(GsonConverterFactory.create(mDeserializerGson))
+            .client(getOkHttpClient()).build();
+
+    public static Gson getGson() {
+        return mGson;
+    }
 
     public static Account getAccountAPI() {
         return mRetrofit.create(Account.class);

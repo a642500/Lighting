@@ -1,6 +1,7 @@
 package co.yishun.lighting.api;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
 import android.support.annotation.StringRes;
@@ -46,7 +47,7 @@ public interface Account {
     Call<Void> changePersonalInfo(
             @Field("user_id") String userId,
             @Field("access_token") String accessToken,
-            @Field("personal_info") User userInfo);
+            @Field("personal_info") @NonNull User userInfo);
 
     @FormUrlEncoded
     @POST("account/get_user_info")
