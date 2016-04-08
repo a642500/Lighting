@@ -15,7 +15,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.Theme;
 import com.google.gson.Gson;
 
 import org.androidannotations.annotations.AfterInject;
@@ -24,7 +23,7 @@ import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
-import java.util.List;
+import java.util.Map;
 
 import co.yishun.lighting.Constants;
 import co.yishun.lighting.account.AccountManager;
@@ -47,7 +46,7 @@ public abstract class BaseWebFragment extends BaseFragment {
     protected WebView webView;
     protected BaseActivity mActivity;
     protected MaterialDialog dialog;
-    protected File mHybrdDir;
+    protected File mHybridDir;
     protected int posX;
     protected int posY;
     protected float touchX;
@@ -100,10 +99,10 @@ public abstract class BaseWebFragment extends BaseFragment {
 
     @AfterInject
     void setDefault() {
-        mHybrdDir = FileUtil.getInternalFile(getContext(), Constants.HYBRD_UNZIP_DIR);
+        mHybridDir = FileUtil.getInternalFile(getContext(), Constants.HYBRD_UNZIP_DIR);
         if (TextUtils.isEmpty(mUrl)) {
             mUrl = Constants.FILE_URL_PREFIX +
-                    new File(mHybrdDir, "build/pages/world/world.html").getPath();
+                    new File(mHybridDir, "build/pages/world/world.html").getPath();
             LogUtil.i(TAG, "url is null, load default");
         }
 
@@ -163,67 +162,87 @@ public abstract class BaseWebFragment extends BaseFragment {
         swipeRefreshLayout.setRefreshing(false);
     }
 
-    private void webGetEnv(List<String> args) {
-        @SuppressWarnings("ConstantConditions") String env = Constants.SANDBOX ? "development" : "production";
-        webView.loadUrl(String.format(toJs(env), HybrdUrlHandler.FUNC_GET_ENV));
+//    private void webGetEnv(Map<String,String args) {
+//        @SuppressWarnings("ConstantConditions") String env = Constants.SANDBOX ? "development" : "production";
+//        webView.loadUrl(String.format(toJs(env), HybridUrlHandler.FUNC_GET_ENV));
+//    }
+
+    private void webGetAccount(String call) {
+        webView.loadUrl(String.format(
+                toJs(AccountManager.getUserInfo(getContext()), true, true),
+                call));
+    }
+//
+//    private void webGetAccountId(Map<String,String args) {
+//        webView.loadUrl(String.format(toJs(AccountManager.getUserInfo(getContext()).id),
+//                HybridUrlHandler.FUNC_GET_ACCOUNT_ID));
+//    }
+
+    private void webLog(Map<String, String> args) {
+        LogUtil.i(TAG, "js log : " + args.get("text"));
     }
 
-    private void webGetAccount(List<String> args) {
-        webView.loadUrl(String.format(toJs(AccountManager.getUserInfo(getContext()), true, true),
-                HybrdUrlHandler.FUNC_GET_ACCOUNT));
+    private void webConfig(Map<String, String> args) {
+        boolean h = Boolean.valueOf(args.get("h_scroll_indicator"));
+        webView.setHorizontalScrollBarEnabled(h);
+        boolean v = Boolean.valueOf(args.get("v_scroll_indicator"));
+        webView.setVerticalScrollBarEnabled(v);
     }
 
-    private void webGetAccountId(List<String> args) {
-        webView.loadUrl(String.format(toJs(AccountManager.getUserInfo(getContext()).id),
-                HybrdUrlHandler.FUNC_GET_ACCOUNT_ID));
+    private void webGetAccessToken(Map<String, String> args, String call) {
+        String id = args.get("user_id");
+        //TODO
+        webView.loadUrl(String.format(
+                toJs(AccountManager.getUserInfo(getContext()).getToken(), true, true),
+                call));
     }
 
-    private void webLog(List<String> args) {
-        LogUtil.i(TAG, "js log : " + args.get(0));
+    private void webGetOthers(String call) {
+        //TODO
     }
 
-    private void webAlert(List<String> args) {
-        String type = args.get(0);
-        if (dialog != null && dialog.isShowing()) dialog.hide();
-        if (TextUtils.equals(type, "alert")) {
-            dialog = new MaterialDialog.Builder(getContext()).theme(Theme.LIGHT)
-                    .content(args.get(1)).progress(true, 0).build();
-            dialog.show();
-        } else if (TextUtils.equals(type, "message") && mActivity != null) {
-            mActivity.showSnackMsg(args.get(1));
-        } else {
-            LogUtil.e(TAG, "unhandled alert type");
-        }
-    }
+//    private void webAlert(Map<String, String> args) {
+//        String type = args.get(0);
+//        if (dialog != null && dialog.isShowing()) dialog.hide();
+//        if (TextUtils.equals(type, "alert")) {
+//            dialog = new MaterialDialog.Builder(getContext()).theme(Theme.LIGHT)
+//                    .content(args.get(1)).progress(true, 0).build();
+//            dialog.show();
+//        } else if (TextUtils.equals(type, "message") && mActivity != null) {
+//            mActivity.showSnackMsg(args.get(1));
+//        } else {
+//            LogUtil.e(TAG, "unhandled alert type");
+//        }
+//    }
 
-    private void webCancelAlert(List<String> args) {
-        if (dialog != null && dialog.isShowing()) {
-            dialog.hide();
-        }
-    }
+//    private void webCancelAlert(Map<String, String> args) {
+//        if (dialog != null && dialog.isShowing()) {
+//            dialog.hide();
+//        }
+//    }
 
-    private void webFinish(List<String> args) {
-        String type = args.get(0);
-        if (TextUtils.equals(type, "preview")) {
-//            Intent intent = new Intent();
-//            intent.putExtra(PersonalWorldActivity.KEY_NAME, args.get(1));
-//            intent.putExtra(PersonalWorldActivity.KEY_ID, args.get(2));
-//            if (mActivity != null)
-//                mActivity.setResult(PersonalWorldActivity.RESULT_OK, intent);
-        } else {
-            LogUtil.e(TAG, "unhandled finish type");
-        }
-        if (mActivity != null)
-            mActivity.finish();
-    }
+//    private void webFinish(Map<String, String> args) {
+//        String type = args.get(0);
+//        if (TextUtils.equals(type, "preview")) {
+////            Intent intent = new Intent();
+////            intent.putExtra(PersonalWorldActivity.KEY_NAME, args.get(1));
+////            intent.putExtra(PersonalWorldActivity.KEY_ID, args.get(2));
+////            if (mActivity != null)
+////                mActivity.setResult(PersonalWorldActivity.RESULT_OK, intent);
+//        } else {
+//            LogUtil.e(TAG, "unhandled finish type");
+//        }
+//        if (mActivity != null)
+//            mActivity.finish();
+//    }
 
-    private void webLoad(List<String> args) {
-        webView.loadUrl(String.format(toJs(mArg, false), HybrdUrlHandler.FUNC_LOAD));
-    }
+//    private void webLoad(Map<String, String> args) {
+//        webView.loadUrl(String.format(toJs(mArg, false), HybridUrlHandler.FUNC_LOAD));
+//    }
 
-//    private void webAuth(List<String> args) {
+//    private void webAuth(Map<String,String args) {
 //        webView.loadUrl(String.format(toJs(OneMomentClientV4.getAuthStr()),
-//                HybrdUrlHandler.FUNC_GET_BASIC_AUTH_HEADER));
+//                HybridUrlHandler.FUNC_GET_BASIC_AUTH_HEADER));
 //    }
 
     public void sendFinish() {
@@ -253,7 +272,7 @@ public abstract class BaseWebFragment extends BaseFragment {
                 arg = arg.substring(0, arg.length() - 1);
         }
 
-        String result = "javascript:ctx.%sAndroidReturn('[" + arg + "]')";
+        String result = "javascript:%sReturn(" + arg + ")";
         LogUtil.d(TAG, "load js : " + result);
         return result;
     }
@@ -281,7 +300,7 @@ public abstract class BaseWebFragment extends BaseFragment {
     }
 
     public File getHybrdDir() {
-        return mHybrdDir;
+        return mHybridDir;
     }
 
     public interface WebViewLoadListener {
@@ -290,27 +309,21 @@ public abstract class BaseWebFragment extends BaseFragment {
 
     private class BaseWebClient extends WebViewClient {
 
-        private HybrdUrlHandler urlHandler = new HybrdUrlHandler() {
+        private HybridUrlHandler urlHandler = new HybridUrlHandler() {
             @Override
             protected boolean handleInnerUrl(UrlModel urlModel) {
-                if (TextUtils.equals(urlModel.call, FUNC_GET_ENV)) {
-                    webGetEnv(urlModel.args);
-                } else if (TextUtils.equals(urlModel.call, FUNC_GET_ACCOUNT)) {
-                    webGetAccount(urlModel.args);
-                } else if (TextUtils.equals(urlModel.call, FUNC_GET_ACCOUNT_ID)) {
-                    webGetAccountId(urlModel.args);
-                } else if (TextUtils.equals(urlModel.call, FUNC_LOG)) {
+                if (TextUtils.equals(urlModel.type, FUNC_CONFIG)) {
+                    webConfig(urlModel.args);
+                } else if (TextUtils.equals(urlModel.type, FUNC_GET_ACCOUNT)) {
+                    webGetAccount(urlModel.call);
+                } else if (TextUtils.equals(urlModel.type, FUNC_GET_ACCESS_TOKEN)) {
+                    webGetAccessToken(urlModel.args, urlModel.call);
+                } else if (TextUtils.equals(urlModel.type, FUNC_LOG)) {
                     webLog(urlModel.args);
-                } else if (TextUtils.equals(urlModel.call, FUNC_ALERT)) {
-                    webAlert(urlModel.args);
-                } else if (TextUtils.equals(urlModel.call, FUNC_CANCEL_AlERT)) {
-                    webCancelAlert(urlModel.args);
-                } else if (TextUtils.equals(urlModel.call, FUNC_FINISH)) {
-                    webFinish(urlModel.args);
-                } else if (TextUtils.equals(urlModel.call, FUNC_LOAD)) {
-                    webLoad(urlModel.args);
+                } else if (TextUtils.equals(urlModel.type, FUNC_GET_OTHERS)) {
+                    webGetOthers(urlModel.call);
                 } else {
-                    LogUtil.i(TAG, "unknown call type");
+                    LogUtil.i(TAG, "unknown type");
                 }
                 return true;
             }
@@ -324,7 +337,7 @@ public abstract class BaseWebFragment extends BaseFragment {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            url = HybrdUrlHandler.urlDecode(url);
+            url = HybridUrlHandler.urlDecode(url);
             LogUtil.d(TAG, url);
             return urlHandler.handleUrl(getContext(), url, (int) (touchX + posX), (int) (touchY + posY))
                     || super.shouldOverrideUrlLoading(view, url);
