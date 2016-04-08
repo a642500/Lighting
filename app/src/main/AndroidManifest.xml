@@ -52,6 +52,19 @@
         <activity
             android:name=".ui.account.AccountActivity_"
             android:parentActivityName=".ui.LoginActivity_" />
+
+        <service
+            android:name=".account.AuthenticatorService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
     </application>
 
 </manifest>
