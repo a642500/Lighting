@@ -15,7 +15,6 @@ import co.yishun.lighting.Constants;
 import co.yishun.lighting.api.model.Token;
 import co.yishun.lighting.api.model.User;
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -44,7 +43,7 @@ public class APIFactory {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         //noinspection PointlessBooleanExpression
         if (Constants.LOG_ENABLE || BuildConfig.DEBUG) {
-            builder.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
+//            builder.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
         }
         return builder.build();
     }

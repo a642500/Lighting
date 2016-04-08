@@ -25,6 +25,7 @@ import com.squareup.picasso.Picasso;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.FragmentById;
@@ -32,7 +33,11 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import co.yishun.lighting.Constants;
 import co.yishun.lighting.R;
@@ -41,10 +46,12 @@ import co.yishun.lighting.api.APIFactory;
 import co.yishun.lighting.api.Account;
 import co.yishun.lighting.api.model.Token;
 import co.yishun.lighting.api.model.User;
+import co.yishun.lighting.ui.MainActivity_;
 import co.yishun.lighting.ui.common.BaseFragment;
 import co.yishun.lighting.ui.view.LocationChooseDialog;
 import co.yishun.lighting.util.LogUtil;
 import co.yishun.lighting.util.Util;
+import retrofit2.Call;
 import retrofit2.Response;
 
 /**
@@ -76,6 +83,9 @@ public class UserInfoFragment extends BaseFragment
     ItemFragment birthDayFragment;
     @FragmentById(childFragment = true)
     ItemFragment locationFragment;
+    @ViewById
+    View finishBtn;
+
     @FragmentArg
     Token token;
     @FragmentArg
@@ -85,16 +95,22 @@ public class UserInfoFragment extends BaseFragment
     User lastFillUser;
     private Uri croppedProfileUri;
 
+    public static SimpleDateFormat getTimeFormat() {
+        return new SimpleDateFormat(Constants.TIME_FORMAT, Locale.CHINA);
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AccountManager.addOnUserInfoChangedListener(this);
+        if (editMode == EDIT_MODE_COMMIT_EVERY_TIME)
+            AccountManager.addOnUserInfoChangedListener(this);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        AccountManager.removeOnUserInfoChangedListener(this);
+        if (editMode == EDIT_MODE_COMMIT_EVERY_TIME)
+            AccountManager.removeOnUserInfoChangedListener(this);
     }
 
     @AfterViews
@@ -113,14 +129,17 @@ public class UserInfoFragment extends BaseFragment
         locationFragment.setTitle(getString(R.string.activity_user_info_location));
 
         nicknameFragment.setOnClickListener(this::usernameClicked);
+        wechatFragment.setOnClickListener(this::weChatClicked);
 
         genderFragment.setOnClickListener(this::genderClicked);
-        sexualityFragment.setOnClickListener(this::genderClicked);
+        sexualityFragment.setOnClickListener(this::sexualityClicked);
 
         birthDayFragment.setOnClickListener(this::birthDayClicked);
         locationFragment.setOnClickListener(this::locationClicked);
 
-        invalidateUserInfo(AccountManager.getUserInfo(getContext()));
+        finishBtn.setVisibility(editMode == EDIT_MODE_COMMIT_LAST ? View.VISIBLE : View.INVISIBLE);
+
+        invalidateUserInfo(null);
     }
 
     void usernameClicked(View view) {
@@ -128,38 +147,55 @@ public class UserInfoFragment extends BaseFragment
         new MaterialDialog.Builder(context).theme(Theme.DARK)
                 .title(getString(R.string.activity_user_info_username))
                 .input(getString(R.string.activity_user_info_username),
-                        AccountManager.getUserInfo(context).nickname, false,
+                        lastFillUser.nickname, false,
                         (MaterialDialog dialog, CharSequence input) -> {
                             if (TextUtils.equals(input, lastFillUser.nickname))
                                 return;
                             User newUser = new User();
                             newUser.nickname = input.toString();
-                            switch (editMode) {
-                                case EDIT_MODE_COMMIT_LAST:
-                                    invalidateUserInfo(newUser);
-                                    break;
-                                case EDIT_MODE_COMMIT_EVERY_TIME:
-                                    updateUserInfo(newUser);
-                                    break;
-                            }
+                            commit(newUser);
                         })
                 .build().show();
     }
 
+    void weChatClicked(View view) {
+        //TODO add wechat
+    }
+
     void genderClicked(View view) {
-        Context context = view.getContext();
-        Account.Gender mSelectGender = AccountManager.getUserInfo(context).getGender();
+        final Context context = view.getContext();
+        final Account.Gender mSelectGender = lastFillUser.getSex();
         new MaterialDialog.Builder(context)
-                .theme(Theme.LIGHT)
+                .theme(Theme.DARK)
                 .title(R.string.view_gender_spinner_title)
                 .items(R.array.view_gender_spinner_items)
                 .itemsCallbackSingleChoice(mSelectGender.toInt() % 2, (dialog, view1, which, text) -> {
                     Account.Gender gender = Account.Gender.format(which);
-                    if (gender == AccountManager.getUserInfo(context).getGender())
+                    if (gender == mSelectGender)
                         return true;
                     User newUser = new User();
+                    newUser.setSex(gender);
+                    commit(newUser);
+                    return true; // allow selection
+                })
+                .positiveText(R.string.view_gender_spinner_positive_btn)
+                .show();
+    }
 
-                    updateUserInfo(AccountManager.getUserInfo(context).id, null, gender, null, null);
+    void sexualityClicked(View view) {
+        final Context context = view.getContext();
+        final Account.Gender mSelectGender = lastFillUser.getSexuality();
+        new MaterialDialog.Builder(context)
+                .theme(Theme.DARK)
+                .title(R.string.view_gender_spinner_title)
+                .items(R.array.view_gender_spinner_items)
+                .itemsCallbackSingleChoice(mSelectGender.toInt() % 2, (dialog, view1, which, text) -> {
+                    Account.Gender gender = Account.Gender.format(which);
+                    if (gender == mSelectGender)
+                        return true;
+                    User newUser = new User();
+                    newUser.setSexuality(gender);
+                    commit(newUser);
                     return true; // allow selection
                 })
                 .positiveText(R.string.view_gender_spinner_positive_btn)
@@ -167,24 +203,63 @@ public class UserInfoFragment extends BaseFragment
     }
 
     void birthDayClicked(View view) {
-        Calendar calendar = Calendar.getInstance();
-        new DatePickerDialog(view.getContext(), (view1, year, monthOfYear, dayOfMonth) -> {
+        Date birthday;
+        final SimpleDateFormat dateFormat = getTimeFormat();
 
-        }, calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)).show();
+        try {
+            birthday = dateFormat.parse(lastFillUser.birthday);
+        } catch (ParseException | NullPointerException e) {
+            birthday = new Date();
+        }
+
+        final Calendar calendar = Calendar.getInstance(Locale.CHINA);
+        calendar.setTime(birthday);
+        int oYear = calendar.get(Calendar.YEAR);
+        int oMonth = calendar.get(Calendar.MONTH);
+        int oDay = calendar.get(Calendar.DAY_OF_MONTH);
+        new DatePickerDialog(view.getContext(), (view1, year, monthOfYear, dayOfMonth) -> {
+            if (year != oYear || monthOfYear != oMonth || dayOfMonth != oDay) {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, monthOfYear);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                User newUser = new User();
+                newUser.birthday = dateFormat.format(calendar.getTime());
+                commit(newUser);
+            }
+        }, oYear, oMonth, oDay).show();
     }
 
     void locationClicked(View view) {
         Context context = view.getContext();
-        new LocationChooseDialog.Builder(context)
-                .build()
+        //TODO select origin location
+        new LocationChooseDialog.Builder(context).build()
                 .setLocationSelectedListener((String location, Pair<String, String> provinceAndDistrict) -> {
-                    if (TextUtils.equals(location, AccountManager.getUserInfo(context).location))
+                    if (TextUtils.equals(location, lastFillUser.location))
                         return;
-                    updateUserInfo(AccountManager.getUserInfo(context).id, null, null, null, location);
-                })
-                .show();
+                    User newUser = new User();
+                    newUser.location = location;
+                    commit(newUser);
+                }).show();
+    }
+
+    private void commit(final User user) {
+        switch (editMode) {
+            case EDIT_MODE_COMMIT_LAST:
+                invalidateUserInfo(user);
+                break;
+            case EDIT_MODE_COMMIT_EVERY_TIME:
+                updateUserInfo(user, false);
+                break;
+        }
+    }
+
+    @Click
+    void finishBtnClicked(View view) {
+
+        if (TextUtils.isEmpty(lastFillUser.nickname)) {
+
+        }
+        updateUserInfo(lastFillUser, true);
     }
 
     @Override
@@ -195,7 +270,8 @@ public class UserInfoFragment extends BaseFragment
     @Override
     public void onPictureCropped(Uri uri) {
         croppedProfileUri = uri;
-        updateAvatar(AccountManager.getUserInfo(getContext()).id);
+        //TODO commit
+//        updateAvatar(AccountManager.getUserInfo(getContext()).id);
 //        Picasso.with(this).load(uri).memoryPolicy(MemoryPolicy.NO_STORE).memoryPolicy(MemoryPolicy.NO_CACHE).into(avatarImage);
     }
 
@@ -207,22 +283,26 @@ public class UserInfoFragment extends BaseFragment
         String qiNiuKey = Constants.PROFILE_PREFIX + userId + Constants.URL_HYPHEN + Util.unixTimeStamp() + Constants.PROFILE_SUFFIX;
 
         //TODO add new update user info code
-        updateUserInfo(userId, null, null, qiNiuKey, null);
+//        updateUserInfo(userId, null, null, qiNiuKey, null);
     }
 
     @Background
-    void updateUserInfo(final User user) {
+    void updateUserInfo(final User user, boolean exitWhenSuccess) {
         final AccountActivity accountActivity = getAccountActivity();
         if (accountActivity == null) {
             return;
         }
         try {
-            Response<Void> response = APIFactory.getAccountAPI().changePersonalInfo(token.userId, token.accessToken,
-                    user).execute();
+            Call<Void> call = APIFactory.getAccountAPI().changePersonalInfo(token.userId, token.accessToken,
+                    user);
+            Response<Void> response = call.execute();
             if (response.isSuccessful()) {
                 AccountManager.updateOrCreateUserInfo(accountActivity, user);
+                if (exitWhenSuccess) {
+                    MainActivity_.intent(this).start();
+                }
             } else {
-                accountActivity.showSnackMsg(R.string.fragment_user_info_error_network);
+                accountActivity.showSnackMsg(R.string.fragment_user_info_msg_update_info_fail);
             }
         } catch (IOException e) {
             accountActivity.showSnackMsg(R.string.fragment_user_info_error_network);
@@ -235,44 +315,52 @@ public class UserInfoFragment extends BaseFragment
     }
 
     @UiThread
-    void invalidateUserInfo(User user) {
-        if (user == null) {
-            return;
+    void invalidateUserInfo(@Nullable final User changed) {
+        if (lastFillUser == null) {
+            lastFillUser = User.dummyUser();
         }
-        LogUtil.i(TAG, "user info: " + user);
-        Picasso.with(getContext()).load(user.portrait).into(avatarImage);
+        if (changed == null) {
+            lastFillUser.add(AccountManager.getUserInfo(getContext()));
+        } else {
+            lastFillUser.add(changed);
+        }
 
-        nicknameFragment.setContent(user.nickname);
+        LogUtil.i(TAG, "user changed: " + changed);
+        LogUtil.i(TAG, "user info: " + lastFillUser);
+
+        Picasso.with(getContext()).load(lastFillUser.portrait).into(avatarImage);
+
+        nicknameFragment.setContent(lastFillUser.nickname);
         String weChatName;
-        if (TextUtils.isEmpty(user.wechatUid)) {
+        if (TextUtils.isEmpty(lastFillUser.wechatUid)) {
             weChatName = getString(R.string.activity_user_info_weibo_id_unbound);
         } else {
-            weChatName = user.wechatNickname;
+            weChatName = lastFillUser.wechatNickname;
         }
         wechatFragment.setContent(weChatName);
 
         String gender = getString(R.string.activity_user_info_gender_unknown);
-        Account.Gender orin = user.getGender();
+        Account.Gender orin = lastFillUser.getSex();
         if (orin != null) {
             gender = orin.getDisplayText(getContext());
         }
         genderFragment.setContent(gender);
 
         String sexuality = getString(R.string.activity_user_info_gender_unknown);
-        Account.Gender sexualityOrigin = user.getSexuality();
+        Account.Gender sexualityOrigin = lastFillUser.getSexuality();
         if (sexualityOrigin != null) {
-            sexuality = orin.getDisplayText(getContext());
+            sexuality = sexualityOrigin.getDisplayText(getContext());
         }
         sexualityFragment.setContent(sexuality);
 
 
-        String birthday = user.birthday;
+        String birthday = lastFillUser.birthday;
         if (TextUtils.isEmpty(birthday)) {
             birthday = getString(R.string.fragment_user_info_birthday_default);
         }
         birthDayFragment.setContent(birthday);
 
-        locationFragment.setContent(user.location);
+        locationFragment.setContent(lastFillUser.location);
     }
 
     @Override

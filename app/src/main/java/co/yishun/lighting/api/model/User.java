@@ -1,8 +1,11 @@
 package co.yishun.lighting.api.model;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 
 import co.yishun.lighting.api.Account;
 
@@ -70,6 +73,15 @@ public class User implements Serializable {
     public String wechatNickname;
     public String portrait;
 
+    public static User dummyUser() {
+        User user = new User();
+        user.nickname = "nickname";
+        user.portrait = "http://ss.bdimg.com/static/superman/img/logo/bd_logo1_31bdc765.png";
+        user.setSex(Account.Gender.OTHER);
+        user.setSexuality(Account.Gender.OTHER);
+        return user;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -89,11 +101,35 @@ public class User implements Serializable {
                 '}';
     }
 
-    public Account.Gender getGender() {
+    public Account.Gender getSex() {
         return Account.Gender.MALE;
+    }
+
+    public void setSex(Account.Gender gender) {
+        this.sex = gender.toString();
     }
 
     public Account.Gender getSexuality() {
         return Account.Gender.FEMALE;
+    }
+
+    public void setSexuality(Account.Gender gender) {
+        this.sexuality = gender.toString();
+    }
+
+    public void add(@Nullable User user) {
+        if (user == null) {
+            return;
+        }
+        try {
+            for (Field field : User.class.getDeclaredFields()) {
+                field.setAccessible(true);
+                String value = (String) field.get(user);
+                if (value != null) {
+                    field.set(this, value);
+                }
+            }
+        } catch (IllegalAccessException ignore) {
+        }
     }
 }
