@@ -117,7 +117,7 @@ public class UserInfoFragment extends BaseFragment
     void setupViews() {
         toolbar.setNavigationOnClickListener(v -> NavUtils.navigateUpFromSameTask(getActivity()));
 
-        avatarLayout.setOnClickListener(v -> Crop.pickImage(avatarLayout.getContext()));
+        avatarLayout.setOnClickListener(v -> Crop.pickImage(getActivity()));
 
         nicknameFragment.setTitle(getString(R.string.activity_user_info_username));
         wechatFragment.setTitle(getString(R.string.activity_user_info_wechat));
