@@ -30,7 +30,6 @@ import co.yishun.lighting.api.model.User;
 import co.yishun.lighting.ui.account.AccountActivity_;
 import co.yishun.lighting.ui.common.BaseActivity;
 import co.yishun.lighting.ui.view.PageIndicatorDot;
-import co.yishun.lighting.util.LogUtil;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -171,7 +170,7 @@ public class LoginActivity extends BaseActivity {
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password)) {
+        if (TextUtils.isEmpty(password)) {
             passwordEditText.setError(getString(R.string.activity_login_error_incorrect_password));
             focusView = passwordEditText;
             cancel = true;
@@ -237,10 +236,10 @@ public class LoginActivity extends BaseActivity {
             Response<User> userResponse = call.execute();
             if (userResponse.isSuccessful()) {
                 User user = userResponse.body();
-                LogUtil.i(TAG, user.toString());
-                AccountManager.saveAccount(LoginActivity.this, user);
                 showSnackMsg(R.string.activity_login_msg_success);
 
+                AccountManager.saveAccount(LoginActivity.this, user);
+                MainActivity_.intent(this).start();
                 /*
                                 passwordEditText.setError(getString(R.string.activity_login_error_incorrect_password));
                 passwordEditText.requestFocus();
