@@ -10,4 +10,5 @@
     <string name="activity_shoot_permission_error_msg">We need some  permissions to use camera,record audio and access storage. Please ensure you grant us necessary permission.</string>
     <string name="app_version">1.0.0-dev</string>
 
+    <string name="error_network">Network is not working, please try later.</string>
 </resources>

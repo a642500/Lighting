@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
@@ -55,6 +56,8 @@ public class UserInfoFragment extends BaseFragment
         AccountActivity.PictureCroppedHandler {
 
     public static final String TAG = "UserInfoFragment";
+    public static final int EDIT_MODE_COMMIT_LAST = 0;
+    public static final int EDIT_MODE_COMMIT_EVERY_TIME = 1;
     @ViewById
     Toolbar toolbar;
     @ViewById
@@ -65,21 +68,21 @@ public class UserInfoFragment extends BaseFragment
     ItemFragment nicknameFragment;
     @FragmentById(childFragment = true)
     ItemFragment wechatFragment;
-
     @FragmentById(childFragment = true)
     ItemFragment genderFragment;
     @FragmentById(childFragment = true)
     ItemFragment sexualityFragment;
-
     @FragmentById(childFragment = true)
     ItemFragment birthDayFragment;
     @FragmentById(childFragment = true)
     ItemFragment locationFragment;
-
     @FragmentArg
     Token token;
     @FragmentArg
     String phone;
+    @FragmentArg
+    int editMode = EDIT_MODE_COMMIT_LAST;
+    User lastFillUser;
     private Uri croppedProfileUri;
 
     @Override
@@ -127,10 +130,18 @@ public class UserInfoFragment extends BaseFragment
                 .input(getString(R.string.activity_user_info_username),
                         AccountManager.getUserInfo(context).nickname, false,
                         (MaterialDialog dialog, CharSequence input) -> {
-                            if (TextUtils.equals(input, AccountManager.getUserInfo(context).nickname))
+                            if (TextUtils.equals(input, lastFillUser.nickname))
                                 return;
-                            updateUserInfo(AccountManager.getUserInfo(context).id,
-                                    input.toString(), null, null, null);
+                            User newUser = new User();
+                            newUser.nickname = input.toString();
+                            switch (editMode) {
+                                case EDIT_MODE_COMMIT_LAST:
+                                    invalidateUserInfo(newUser);
+                                    break;
+                                case EDIT_MODE_COMMIT_EVERY_TIME:
+                                    updateUserInfo(newUser);
+                                    break;
+                            }
                         })
                 .build().show();
     }
@@ -146,6 +157,8 @@ public class UserInfoFragment extends BaseFragment
                     Account.Gender gender = Account.Gender.format(which);
                     if (gender == AccountManager.getUserInfo(context).getGender())
                         return true;
+                    User newUser = new User();
+
                     updateUserInfo(AccountManager.getUserInfo(context).id, null, gender, null, null);
                     return true; // allow selection
                 })
@@ -198,18 +211,27 @@ public class UserInfoFragment extends BaseFragment
     }
 
     @Background
-    void updateUserInfo(String userId, String nickname, Account.Gender gender, String qiNiuKey, String location) {
-        User user = new User();
+    void updateUserInfo(final User user) {
+        final AccountActivity accountActivity = getAccountActivity();
+        if (accountActivity == null) {
+            return;
+        }
         try {
             Response<Void> response = APIFactory.getAccountAPI().changePersonalInfo(token.userId, token.accessToken,
                     user).execute();
             if (response.isSuccessful()) {
-
-                AccountManager.updateOrCreateUserInfo(getContext(), user);
+                AccountManager.updateOrCreateUserInfo(accountActivity, user);
+            } else {
+                accountActivity.showSnackMsg(R.string.fragment_user_info_error_network);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            accountActivity.showSnackMsg(R.string.fragment_user_info_error_network);
         }
+    }
+
+    @Nullable
+    private AccountActivity getAccountActivity() {
+        return (AccountActivity) getActivity();
     }
 
     @UiThread
@@ -255,6 +277,10 @@ public class UserInfoFragment extends BaseFragment
     @Override
     public void onUserInfoChange(User info) {
         invalidateUserInfo(info);
+    }
+
+    @IntDef({EDIT_MODE_COMMIT_LAST, EDIT_MODE_COMMIT_EVERY_TIME})
+    public @interface EditMode {
     }
 
     public static class ItemFragment extends BaseFragment {

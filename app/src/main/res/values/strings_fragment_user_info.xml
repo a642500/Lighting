@@ -4,4 +4,6 @@
     <string name="fragment_user_info_btn_finish">Finish</string>
     <string name="fragment_user_info_sexuality">Sexuality</string>
     <string name="fragment_user_info_birthday">BirthDay</string>
+    <string name="fragment_user_info_msg_update_info_fail">Update Info failed.</string>
+    <string name="fragment_user_info_error_network">@string/error_network</string>
 </resources>
