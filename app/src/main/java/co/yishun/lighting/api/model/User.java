@@ -83,6 +83,13 @@ public class User implements Serializable {
         return user;
     }
 
+    public Token getToken() {
+        Token token = new Token();
+        token.userId = id;
+        token.accessToken = accessToken;
+        return token;
+    }
+
     @Override
     public String toString() {
         return APIFactory.getGson().toJson(this);
