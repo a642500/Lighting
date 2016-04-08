@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import co.yishun.lighting.Constants;
+import co.yishun.lighting.api.model.Token;
 import co.yishun.lighting.api.model.User;
 import co.yishun.lighting.util.GsonFactory;
 import co.yishun.lighting.util.LogUtil;
@@ -174,6 +175,10 @@ public class AccountManager {
             loadUserInfo(context.getApplicationContext());
         }
         return mUser;
+    }
+
+    public static Token getUserToken(Context context) {
+        return getUserInfo(context).getToken();
     }
 
     public static void addOnUserInfoChangedListener(@NonNull OnUserInfoChangeListener listener) {
