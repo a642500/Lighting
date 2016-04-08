@@ -44,7 +44,7 @@ public class APIFactory {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         //noinspection PointlessBooleanExpression
         if (Constants.LOG_ENABLE || BuildConfig.DEBUG) {
-            builder.addInterceptor(new HttpLoggingInterceptor());
+            builder.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
         }
         return builder.build();
     }
