@@ -30,7 +30,7 @@ public class User implements Serializable {
         "location": "",
         "wechat_nickname": "",
         "sex": "",
-        "avatar": ""
+        "portrait": ""
     }
 }
 
@@ -51,7 +51,7 @@ public class User implements Serializable {
         "location": "",
         "wechat_nickname": "",
         "basic_info_light_number": 0,
-        "avatar": ""
+        "portrait": ""
     }
 }
 
