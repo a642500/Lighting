@@ -1,6 +1,5 @@
 package co.yishun.lighting.ui.account;
 
-import android.support.annotation.IntDef;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
@@ -20,16 +19,18 @@ import co.yishun.lighting.R;
 import co.yishun.lighting.api.APIFactory;
 import co.yishun.lighting.api.model.Token;
 import co.yishun.lighting.ui.LoginActivity;
+import co.yishun.lighting.ui.UIStatus;
 import co.yishun.lighting.ui.common.BaseFragment;
 import retrofit2.Response;
+
+import static co.yishun.lighting.ui.UIStatus.STATUS_NETWORKING;
+import static co.yishun.lighting.ui.UIStatus.STATUS_NOTHING;
 
 /**
  * Created by carlos on 4/7/16.
  */
 @EFragment(R.layout.fragment_password)
 public class PasswordFragment extends BaseFragment {
-    public static final int STATUS_NETWORKING = 1;
-    public static final int STATUS_NOTHING = 0;
     private static final String TAG = "PasswordFragment";
     @FragmentArg
     Token token;
@@ -41,7 +42,7 @@ public class PasswordFragment extends BaseFragment {
     View nextBtn;
     @FragmentArg
     String phone;
-    @Status
+    @UIStatus
     private int status = STATUS_NOTHING;
 
     @Override
@@ -88,9 +89,5 @@ public class PasswordFragment extends BaseFragment {
     @AfterViews
     void setViews() {
         toolbar.setNavigationOnClickListener(v -> NavUtils.navigateUpFromSameTask(getActivity()));
-    }
-
-    @IntDef({STATUS_NOTHING, STATUS_NETWORKING})
-    private @interface Status {
     }
 }

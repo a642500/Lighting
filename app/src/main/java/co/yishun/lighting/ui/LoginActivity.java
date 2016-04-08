@@ -33,6 +33,9 @@ import co.yishun.lighting.ui.view.PageIndicatorDot;
 import retrofit2.Call;
 import retrofit2.Response;
 
+import static co.yishun.lighting.ui.UIStatus.STATUS_NETWORKING;
+import static co.yishun.lighting.ui.UIStatus.STATUS_NOTHING;
+
 /**
  * A login screen that offers login via email/password.
  */
@@ -62,8 +65,8 @@ public class LoginActivity extends BaseActivity {
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-
-    private int status = 0;
+    @UIStatus
+    private int status = STATUS_NOTHING;
 
     public static boolean isPhoneValid(@NonNull String phone) {
         //TODO: Replace this with your own logic
@@ -199,7 +202,7 @@ public class LoginActivity extends BaseActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            status = 1;
+            status = STATUS_NETWORKING;
             login(phone, password);
         }
     }
@@ -250,6 +253,7 @@ public class LoginActivity extends BaseActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        status = STATUS_NOTHING;
         IntegrateInfoActivity_.intent(this).start();
     }
 
