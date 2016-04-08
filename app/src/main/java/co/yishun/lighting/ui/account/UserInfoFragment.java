@@ -2,6 +2,7 @@ package co.yishun.lighting.ui.account;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
@@ -299,7 +300,8 @@ public class UserInfoFragment extends BaseFragment
             if (response.isSuccessful()) {
                 AccountManager.updateOrCreateUserInfo(accountActivity, user);
                 if (exitWhenSuccess) {
-                    MainActivity_.intent(this).start();
+                    MainActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                            Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
                 }
             } else {
                 accountActivity.showSnackMsg(R.string.fragment_user_info_msg_update_info_fail);

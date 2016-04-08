@@ -1,5 +1,7 @@
 package co.yishun.lighting.ui;
 
+import android.content.Intent;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Fullscreen;
@@ -25,7 +27,8 @@ public class SplashActivity extends BaseActivity {
     @UiThread(delay = 1600)
     void endWithStartMain() {
         if (AccountManager.isLogin(this))
-            MainActivity_.intent(this).start();
+            MainActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
         else
             LoginActivity_.intent(this).start();
         this.finish();

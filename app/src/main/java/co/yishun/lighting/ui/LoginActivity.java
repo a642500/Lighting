@@ -245,7 +245,7 @@ public class LoginActivity extends BaseActivity {
 
                 AccountManager.saveAccount(LoginActivity.this, user);
                 IntegrateInfoActivity_.intent(this).start();
-//                MainActivity_.intent(this).start();
+//                MainActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
                 /*
                                 passwordEditText.setError(getString(R.string.activity_login_error_incorrect_password));
                 passwordEditText.requestFocus();
