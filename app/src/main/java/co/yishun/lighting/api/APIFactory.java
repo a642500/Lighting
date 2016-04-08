@@ -10,10 +10,12 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
+import co.yishun.lighting.BuildConfig;
 import co.yishun.lighting.Constants;
 import co.yishun.lighting.api.model.Token;
 import co.yishun.lighting.api.model.User;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -39,7 +41,12 @@ public class APIFactory {
     }
 
     public static OkHttpClient getOkHttpClient() {
-        return new OkHttpClient.Builder().build();
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        //noinspection PointlessBooleanExpression
+        if (Constants.LOG_ENABLE || BuildConfig.DEBUG) {
+            builder.addInterceptor(new HttpLoggingInterceptor());
+        }
+        return builder.build();
     }
 
     public static class DataDeserializer<T> implements JsonDeserializer<T> {
