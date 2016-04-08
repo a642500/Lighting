@@ -21,8 +21,8 @@ public interface Media {
     Call<Void> getQuestions(
             @Field("user_id") String userId,
             @Field("sex") String sex,
-            @Field("file_type") @FileType String type,
-            @Field("audio_class") @AudioType String type,
+            @Field("file_type") @FileType String fileType,
+            @Field("audio_class") @AudioType String audioType,
             @Field("question_arr") int limit
     );
 
