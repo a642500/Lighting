@@ -80,7 +80,7 @@ public class MainActivity extends BaseActivity {
     public void onNavigationItemClicked(View view) {
         switch (view.getId()) {
             case R.id.navigation_item_lightup:
-                startActivity(new Intent(this, LoginActivity_.class));
+                startActivity(new Intent(this, IntegrateInfoActivity_.class));
                 break;
             case R.id.navigation_item_mssage:
                 ShootActivity_.intent(this).start();
