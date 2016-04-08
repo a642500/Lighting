@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.EditorAction;
@@ -233,6 +234,7 @@ public class LoginActivity extends BaseActivity {
 
     }
 
+    @Background
     void login(String phone, String password) {
         try {
             Call<User> call = APIFactory.getAccountAPI().login(phone, "password", password, null);
@@ -242,19 +244,19 @@ public class LoginActivity extends BaseActivity {
                 showSnackMsg(R.string.activity_login_msg_success);
 
                 AccountManager.saveAccount(LoginActivity.this, user);
-                MainActivity_.intent(this).start();
+                IntegrateInfoActivity_.intent(this).start();
+//                MainActivity_.intent(this).start();
                 /*
                                 passwordEditText.setError(getString(R.string.activity_login_error_incorrect_password));
                 passwordEditText.requestFocus();
                  */
             } else {
-                showSnackMsg(R.string.activity_login_error_server_unavaiable);
+                showSnackMsg(R.string.activity_login_error_incorrect_password);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            showSnackMsg(R.string.activity_login_error_server_unavaiable);
         }
         status = STATUS_NOTHING;
-        IntegrateInfoActivity_.intent(this).start();
     }
 
     @Override
