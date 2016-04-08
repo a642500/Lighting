@@ -106,20 +106,22 @@ public class SignUpFragment extends BaseFragment {
 
     @Background
     void sendSms(final String phone) {
+        final BaseActivity baseActivity = (BaseActivity) getActivity();
+        if (baseActivity == null) return;
         try {
             Response response = APIFactory.getAccountAPI().register(phone).execute();
             if (response.isSuccessful()) {
-                ((BaseActivity) getActivity()).showSnackMsg(R.string.fragment_sign_up_msg_send_ok);
+                baseActivity.showSnackMsg(R.string.fragment_sign_up_msg_send_ok);
             } else if (response.code() == 500) {
-                ((BaseActivity) getActivity()).showSnackMsg(R.string.fragment_sign_up_error_registered);
+                baseActivity.showSnackMsg(R.string.fragment_sign_up_error_registered);
                 onFail();
             } else {
-                ((BaseActivity) getActivity()).showSnackMsg(R.string.fragment_sign_up_msg_send_fail);
+                baseActivity.showSnackMsg(R.string.fragment_sign_up_msg_send_fail);
                 onFail();
             }
         } catch (IOException e) {
             e.printStackTrace();
-            ((BaseActivity) getActivity()).showSnackMsg(R.string.fragment_sign_up_msg_error_network);
+            baseActivity.showSnackMsg(R.string.fragment_sign_up_msg_error_network);
             onFail();
         }
     }
