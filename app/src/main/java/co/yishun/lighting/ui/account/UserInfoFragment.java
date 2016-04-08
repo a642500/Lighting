@@ -240,32 +240,38 @@ public class UserInfoFragment extends BaseFragment
             return;
         }
         LogUtil.i(TAG, "user info: " + user);
-        Picasso.with(getContext()).load(user.avatar).into(avatarImage);
+        Picasso.with(getContext()).load(user.portrait).into(avatarImage);
 
         nicknameFragment.setContent(user.nickname);
-        String weiboID;
-        if (TextUtils.isEmpty(user.weiboUid)) {
-            weiboID = getString(R.string.activity_user_info_weibo_id_unbound);
+        String weChatName;
+        if (TextUtils.isEmpty(user.wechatUid)) {
+            weChatName = getString(R.string.activity_user_info_weibo_id_unbound);
         } else {
-            weiboID = user.weiboNickname;
+            weChatName = user.wechatNickname;
         }
-//        weiboFragment.setContent(weiboID);
-        String gender;
+        wechatFragment.setContent(weChatName);
+
+        String gender = getString(R.string.activity_user_info_gender_unknown);
         Account.Gender orin = user.getGender();
-        if (orin != null)
-            switch (user.getGender()) {
-                case FEMALE:
-                    gender = "♀";
-                    break;
-                case MALE:
-                    gender = "♂";
-                    break;
-                default:
-                    gender = getString(R.string.activity_user_info_gender_unknown);
-                    break;
-            }
-        else gender = getString(R.string.activity_user_info_gender_unknown);
+        if (orin != null) {
+            gender = orin.getDisplayText(getContext());
+        }
         genderFragment.setContent(gender);
+
+        String sexuality = getString(R.string.activity_user_info_gender_unknown);
+        Account.Gender sexualityOrigin = user.getSexuality();
+        if (sexualityOrigin != null) {
+            sexuality = orin.getDisplayText(getContext());
+        }
+        sexualityFragment.setContent(sexuality);
+
+
+        String birthday = user.birthday;
+        if (TextUtils.isEmpty(birthday)) {
+            birthday = getString(R.string.fragment_user_info_birthday_default);
+        }
+        birthDayFragment.setContent(birthday);
+
         locationFragment.setContent(user.location);
     }
 

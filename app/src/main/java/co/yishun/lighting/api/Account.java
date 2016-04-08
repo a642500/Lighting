@@ -1,10 +1,13 @@
 package co.yishun.lighting.api;
 
+import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
+import android.support.annotation.StringRes;
 
 import com.google.gson.annotations.SerializedName;
 
+import co.yishun.lighting.R;
 import co.yishun.lighting.account.UserInfo;
 import co.yishun.lighting.api.model.Token;
 import co.yishun.lighting.api.model.UploadToken;
@@ -92,6 +95,12 @@ public interface Account {
         MALE,
         @SerializedName("n")
         OTHER,;
+        @StringRes
+        public static final int DISPLAY_TEXT_RES[] = new int[]{
+                R.string.api_gender_display_female,
+                R.string.api_gender_display_male,
+                R.string.api_gender_display_Unknown
+        };
 
         public static Gender format(String s) {
             switch (s) {
@@ -113,6 +122,10 @@ public interface Account {
                 default:
                     return OTHER;
             }
+        }
+
+        public String getDisplayText(Context context) {
+            return context.getString(DISPLAY_TEXT_RES[toInt()]);
         }
 
         @Override

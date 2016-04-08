@@ -61,13 +61,14 @@ public class User implements Serializable {
     public String weiboNickname;
     public String location;
     public String sex;
-    public String loveSex;
+    @SerializedName("love_sex")
+    public String sexuality;
     public String wechatUid;
     public String weiboUid;
     public String phoneNumber;
     public String accessToken;
     public String wechatNickname;
-    public String avatar;
+    public String portrait;
 
     @Override
     public String toString() {
@@ -78,17 +79,21 @@ public class User implements Serializable {
                 ", weiboNickname='" + weiboNickname + '\'' +
                 ", location='" + location + '\'' +
                 ", sex='" + sex + '\'' +
-                ", loveSex='" + loveSex + '\'' +
+                ", sexuality='" + sexuality + '\'' +
                 ", wechatUid='" + wechatUid + '\'' +
                 ", weiboUid='" + weiboUid + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", accessToken='" + accessToken + '\'' +
                 ", wechatNickname='" + wechatNickname + '\'' +
-                ", avatar='" + avatar + '\'' +
+                ", portrait='" + portrait + '\'' +
                 '}';
     }
 
     public Account.Gender getGender() {
+        return Account.Gender.MALE;
+    }
+
+    public Account.Gender getSexuality() {
         return Account.Gender.FEMALE;
     }
 }
