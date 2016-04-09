@@ -241,6 +241,22 @@ public abstract class BaseActivity extends AppCompatActivity implements Interact
     }
 
     @Override
+    public boolean filterExceptionWithToken(Exceptionable1<Token> exceptionable) throws Exception {
+        try {
+            Token token = AccountManager.retrieveUserToken(this);
+            exceptionable.call(token);
+            return false;
+        } catch (UnauthorizedException e) {
+            AccountManager.deleteAccount(this);
+            LoginActivity_.intent(this).start();
+            return true;
+        } catch (IOException e) {
+            showSnackMsg(R.string.error_network);
+            return true;
+        }
+    }
+
+    @Override
     public boolean filterExceptionWithContextToken(Exceptionable2<Context, Token> exceptionable) throws Exception {
         try {
             Token token = AccountManager.retrieveUserToken(this);

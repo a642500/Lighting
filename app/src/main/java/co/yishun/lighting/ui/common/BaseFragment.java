@@ -22,6 +22,14 @@ public abstract class BaseFragment extends Fragment implements Interactive {
     public abstract String getPageInfo();
 
     @Override
+    public boolean filterExceptionWithToken(Exceptionable1<Token> exceptionable) throws Exception {
+        if (interactiveImpl == null) {
+            interactiveImpl = (Interactive) getActivity();
+        }
+        return interactiveImpl == null || interactiveImpl.filterExceptionWithToken(exceptionable);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         if (mIsPage) {

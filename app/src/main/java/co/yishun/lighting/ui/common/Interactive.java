@@ -51,6 +51,8 @@ public interface Interactive {
 
     boolean filterExceptionWithContextToken(Exceptionable2<Context, Token> exceptionable) throws Exception;
 
+    boolean filterExceptionWithToken(Exceptionable1<Token> exceptionable) throws Exception;
+
     interface Callable<K, T> {
         K call(T t);
     }
