@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.JsonSyntaxException;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
@@ -23,6 +25,8 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.EditorAction;
 import org.androidannotations.annotations.Fullscreen;
 import org.androidannotations.annotations.ViewById;
+
+import java.io.IOException;
 
 import co.yishun.lighting.R;
 import co.yishun.lighting.account.AccountManager;
@@ -253,8 +257,11 @@ public class LoginActivity extends BaseActivity {
             } else {
                 showSnackMsg(R.string.activity_login_error_incorrect_password);
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             showSnackMsg(R.string.activity_login_error_server_unavaiable);
+        } catch (JsonSyntaxException e) {
+            showSnackMsg(R.string.error_server);
+            e.printStackTrace();
         }
         status = STATUS_NOTHING;
     }

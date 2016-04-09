@@ -6,6 +6,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.google.gson.JsonSyntaxException;
+
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
@@ -82,6 +84,9 @@ public class PasswordFragment extends BaseFragment {
             }
         } catch (IOException e) {
             accountActivity.showSnackMsg(R.string.fragment_password_error_network);
+        } catch (JsonSyntaxException e) {
+            accountActivity.showSnackMsg(R.string.error_server);
+            e.printStackTrace();
         }
         status = STATUS_NOTHING;
     }

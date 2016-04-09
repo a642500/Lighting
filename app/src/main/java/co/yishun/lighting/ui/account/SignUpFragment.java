@@ -7,6 +7,8 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.google.gson.JsonSyntaxException;
+
 import org.androidannotations.annotations.AfterTextChange;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -94,6 +96,9 @@ public class SignUpFragment extends BaseFragment {
         } catch (IOException e) {
             e.printStackTrace();
             accountActivity.showSnackMsg(R.string.fragment_sign_up_msg_error_network);
+        } catch (JsonSyntaxException e) {
+            accountActivity.showSnackMsg(R.string.error_server);
+            e.printStackTrace();
         }
     }
 
@@ -120,8 +125,11 @@ public class SignUpFragment extends BaseFragment {
                 onFail();
             }
         } catch (IOException e) {
-            e.printStackTrace();
             baseActivity.showSnackMsg(R.string.fragment_sign_up_msg_error_network);
+            onFail();
+        } catch (JsonSyntaxException e) {
+            baseActivity.showSnackMsg(R.string.error_server);
+            e.printStackTrace();
             onFail();
         }
     }

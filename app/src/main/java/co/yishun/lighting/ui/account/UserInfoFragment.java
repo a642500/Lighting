@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
+import com.google.gson.JsonSyntaxException;
 import com.soundcloud.android.crop.Crop;
 import com.squareup.picasso.Picasso;
 
@@ -308,6 +309,9 @@ public class UserInfoFragment extends BaseFragment
             }
         } catch (IOException e) {
             accountActivity.showSnackMsg(R.string.fragment_user_info_error_network);
+        } catch (JsonSyntaxException e) {
+            accountActivity.showSnackMsg(R.string.error_server);
+            e.printStackTrace();
         }
     }
 
