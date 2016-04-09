@@ -248,8 +248,10 @@ public class LoginActivity extends BaseActivity {
 //                MainActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TASK |
 // Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
             } else {
-                passwordEditText.setError(getString(R.string.activity_login_error_incorrect_password));
-                passwordEditText.requestFocus();
+                runOnUiThread(() -> {
+                    passwordEditText.setError(getString(R.string.activity_login_error_incorrect_password));
+                    passwordEditText.requestFocus();
+                });
             }
         });
         status = STATUS_NOTHING;
