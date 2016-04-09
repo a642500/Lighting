@@ -189,7 +189,11 @@ public class AccountManager {
         }
         Response<Token> response = APIFactory.getAccountAPI().refreshToken(token.userId, token.accessToken).execute();
         if (response.isSuccessful()) {
-            return response.body();
+            token = response.body();
+            User user = getUserInfo(context);
+            user.accessToken = token.accessToken;
+            updateOrCreateUserInfo(context, user);
+            return token;
         } else {
             throw new UnauthorizedException();
         }
