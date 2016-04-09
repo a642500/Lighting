@@ -20,6 +20,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
+import org.androidannotations.api.BackgroundExecutor;
 
 import java.io.IOException;
 
@@ -149,6 +150,13 @@ public abstract class BaseActivity extends AppCompatActivity implements Interact
             mProgressDialog.dismiss();
             mProgressDialog = null;
         }
+        BackgroundExecutor.cancelAll(CANCEL_WHEN_PAUSE, true);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        BackgroundExecutor.cancelAll(CANCEL_WHEN_DESTROY, true);
     }
 
     @Override

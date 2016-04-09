@@ -14,6 +14,9 @@ import co.yishun.lighting.api.model.Token;
  */
 @SuppressWarnings("unused")
 public interface Interactive {
+    String CANCEL_WHEN_PAUSE = "cancel_when_pause";
+    String CANCEL_WHEN_DESTROY = "cancel_when_destroy";
+
     void showSnackMsg(String msg);
 
     void showSnackMsg(@StringRes int msgRes);
