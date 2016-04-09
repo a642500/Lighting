@@ -39,21 +39,17 @@ public class IntegrateInfoActivity extends BaseActivity {
 
     @Background(id = CANCEL_WHEN_DESTROY)
     void loadQuestions() {
-        try {
-            safelyDoWithToken((token) -> {
-                Response<List<Question>> response = APIFactory.getProcedureAPI().
-                        getQuestions(token.userId, token.accessToken, type, 3).execute();
+        safelyDoWithToken((token) -> {
+            Response<List<Question>> response = APIFactory.getProcedureAPI().
+                    getQuestions(token.userId, token.accessToken, type, 3).execute();
 
-                if (response.isSuccessful()) {
-                    showQuestions(response.body());
-                } else {
-                    showSnackMsg(R.string.activity_integrate_info_msg_get_question_fail);
-                    this.finish();
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            if (response.isSuccessful()) {
+                showQuestions(response.body());
+            } else {
+                showSnackMsg(R.string.activity_integrate_info_msg_get_question_fail);
+                this.finish();
+            }
+        });
     }
 
     @UiThread

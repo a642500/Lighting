@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
-import com.google.gson.JsonSyntaxException;
 import com.soundcloud.android.crop.Crop;
 import com.squareup.picasso.Picasso;
 
@@ -34,7 +33,6 @@ import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -278,7 +276,7 @@ public class UserInfoFragment extends BaseFragment
 //        Picasso.with(this).load(uri).memoryPolicy(MemoryPolicy.NO_STORE).memoryPolicy(MemoryPolicy.NO_CACHE).into(avatarImage);
     }
 
-    @Background
+    @Background(id = CANCEL_WHEN_DESTROY)
     void updateAvatar(@NonNull String userId) {
         if (croppedProfileUri == null) return;
         String uriString = croppedProfileUri.toString();
@@ -289,31 +287,23 @@ public class UserInfoFragment extends BaseFragment
 //        updateUserInfo(userId, null, null, qiNiuKey, null);
     }
 
-    @Background
+    @Background(id = CANCEL_WHEN_DESTROY)
     void updateUserInfo(final User user, boolean exitWhenSuccess) {
-        final BaseActivity accountActivity = getBaseActivity();
-        if (accountActivity == null) {
-            return;
-        }
-        try {
+        safelyDoWithContextToken((context, newToken) -> {
+            token = newToken;
             Call<Void> call = APIFactory.getAccountAPI().changePersonalInfo(token.userId, token.accessToken,
                     user);
             Response<Void> response = call.execute();
             if (response.isSuccessful()) {
-                AccountManager.updateOrCreateUserInfo(accountActivity, user);
+                AccountManager.updateOrCreateUserInfo(context, user);
                 if (exitWhenSuccess) {
                     MainActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TASK |
                             Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
                 }
             } else {
-                accountActivity.showSnackMsg(R.string.fragment_user_info_msg_update_info_fail);
+                showSnackMsg(R.string.fragment_user_info_msg_update_info_fail);
             }
-        } catch (IOException e) {
-            accountActivity.showSnackMsg(R.string.fragment_user_info_error_network);
-        } catch (JsonSyntaxException e) {
-            accountActivity.showSnackMsg(R.string.error_server);
-            e.printStackTrace();
-        }
+        });
     }
 
     @Nullable

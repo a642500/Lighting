@@ -12,4 +12,5 @@
 
     <string name="error_network">Network is not working, please try later.</string>
     <string name="error_server">Server is doing something evil.</string>
+    <string name="error_unknown">Unknown error.</string>
 </resources>

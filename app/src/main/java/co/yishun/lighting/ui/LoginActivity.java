@@ -16,8 +16,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.gson.JsonSyntaxException;
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Click;
@@ -25,8 +23,6 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.EditorAction;
 import org.androidannotations.annotations.Fullscreen;
 import org.androidannotations.annotations.ViewById;
-
-import java.io.IOException;
 
 import co.yishun.lighting.R;
 import co.yishun.lighting.account.AccountManager;
@@ -238,31 +234,24 @@ public class LoginActivity extends BaseActivity {
 
     }
 
-    @Background
+    @Background(id = CANCEL_WHEN_DESTROY)
     void login(String phone, String password) {
-        try {
+        safelyDoWithActivity(activity -> {
             Call<User> call = APIFactory.getAccountAPI().login(phone, "password", password, null);
             Response<User> userResponse = call.execute();
             if (userResponse.isSuccessful()) {
                 User user = userResponse.body();
                 showSnackMsg(R.string.activity_login_msg_success);
 
-                AccountManager.saveAccount(LoginActivity.this, user);
+                AccountManager.saveAccount(activity, user);
                 IntegrateInfoActivity_.intent(this).start();
-//                MainActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
-                /*
-                                passwordEditText.setError(getString(R.string.activity_login_error_incorrect_password));
-                passwordEditText.requestFocus();
-                 */
+//                MainActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TASK |
+// Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
             } else {
-                showSnackMsg(R.string.activity_login_error_incorrect_password);
+                passwordEditText.setError(getString(R.string.activity_login_error_incorrect_password));
+                passwordEditText.requestFocus();
             }
-        } catch (IOException e) {
-            showSnackMsg(R.string.activity_login_error_server_unavaiable);
-        } catch (JsonSyntaxException e) {
-            showSnackMsg(R.string.error_server);
-            e.printStackTrace();
-        }
+        });
         status = STATUS_NOTHING;
     }
 
