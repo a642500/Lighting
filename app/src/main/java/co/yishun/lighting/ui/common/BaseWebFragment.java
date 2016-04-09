@@ -192,9 +192,8 @@ public abstract class BaseWebFragment extends BaseFragment {
     private void webGetAccessToken(Map<String, String> args, String call) {
         String id = args.get("user_id");
         //TODO
-        webView.loadUrl(String.format(
-                toJs(AccountManager.getUserInfo(getContext()).getToken(), true, true),
-                call));
+        safelyDoWithToken((token) ->
+                webView.loadUrl(String.format(toJs(token, true, true), call)));
     }
 
     private void webGetOthers(String call) {

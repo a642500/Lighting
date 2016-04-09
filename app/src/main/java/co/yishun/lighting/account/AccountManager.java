@@ -34,6 +34,7 @@ public class AccountManager {
     public static android.accounts.AccountManager accountManager;
     public static Account account;
     private static User mUser = null;
+    private static Token mToken = null;
     private static HashMap<Integer, OnUserInfoChangeListener> mListeners = new HashMap<>();
 
     private static android.accounts.AccountManager getAccountManager(Context context) {
@@ -179,21 +180,44 @@ public class AccountManager {
         return mUser;
     }
 
-    private static Token getUserToken(Context context) {
-        return getUserInfo(context).getToken();
+    public static Token getUserToken(Context context) {
+        if (mToken == null) {
+            synchronized (Token.class) {
+                if (mToken == null) {
+                    mToken = new Token();
+                    mToken.accessToken = context.getSharedPreferences(Constants.Perference.RUNTIME_PREFERENCE,
+                            Context.MODE_PRIVATE).getString(Constants.Perference.PREFERENCE_TOKEN, null);
+                    mToken.userId = getAccountId(context);
+                }
+            }
+        }
+        return mToken;
+    }
+
+    public static void saveUserToken(Context context, String token) {
+        synchronized (Token.class) {
+            context.getSharedPreferences(Constants.Perference.RUNTIME_PREFERENCE,
+                    Context.MODE_PRIVATE).edit().putString(Constants.Perference.PREFERENCE_TOKEN, token)
+                    .apply();
+        }
+    }
+
+    public static void saveUserToken(Context context, Token token) {
+        saveUserToken(context, token.accessToken);
     }
 
     public static Token retrieveUserToken(Context context, Token token) throws Exception {
         if (token == null) {
             token = getUserToken(context);
         }
+
         Response<Token> response = APIFactory.getAccountAPI().refreshToken(token.userId, token.accessToken).execute();
         if (response.isSuccessful()) {
             String accessToken = response.body().accessToken;
-            User user = getUserInfo(context);
-            user.accessToken = accessToken;
-            updateOrCreateUserInfo(context, user);
-            return getUserToken(context);
+            mToken.accessToken = accessToken;
+            saveUserToken(context, accessToken);
+
+            return mToken;
         } else if (response.code() == 401) {
             throw new UnauthorizedException();
         } else {
