@@ -295,7 +295,7 @@ public class UserInfoFragment extends BaseFragment
             Response<Void> response = call.execute();
             if (response.isSuccessful()) {
                 AccountManager.saveUserToken(context, user.accessToken);
-                AccountManager.updateOrCreateUserInfo(context, user);
+                AccountManager.saveAccount(context, user);
                 if (exitWhenSuccess) {
                     MainActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TASK |
                             Intent.FLAG_ACTIVITY_CLEAR_TOP).start();

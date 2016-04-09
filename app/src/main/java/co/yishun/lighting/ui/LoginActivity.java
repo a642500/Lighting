@@ -242,7 +242,7 @@ public class LoginActivity extends BaseActivity {
             if (userResponse.isSuccessful()) {
                 User user = userResponse.body();
                 showSnackMsg(R.string.activity_login_msg_success);
-
+                AccountManager.saveUserToken(activity, user.accessToken);
                 AccountManager.saveAccount(activity, user);
                 IntegrateInfoActivity_.intent(this).start();
 //                MainActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TASK |
