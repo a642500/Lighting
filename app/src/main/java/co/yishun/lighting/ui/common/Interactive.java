@@ -42,19 +42,18 @@ public interface Interactive {
      * @param exceptionable the runnable which may throw {@link IOException}
      *                      and {@link AccountManager.UnauthorizedException}
      * @return whether exception occurs.
-     * @throws Exception except for {@link IOException} and {@link AccountManager.UnauthorizedException}
      */
-    boolean filterException(Exceptionable exceptionable) throws Exception;
+    boolean safelyDo(Exceptionable exceptionable);
 
-    boolean filterExceptionWithContext(Exceptionable1<Context> exceptionable) throws Exception;
+    boolean safelyDoWithContext(Exceptionable1<Context> exceptionable);
 
-    boolean filterExceptionWithActivity(Exceptionable1<Activity> exceptionable) throws Exception;
+    boolean safelyDoWithActivity(Exceptionable1<Activity> exceptionable);
 
-    boolean filterExceptionWithActivityToken(Exceptionable2<Activity, Token> exceptionable) throws Exception;
+    boolean safelyDoWithActivityToken(Exceptionable2<Activity, Token> exceptionable);
 
-    boolean filterExceptionWithContextToken(Exceptionable2<Context, Token> exceptionable) throws Exception;
+    boolean safelyDoWithContextToken(Exceptionable2<Context, Token> exceptionable);
 
-    boolean filterExceptionWithToken(Exceptionable1<Token> exceptionable) throws Exception;
+    boolean safelyDoWithToken(Exceptionable1<Token> exceptionable);
 
     interface Callable<K, T> {
         K call(T t);

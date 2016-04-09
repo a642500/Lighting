@@ -2,6 +2,7 @@ package co.yishun.lighting.ui.common;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
@@ -16,6 +17,7 @@ import android.widget.FrameLayout;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
+import com.google.gson.JsonSyntaxException;
 import com.umeng.analytics.MobclickAgent;
 
 import org.androidannotations.annotations.EActivity;
@@ -158,18 +160,18 @@ public abstract class BaseActivity extends AppCompatActivity implements Interact
         super.onDestroy();
         BackgroundExecutor.cancelAll(CANCEL_WHEN_DESTROY, true);
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-//        BaseWebFragment webFragment = (BaseWebFragment) getSupportFragmentManager()
-//                .findFragmentByTag(BaseWebFragment.TAG_WEB);
-//        if (webFragment != null && webFragment.canGoBack()) {
-//            webFragment.goBack();
-//        } else {
-//            supportFinishAfterTransition();
-//        }
-    }
+//
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+////        BaseWebFragment webFragment = (BaseWebFragment) getSupportFragmentManager()
+////                .findFragmentByTag(BaseWebFragment.TAG_WEB);
+////        if (webFragment != null && webFragment.canGoBack()) {
+////            webFragment.goBack();
+////        } else {
+////            supportFinishAfterTransition();
+////        }
+//    }
 
     @UiThread(delay = 300)
     @Override
@@ -188,94 +190,148 @@ public abstract class BaseActivity extends AppCompatActivity implements Interact
     }
 
     @Override
-    public boolean filterException(Exceptionable exceptionable) throws Exception {
+    public boolean safelyDo(Exceptionable exceptionable) {
         try {
             exceptionable.call();
             return false;
         } catch (UnauthorizedException e) {
             AccountManager.deleteAccount(this);
-            LoginActivity_.intent(this).start();
+            LoginActivity_.intent(this).
+                    flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
             return true;
         } catch (IOException e) {
             showSnackMsg(R.string.error_network);
+            return true;
+        } catch (JsonSyntaxException e) {
+            showSnackMsg(R.string.error_server);
+            LogUtil.e(TAG, "json syntax ex", e);
+            return true;
+        } catch (Exception e) {
+            showSnackMsg(R.string.error_unknown);
+            LogUtil.e(TAG, "unknown ex", e);
             return true;
         }
     }
 
     @Override
-    public boolean filterExceptionWithContext(Exceptionable1<Context> exceptionable) throws Exception {
+    public boolean safelyDoWithContext(Exceptionable1<Context> exceptionable) {
         try {
             exceptionable.call(this);
             return false;
         } catch (UnauthorizedException e) {
             AccountManager.deleteAccount(this);
-            LoginActivity_.intent(this).start();
+            LoginActivity_.intent(this).
+                    flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
             return true;
         } catch (IOException e) {
             showSnackMsg(R.string.error_network);
+            return true;
+        } catch (JsonSyntaxException e) {
+            showSnackMsg(R.string.error_server);
+            LogUtil.e(TAG, "json syntax ex", e);
+            return true;
+        } catch (Exception e) {
+            showSnackMsg(R.string.error_unknown);
+            LogUtil.e(TAG, "unknown ex", e);
             return true;
         }
     }
 
     @Override
-    public boolean filterExceptionWithActivity(Exceptionable1<Activity> exceptionable) throws Exception {
+    public boolean safelyDoWithActivity(Exceptionable1<Activity> exceptionable) {
         try {
             exceptionable.call(this);
             return false;
         } catch (UnauthorizedException e) {
             AccountManager.deleteAccount(this);
-            LoginActivity_.intent(this).start();
+            LoginActivity_.intent(this).
+                    flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
             return true;
         } catch (IOException e) {
             showSnackMsg(R.string.error_network);
+            return true;
+        } catch (JsonSyntaxException e) {
+            showSnackMsg(R.string.error_server);
+            LogUtil.e(TAG, "json syntax ex", e);
+            return true;
+        } catch (Exception e) {
+            showSnackMsg(R.string.error_unknown);
+            LogUtil.e(TAG, "unknown ex", e);
             return true;
         }
     }
 
     @Override
-    public boolean filterExceptionWithActivityToken(Exceptionable2<Activity, Token> exceptionable) throws Exception {
+    public boolean safelyDoWithActivityToken(Exceptionable2<Activity, Token> exceptionable) {
         try {
             Token token = AccountManager.retrieveUserToken(this);
             exceptionable.call(this, token);
             return false;
         } catch (UnauthorizedException e) {
             AccountManager.deleteAccount(this);
-            LoginActivity_.intent(this).start();
+            LoginActivity_.intent(this).
+                    flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
             return true;
         } catch (IOException e) {
             showSnackMsg(R.string.error_network);
+            return true;
+        } catch (JsonSyntaxException e) {
+            showSnackMsg(R.string.error_server);
+            LogUtil.e(TAG, "json syntax ex", e);
+            return true;
+        } catch (Exception e) {
+            showSnackMsg(R.string.error_unknown);
+            LogUtil.e(TAG, "unknown ex", e);
             return true;
         }
     }
 
     @Override
-    public boolean filterExceptionWithToken(Exceptionable1<Token> exceptionable) throws Exception {
+    public boolean safelyDoWithToken(Exceptionable1<Token> exceptionable) {
         try {
             Token token = AccountManager.retrieveUserToken(this);
             exceptionable.call(token);
             return false;
         } catch (UnauthorizedException e) {
             AccountManager.deleteAccount(this);
-            LoginActivity_.intent(this).start();
+            LoginActivity_.intent(this).
+                    flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
             return true;
         } catch (IOException e) {
             showSnackMsg(R.string.error_network);
+            return true;
+        } catch (JsonSyntaxException e) {
+            showSnackMsg(R.string.error_server);
+            LogUtil.e(TAG, "json syntax ex", e);
+            return true;
+        } catch (Exception e) {
+            showSnackMsg(R.string.error_unknown);
+            LogUtil.e(TAG, "unknown ex", e);
             return true;
         }
     }
 
     @Override
-    public boolean filterExceptionWithContextToken(Exceptionable2<Context, Token> exceptionable) throws Exception {
+    public boolean safelyDoWithContextToken(Exceptionable2<Context, Token> exceptionable) {
         try {
             Token token = AccountManager.retrieveUserToken(this);
             exceptionable.call(this, token);
             return false;
         } catch (UnauthorizedException e) {
             AccountManager.deleteAccount(this);
-            LoginActivity_.intent(this).start();
+            LoginActivity_.intent(this).
+                    flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
             return true;
         } catch (IOException e) {
             showSnackMsg(R.string.error_network);
+            return true;
+        } catch (JsonSyntaxException e) {
+            showSnackMsg(R.string.error_server);
+            LogUtil.e(TAG, "json syntax ex", e);
+            return true;
+        } catch (Exception e) {
+            showSnackMsg(R.string.error_unknown);
+            LogUtil.e(TAG, "unknown ex", e);
             return true;
         }
     }

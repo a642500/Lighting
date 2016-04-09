@@ -22,14 +22,6 @@ public abstract class BaseFragment extends Fragment implements Interactive {
     public abstract String getPageInfo();
 
     @Override
-    public boolean filterExceptionWithToken(Exceptionable1<Token> exceptionable) throws Exception {
-        if (interactiveImpl == null) {
-            interactiveImpl = (Interactive) getActivity();
-        }
-        return interactiveImpl == null || interactiveImpl.filterExceptionWithToken(exceptionable);
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         if (mIsPage) {
@@ -46,11 +38,11 @@ public abstract class BaseFragment extends Fragment implements Interactive {
     }
 
     @Override
-    public boolean filterExceptionWithActivity(Exceptionable1<Activity> exceptionable) throws Exception {
+    public boolean safelyDoWithActivity(Exceptionable1<Activity> exceptionable) {
         if (interactiveImpl == null) {
             interactiveImpl = (Interactive) getActivity();
         }
-        return interactiveImpl == null || interactiveImpl.filterExceptionWithActivity(exceptionable);
+        return interactiveImpl == null || interactiveImpl.safelyDoWithActivity(exceptionable);
     }
 
     @Override
@@ -139,34 +131,42 @@ public abstract class BaseFragment extends Fragment implements Interactive {
     }
 
     @Override
-    public boolean filterException(Exceptionable exceptionable) throws Exception {
+    public boolean safelyDo(Exceptionable exceptionable) {
         if (interactiveImpl == null) {
             interactiveImpl = (Interactive) getActivity();
         }
-        return interactiveImpl == null || interactiveImpl.filterException(exceptionable);
+        return interactiveImpl == null || interactiveImpl.safelyDo(exceptionable);
     }
 
     @Override
-    public boolean filterExceptionWithContext(Exceptionable1<Context> exceptionable) throws Exception {
+    public boolean safelyDoWithContext(Exceptionable1<Context> exceptionable) {
         if (interactiveImpl == null) {
             interactiveImpl = (Interactive) getActivity();
         }
-        return interactiveImpl == null || interactiveImpl.filterExceptionWithContext(exceptionable);
+        return interactiveImpl == null || interactiveImpl.safelyDoWithContext(exceptionable);
     }
 
     @Override
-    public boolean filterExceptionWithActivityToken(Exceptionable2<Activity, Token> exceptionable) throws Exception {
+    public boolean safelyDoWithToken(Exceptionable1<Token> exceptionable) {
         if (interactiveImpl == null) {
             interactiveImpl = (Interactive) getActivity();
         }
-        return interactiveImpl == null || interactiveImpl.filterExceptionWithActivityToken(exceptionable);
+        return interactiveImpl == null || interactiveImpl.safelyDoWithToken(exceptionable);
     }
 
     @Override
-    public boolean filterExceptionWithContextToken(Exceptionable2<Context, Token> exceptionable) throws Exception {
+    public boolean safelyDoWithActivityToken(Exceptionable2<Activity, Token> exceptionable) {
         if (interactiveImpl == null) {
             interactiveImpl = (Interactive) getActivity();
         }
-        return interactiveImpl == null || interactiveImpl.filterExceptionWithContextToken(exceptionable);
+        return interactiveImpl == null || interactiveImpl.safelyDoWithActivityToken(exceptionable);
+    }
+
+    @Override
+    public boolean safelyDoWithContextToken(Exceptionable2<Context, Token> exceptionable) {
+        if (interactiveImpl == null) {
+            interactiveImpl = (Interactive) getActivity();
+        }
+        return interactiveImpl == null || interactiveImpl.safelyDoWithContextToken(exceptionable);
     }
 }

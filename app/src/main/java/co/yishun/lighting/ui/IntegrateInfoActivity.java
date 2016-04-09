@@ -2,8 +2,6 @@ package co.yishun.lighting.ui;
 
 import android.widget.FrameLayout;
 
-import com.google.gson.JsonSyntaxException;
-
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
@@ -11,15 +9,12 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
-import java.io.IOException;
 import java.util.List;
 
 import co.yishun.lighting.R;
-import co.yishun.lighting.account.AccountManager;
 import co.yishun.lighting.api.APIFactory;
 import co.yishun.lighting.api.Procedure;
 import co.yishun.lighting.api.model.Question;
-import co.yishun.lighting.api.model.Token;
 import co.yishun.lighting.ui.common.BaseActivity;
 import retrofit2.Response;
 
@@ -42,24 +37,21 @@ public class IntegrateInfoActivity extends BaseActivity {
         return TAG;
     }
 
-    @Background(id = "")
-//TODO cancel it
+    @Background(id = CANCEL_WHEN_DESTROY)
     void loadQuestions() {
-        Token token = AccountManager.getUserToken(this);
         try {
-            Response<List<Question>> response = APIFactory.getProcedureAPI().
-                    getQuestions(token.userId, token.accessToken, type, 3).execute();
+            safelyDoWithToken((token) -> {
+                Response<List<Question>> response = APIFactory.getProcedureAPI().
+                        getQuestions(token.userId, token.accessToken, type, 3).execute();
 
-            if (response.isSuccessful()) {
-                showQuestions(response.body());
-            } else {
-                showSnackMsg(R.string.activity_integrate_info_msg_get_question_fail);
-                this.finish();
-            }
-        } catch (IOException e) {
-            showSnackMsg(R.string.error_network);
-        } catch (JsonSyntaxException e) {
-            showSnackMsg(R.string.error_server);
+                if (response.isSuccessful()) {
+                    showQuestions(response.body());
+                } else {
+                    showSnackMsg(R.string.activity_integrate_info_msg_get_question_fail);
+                    this.finish();
+                }
+            });
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
