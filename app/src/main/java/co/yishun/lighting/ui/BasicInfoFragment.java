@@ -9,7 +9,10 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.List;
+
 import co.yishun.lighting.R;
+import co.yishun.lighting.api.model.Question;
 import co.yishun.lighting.bean.AudioQuestion;
 import co.yishun.lighting.ui.common.BaseFragment;
 import co.yishun.lighting.ui.view.QuestionView;
@@ -27,6 +30,8 @@ public class BasicInfoFragment extends BaseFragment {
     QuestionView question1;
     @ViewById
     QuestionView question2;
+    @ViewById
+    View progressBar;
 
     @ViewById
     Toolbar toolbar;
@@ -49,10 +54,6 @@ public class BasicInfoFragment extends BaseFragment {
         questionViews[1] = question1;
         questionViews[2] = question2;
 
-        for (int i = 0; i < mQuestions.length; i++) {
-            mQuestions[i] = new AudioQuestion(i + 1, "Test", null);
-            questionViews[i].setQuestion(mQuestions[i]);
-        }
     }
 
     @Click
@@ -60,4 +61,16 @@ public class BasicInfoFragment extends BaseFragment {
         MainActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
     }
 
+    public void setQuestions(List<Question> questions) {
+        for (int i = 0; i < questionViews.length && i < questions.size(); i++) {
+            Question question = questions.get(i);
+            mQuestions[i] = buildIQuestion(question, i + 1);
+            questionViews[i].setQuestion(mQuestions[i]);
+        }
+        progressBar.setVisibility(View.INVISIBLE);
+    }
+
+    private QuestionView.IQuestion buildIQuestion(final Question question, final int order) {
+        return new AudioQuestion(order, question.content, null);
+    }
 }

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_integrate_info_msg_get_question_fail">Fail to load question…</string>
+</resources>

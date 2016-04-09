@@ -9,8 +9,8 @@ import java.io.Serializable;
  */
 public class Question implements Serializable {
     @SerializedName("problem_content")
-    String content;
+    public String content;
 
     @SerializedName("problem_id")
-    String id;
+    public String id;
 }
