@@ -183,7 +183,7 @@ public class AccountManager {
         return getUserInfo(context).getToken();
     }
 
-    public static Token retrieveUserToken(Context context, Token token) throws IOException, UnauthorizedException {
+    public static Token retrieveUserToken(Context context, Token token) throws Exception {
         if (token == null) {
             token = getUserToken(context);
         }
@@ -194,12 +194,14 @@ public class AccountManager {
             user.accessToken = accessToken;
             updateOrCreateUserInfo(context, user);
             return getUserToken(context);
-        } else {
+        } else if (response.code() == 401) {
             throw new UnauthorizedException();
+        } else {
+            throw new Exception();
         }
     }
 
-    public static Token retrieveUserToken(Context context) throws IOException, UnauthorizedException {
+    public static Token retrieveUserToken(Context context) throws Exception {
         return retrieveUserToken(context, null);
     }
 
