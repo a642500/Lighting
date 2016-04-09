@@ -7,13 +7,12 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 
-import co.yishun.lighting.api.APIFactory;
 import co.yishun.lighting.api.Account;
 
 /**
  * Bean contains user info. <p> Created by Carlos on 2015/8/4.
  */
-public class User implements Serializable {
+public class User extends JsonBean implements Serializable {
 
     /*
 {
@@ -88,11 +87,6 @@ public class User implements Serializable {
         token.userId = id;
         token.accessToken = accessToken;
         return token;
-    }
-
-    @Override
-    public String toString() {
-        return APIFactory.getGson().toJson(this);
     }
 
     public Account.Gender getSex() {
