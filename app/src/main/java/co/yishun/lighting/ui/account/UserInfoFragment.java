@@ -49,6 +49,7 @@ import co.yishun.lighting.api.Account;
 import co.yishun.lighting.api.model.Token;
 import co.yishun.lighting.api.model.User;
 import co.yishun.lighting.ui.MainActivity_;
+import co.yishun.lighting.ui.common.BaseActivity;
 import co.yishun.lighting.ui.common.BaseFragment;
 import co.yishun.lighting.ui.view.LocationChooseDialog;
 import co.yishun.lighting.util.LogUtil;
@@ -290,7 +291,7 @@ public class UserInfoFragment extends BaseFragment
 
     @Background
     void updateUserInfo(final User user, boolean exitWhenSuccess) {
-        final AccountActivity accountActivity = getAccountActivity();
+        final BaseActivity accountActivity = getBaseActivity();
         if (accountActivity == null) {
             return;
         }
@@ -316,8 +317,8 @@ public class UserInfoFragment extends BaseFragment
     }
 
     @Nullable
-    private AccountActivity getAccountActivity() {
-        return (AccountActivity) getActivity();
+    private BaseActivity getBaseActivity() {
+        return (BaseActivity) getActivity();
     }
 
     @UiThread
