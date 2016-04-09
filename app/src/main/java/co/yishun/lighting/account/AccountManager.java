@@ -214,10 +214,12 @@ public class AccountManager {
         Response<Token> response = APIFactory.getAccountAPI().refreshToken(token.userId, token.accessToken).execute();
         if (response.isSuccessful()) {
             String accessToken = response.body().accessToken;
-            mToken.accessToken = accessToken;
+            token.accessToken = accessToken;
+            if (mToken != null)
+                mToken.accessToken = accessToken;
             saveUserToken(context, accessToken);
 
-            return mToken;
+            return token;
         } else if (response.code() == 401) {
             throw new UnauthorizedException();
         } else {

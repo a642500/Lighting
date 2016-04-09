@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
@@ -196,6 +197,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Interact
             return false;
         } catch (UnauthorizedException e) {
             AccountManager.deleteAccount(this);
+            runOnUiThread(() -> Toast.makeText(this, R.string.error_login_out_of_date, Toast.LENGTH_LONG).show());
             LoginActivity_.intent(this).
                     flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
             return true;
@@ -220,6 +222,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Interact
             return false;
         } catch (UnauthorizedException e) {
             AccountManager.deleteAccount(this);
+            runOnUiThread(() -> Toast.makeText(this, R.string.error_login_out_of_date, Toast.LENGTH_LONG).show());
             LoginActivity_.intent(this).
                     flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
             return true;
@@ -244,6 +247,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Interact
             return false;
         } catch (UnauthorizedException e) {
             AccountManager.deleteAccount(this);
+            runOnUiThread(() -> Toast.makeText(this, R.string.error_login_out_of_date, Toast.LENGTH_LONG).show());
             LoginActivity_.intent(this).
                     flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
             return true;
@@ -269,6 +273,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Interact
             return false;
         } catch (UnauthorizedException e) {
             AccountManager.deleteAccount(this);
+            runOnUiThread(() -> Toast.makeText(this, R.string.error_login_out_of_date, Toast.LENGTH_LONG).show());
             LoginActivity_.intent(this).
                     flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
             return true;
@@ -294,6 +299,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Interact
             return false;
         } catch (UnauthorizedException e) {
             AccountManager.deleteAccount(this);
+            runOnUiThread(() -> Toast.makeText(this, R.string.error_login_out_of_date, Toast.LENGTH_LONG).show());
             LoginActivity_.intent(this).
                     flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
             return true;
@@ -319,6 +325,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Interact
             return false;
         } catch (UnauthorizedException e) {
             AccountManager.deleteAccount(this);
+            runOnUiThread(() -> Toast.makeText(this, R.string.error_login_out_of_date, Toast.LENGTH_LONG).show());
             LoginActivity_.intent(this).
                     flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
             return true;

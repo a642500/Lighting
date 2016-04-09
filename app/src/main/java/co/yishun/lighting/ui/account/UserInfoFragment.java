@@ -289,8 +289,7 @@ public class UserInfoFragment extends BaseFragment
 
     @Background(id = CANCEL_WHEN_DESTROY)
     void updateUserInfo(final User user, boolean exitWhenSuccess) {
-        safelyDoWithContextToken((context, newToken) -> {
-            token = newToken;
+        safelyDoWithContext((context) -> {
             Call<Void> call = APIFactory.getAccountAPI().changePersonalInfo(token.userId, token.accessToken,
                     user);
             Response<Void> response = call.execute();
