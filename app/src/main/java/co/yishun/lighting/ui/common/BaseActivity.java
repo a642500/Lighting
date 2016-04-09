@@ -1,5 +1,7 @@
 package co.yishun.lighting.ui.common;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
@@ -19,7 +21,13 @@ import com.umeng.analytics.MobclickAgent;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 
+import java.io.IOException;
+
 import co.yishun.lighting.R;
+import co.yishun.lighting.account.AccountManager;
+import co.yishun.lighting.account.AccountManager.UnauthorizedException;
+import co.yishun.lighting.api.model.Token;
+import co.yishun.lighting.ui.LoginActivity_;
 import co.yishun.lighting.util.LogUtil;
 
 import static java.lang.String.valueOf;
@@ -28,7 +36,7 @@ import static java.lang.String.valueOf;
  * Copy from OneMoment.
  */
 @EActivity
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements Interactive {
     @SuppressWarnings("unused")
     private static final String TAG = "BaseActivity";
     //set it false, if we only take this activity's fragments into count. else set it true, and give a page name.
@@ -63,13 +71,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         content.addView(status, 0);
     }
 
-    @Override
-    public void onContentChanged() {
-        super.onContentChanged();
-//        if (!(this instanceof SplashActivity || this instanceof EntryActivity || this instanceof AccountActivity)) {
-//            setStatusBarOnKitKat();
-//        }
-    }
+//    @Override
+//    public void onContentChanged() {
+//        super.onContentChanged();
+////        if (!(this instanceof SplashActivity || this instanceof EntryActivity || this instanceof AccountActivity)) {
+////            setStatusBarOnKitKat();
+////        }
+//    }
 
 
     @CallSuper
@@ -82,21 +90,23 @@ public abstract class BaseActivity extends AppCompatActivity {
     public abstract String getPageInfo();
 
     @UiThread
+    @Override
     public void showSnackMsg(String msg) {
         Snackbar.make(getSnackbarAnchorWithView(null), msg, Snackbar.LENGTH_SHORT).show();
     }
 
-    @SuppressWarnings("unused")
+    @Override
     public void showSnackMsg(@StringRes int msgRes) {
         showSnackMsg(getString(msgRes));
     }
 
-    @SuppressWarnings("unused")
+    @Override
     public void showProgress() {
         showProgress(R.string.progress_loading_msg);
     }
 
     @UiThread
+    @Override
     public void showProgress(String msg) {
         if (mProgressDialog == null)
             mProgressDialog = new MaterialDialog.Builder(this).theme(Theme.LIGHT).cancelable(false).content(msg).progress(true, 0).build();
@@ -104,12 +114,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         mProgressDialog.show();
     }
 
+    @Override
     public void showProgress(@StringRes int msgRes) {
         showProgress(getString(msgRes));
     }
 
     @UiThread
-    @SuppressWarnings("unused")
+    @Override
     public void hideProgress() {
         if (mProgressDialog != null) {
             mProgressDialog.hide();
@@ -153,9 +164,95 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @UiThread(delay = 300)
-    @SuppressWarnings("unused")
+    @Override
     public void exit() {
         finish();
     }
 
+    @Override
+    public <K> K doIfContextNotNull(Callable<K, Context> callable) {
+        return callable.call(this);
+    }
+
+    @Override
+    public <K> K doIfActivityNotNull(Callable<K, Activity> callable) {
+        return callable.call(this);
+    }
+
+    @Override
+    public boolean filterException(Exceptionable exceptionable) throws Exception {
+        try {
+            exceptionable.call();
+            return false;
+        } catch (UnauthorizedException e) {
+            AccountManager.deleteAccount(this);
+            LoginActivity_.intent(this).start();
+            return true;
+        } catch (IOException e) {
+            showSnackMsg(R.string.error_network);
+            return true;
+        }
+    }
+
+    @Override
+    public boolean filterExceptionWithContext(Exceptionable1<Context> exceptionable) throws Exception {
+        try {
+            exceptionable.call(this);
+            return false;
+        } catch (UnauthorizedException e) {
+            AccountManager.deleteAccount(this);
+            LoginActivity_.intent(this).start();
+            return true;
+        } catch (IOException e) {
+            showSnackMsg(R.string.error_network);
+            return true;
+        }
+    }
+
+    @Override
+    public boolean filterExceptionWithActivity(Exceptionable1<Activity> exceptionable) throws Exception {
+        try {
+            exceptionable.call(this);
+            return false;
+        } catch (UnauthorizedException e) {
+            AccountManager.deleteAccount(this);
+            LoginActivity_.intent(this).start();
+            return true;
+        } catch (IOException e) {
+            showSnackMsg(R.string.error_network);
+            return true;
+        }
+    }
+
+    @Override
+    public boolean filterExceptionWithActivityToken(Exceptionable2<Activity, Token> exceptionable) throws Exception {
+        try {
+            Token token = AccountManager.retrieveUserToken(this);
+            exceptionable.call(this, token);
+            return false;
+        } catch (UnauthorizedException e) {
+            AccountManager.deleteAccount(this);
+            LoginActivity_.intent(this).start();
+            return true;
+        } catch (IOException e) {
+            showSnackMsg(R.string.error_network);
+            return true;
+        }
+    }
+
+    @Override
+    public boolean filterExceptionWithContextToken(Exceptionable2<Context, Token> exceptionable) throws Exception {
+        try {
+            Token token = AccountManager.retrieveUserToken(this);
+            exceptionable.call(this, token);
+            return false;
+        } catch (UnauthorizedException e) {
+            AccountManager.deleteAccount(this);
+            LoginActivity_.intent(this).start();
+            return true;
+        } catch (IOException e) {
+            showSnackMsg(R.string.error_network);
+            return true;
+        }
+    }
 }

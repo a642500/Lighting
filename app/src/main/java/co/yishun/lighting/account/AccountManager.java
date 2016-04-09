@@ -16,10 +16,12 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import co.yishun.lighting.Constants;
+import co.yishun.lighting.api.APIFactory;
 import co.yishun.lighting.api.model.Token;
 import co.yishun.lighting.api.model.User;
 import co.yishun.lighting.util.GsonFactory;
 import co.yishun.lighting.util.LogUtil;
+import retrofit2.Response;
 
 
 /**
@@ -177,8 +179,24 @@ public class AccountManager {
         return mUser;
     }
 
-    public static Token getUserToken(Context context) {
+    private static Token getUserToken(Context context) {
         return getUserInfo(context).getToken();
+    }
+
+    public static Token retrieveUserToken(Context context, Token token) throws IOException, UnauthorizedException {
+        if (token == null) {
+            token = getUserToken(context);
+        }
+        Response<Token> response = APIFactory.getAccountAPI().refreshToken(token.userId, token.accessToken).execute();
+        if (response.isSuccessful()) {
+            return response.body();
+        } else {
+            throw new UnauthorizedException();
+        }
+    }
+
+    public static Token retrieveUserToken(Context context) throws IOException, UnauthorizedException {
+        return retrieveUserToken(context, null);
     }
 
     public static void addOnUserInfoChangedListener(@NonNull OnUserInfoChangeListener listener) {
@@ -189,8 +207,13 @@ public class AccountManager {
         mListeners.remove(listener.hashCode());
     }
 
-
     public interface OnUserInfoChangeListener {
         void onUserInfoChange(User info);
+    }
+
+    public static class UnauthorizedException extends Exception {
+        public UnauthorizedException() {
+            super("Need to login again");
+        }
     }
 }
