@@ -9,12 +9,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
+import java.util.List;
 
 import co.yishun.lighting.BuildConfig;
 import co.yishun.lighting.Constants;
 import co.yishun.lighting.api.model.Token;
 import co.yishun.lighting.api.model.User;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -27,6 +29,7 @@ public class APIFactory {
             .create();
 
     private final static Gson mDeserializerGson = new GsonBuilder()
+            .registerTypeAdapter(List.class, new DataDeserializer<>())
             .registerTypeAdapter(User.class, new DataDeserializer<>())
             .registerTypeAdapter(Token.class, new DataDeserializer<>())
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -56,7 +59,7 @@ public class APIFactory {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
         //noinspection PointlessBooleanExpression
         if (Constants.LOG_ENABLE || BuildConfig.DEBUG) {
-//            builder.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
+            builder.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY));
         }
         return builder.build();
     }
@@ -67,6 +70,9 @@ public class APIFactory {
         public T deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             // Get the "content" element from the parsed JSON
             JsonElement content = json.getAsJsonObject().get("data");
+
+            if (typeOfT.equals(List.class))
+                content = content.getAsJsonArray();
 
             // Deserialize it. You use a new instance of Gson to avoid infinite recursion
             // to this deserializer
