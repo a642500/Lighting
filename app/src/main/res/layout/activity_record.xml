@@ -59,7 +59,7 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <Button
+    <co.yishun.lighting.ui.view.PressButton
         android:id="@+id/recordBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

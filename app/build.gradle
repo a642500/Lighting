@@ -63,7 +63,8 @@ dependencies {
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile('com.github.afollestad.material-dialogs:core:0.8.5.7@aar') { transitive = true }
-
+    compile "com.googlecode.mp4parser:isoparser:1.0.2"
+    compile "com.github.lassana:continuous-audiorecorder:1.1.0"
 }
 
 repositories {

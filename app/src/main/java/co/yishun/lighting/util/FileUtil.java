@@ -35,6 +35,10 @@ public class FileUtil {
         return new File(getCacheDirectory(context, false), "audioq" + Constants.URL_HYPHEN + order + Constants.AUDIO_FILE_SUFFIX);
     }
 
+    public static File getAudioCacheFile(Context context) {
+        return new File(getCacheDirectory(context, false), "audioq" + Constants.URL_HYPHEN + "cache" + Constants.AUDIO_FILE_SUFFIX);
+    }
+
 
     /*
     * for cache normal
