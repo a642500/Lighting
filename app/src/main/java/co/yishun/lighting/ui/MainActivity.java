@@ -8,12 +8,18 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import co.yishun.lighting.R;
+import co.yishun.lighting.account.AccountManager;
 import co.yishun.lighting.ui.common.BaseActivity;
 import co.yishun.lighting.ui.view.ResideLayout;
 import co.yishun.lighting.util.FileUtil;
@@ -23,28 +29,31 @@ import co.yishun.lighting.web.LUWebViewClient;
 @EActivity
 public class MainActivity extends BaseActivity {
 
-    @Bind(R.id.toolbar)
+    @ViewById
     Toolbar toolbar;
-    @Bind(R.id.webView)
+    @ViewById
     WebView webView;
-    @Bind(R.id.reside_layout)
+    @ViewById
     ResideLayout resideLayout;
+    @ViewById
+    ImageView profileImageView;
+    @ViewById
+    TextView nicknameTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ButterKnife.bind(this);
-
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                resideLayout.openPane();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> resideLayout.openPane());
         setWebView();
+    }
+
+    @AfterViews
+    void setViews() {
+        Picasso.with(this).load(AccountManager.getUserInfo(this).portrait)
+                .error(R.drawable.pic_profile_default).into(profileImageView);
+        nicknameTextView.setText(AccountManager.getUserInfo(this).nickname);
     }
 
     @Override
@@ -92,5 +101,10 @@ public class MainActivity extends BaseActivity {
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
         }
+    }
+
+    @Click
+    void profileImageViewClicked(View view) {
+        UserInfoActivity_.intent(this).start();
     }
 }
