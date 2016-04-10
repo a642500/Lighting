@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="activity_record_title">Recording</string>
+    <string name="activity_record_btn_record">Press to record</string>
+    <string name="activity_record_btn_redo">Redo</string>
+    <string name="activity_record_btn_finish">Finish</string>
+</resources>

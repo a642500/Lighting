@@ -14,6 +14,7 @@ import co.yishun.lighting.util.FileUtil;
  * Created by carlos on 3/29/16.
  */
 public class AudioQuestion implements QuestionView.IQuestion {
+    public static final int REQUEST_RECORDING = 0;
     public final int mOrder;
     public final String mQuestion;
     public final Answer mAnswer;
@@ -27,7 +28,7 @@ public class AudioQuestion implements QuestionView.IQuestion {
 
     @Override
     public void onRecordAnswer(Context context) {
-        ShootActivity_.intent(context).start();
+        ShootActivity_.intent(context).startForResult(REQUEST_RECORDING);
     }
 
     @Override
