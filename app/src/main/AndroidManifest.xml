@@ -48,6 +48,9 @@
         <activity
             android:name=".ui.ShootActivity_"
             android:parentActivityName=".ui.MainActivity_" />
+        <activity
+            android:name=".ui.RecordActivity_"
+            android:parentActivityName=".ui.MainActivity_" />
 
         <activity
             android:name=".ui.UserInfoActivity_"
