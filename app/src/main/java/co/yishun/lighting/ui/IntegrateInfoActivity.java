@@ -9,6 +9,7 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import co.yishun.lighting.R;
@@ -47,9 +48,20 @@ public class IntegrateInfoActivity extends BaseActivity {
                 showQuestions(response.body());
             } else {
                 showSnackMsg(R.string.activity_integrate_info_msg_get_question_fail);
-                this.finish();
+                //TODO remove test code
+                exit();
             }
         });
+
+        List<Question> fakeQuestions = new ArrayList<Question>(3);
+        for (int i = 0; i < 3; i++) {
+            Question question = new Question();
+            question.content = "This is my question-" + i;
+            question.id = "" + i;
+            fakeQuestions.add(question);
+        }
+        showQuestions(fakeQuestions);
+
     }
 
     @UiThread
