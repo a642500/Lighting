@@ -1,5 +1,7 @@
 package co.yishun.lighting.ui;
 
+import android.support.v4.app.NavUtils;
+import android.support.v7.widget.Toolbar;
 import android.widget.FrameLayout;
 
 import org.androidannotations.annotations.AfterViews;
@@ -27,6 +29,8 @@ public class IntegrateInfoActivity extends BaseActivity {
     public static final String TAG = "IntegrateInfoActivity";
     @ViewById
     FrameLayout container;
+    @ViewById
+    Toolbar toolbar;
 
     @Extra
     @Procedure.QuestionType
@@ -70,7 +74,8 @@ public class IntegrateInfoActivity extends BaseActivity {
     }
 
     @AfterViews
-    void setFragment() {
+    void setViews() {
+        toolbar.setNavigationOnClickListener(v -> NavUtils.navigateUpFromSameTask(this));
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, mFragment)
                 .commitAllowingStateLoss();
