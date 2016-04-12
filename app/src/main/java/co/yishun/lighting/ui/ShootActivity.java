@@ -40,7 +40,7 @@ import co.yishun.lighting.util.video.VideoConvert;
  */
 @EActivity
 public class ShootActivity extends BaseActivity implements Callback, Consumer<File>, IShootView.SecurityExceptionHandler {
-    public static final int STATUS_PERPARE = 0;
+    public static final int STATUS_PREPARE = 0;
     public static final int STATUS_RECORDING = 1;
     public static final int STATUS_RECORDED = 2;
     private static final String TAG = "ShootActivity";
@@ -77,7 +77,7 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
             case STATUS_RECORDED:
                 finishBtnClicked(view);
                 break;
-            case STATUS_PERPARE:
+            case STATUS_PREPARE:
 //                importVideoBtnClicked(view);
 //                break;
             case STATUS_RECORDING:
@@ -339,7 +339,7 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
         //TODO add help btn to guide user to how enable permission for three-party rom
     }
 
-    @IntDef({STATUS_PERPARE, STATUS_RECORDING, STATUS_RECORDED})
+    @IntDef({STATUS_PREPARE, STATUS_RECORDING, STATUS_RECORDED})
     private @interface Status {
     }
 }
