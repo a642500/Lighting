@@ -181,13 +181,13 @@ public abstract class BaseActivity extends AppCompatActivity implements Interact
     }
 
     @Override
-    public <K> K doIfContextNotNull(Callable<K, Context> callable) {
-        return callable.call(this);
+    public void doIfContextNotNull(Callable<Context> callable) {
+        callable.call(this);
     }
 
     @Override
-    public <K> K doIfActivityNotNull(Callable<K, Activity> callable) {
-        return callable.call(this);
+    public void doIfActivityNotNull(Callable<Activity> callable) {
+        callable.call(this);
     }
 
     @Override

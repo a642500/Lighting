@@ -32,9 +32,10 @@ public interface Interactive {
 
     void exit();
 
-    <K> K doIfContextNotNull(Callable<K, Context> callable);
+    void doIfContextNotNull(Callable<Context> callable);
 
-    <K> K doIfActivityNotNull(Callable<K, Activity> callable);
+    void doIfActivityNotNull(Callable<Activity> callable);
+
 
     /**
      * filter {@link IOException} and {@link AccountManager.UnauthorizedException} to handle it.
@@ -55,8 +56,8 @@ public interface Interactive {
 
     boolean safelyDoWithToken(Exceptionable1<Token> exceptionable);
 
-    interface Callable<K, T> {
-        K call(T t);
+    interface Callable<T> {
+        void call(T t);
     }
 
     interface Exceptionable {

@@ -109,25 +109,21 @@ public abstract class BaseFragment extends Fragment implements Interactive {
     }
 
     @Override
-    public <K> K doIfContextNotNull(Callable<K, Context> callable) {
+    public void doIfContextNotNull(Callable<Context> callable) {
         if (interactiveImpl == null) {
             interactiveImpl = (Interactive) getActivity();
         }
         if (interactiveImpl != null)
-            return interactiveImpl.doIfContextNotNull(callable);
-        else
-            return null;
+            interactiveImpl.doIfContextNotNull(callable);
     }
 
     @Override
-    public <K> K doIfActivityNotNull(Callable<K, Activity> callable) {
+    public void doIfActivityNotNull(Callable<Activity> callable) {
         if (interactiveImpl == null) {
             interactiveImpl = (Interactive) getActivity();
         }
         if (interactiveImpl != null)
-            return interactiveImpl.doIfActivityNotNull(callable);
-        else
-            return null;
+            interactiveImpl.doIfActivityNotNull(callable);
     }
 
     @Override
