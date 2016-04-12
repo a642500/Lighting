@@ -15,8 +15,8 @@
             android:id="@+id/shootView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:cgsv_height_px="360"
-            app:cgsv_width_px="360" />
+            app:cgsv_height_px="640"
+            app:cgsv_width_px="640" />
 
         <co.yishun.lighting.ui.view.RadioCornerImageView
             android:id="@+id/maskImageView"

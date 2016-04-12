@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
@@ -15,8 +14,10 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.androidannotations.annotations.AfterExtras;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
@@ -61,6 +62,8 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
     View recordBtnBeginImageView;
     @ViewById
     View recordBtnStopImageView;
+    @Extra
+    boolean isLargerSize = false;
     private int status;
     @Nullable
     private CameraGLSurfaceView mCameraGLSurfaceView;
@@ -138,10 +141,12 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
         return "ShootActivity";
     }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shoot);
+    @AfterExtras
+    void setViews() {
+        if (isLargerSize)
+            setContentView(R.layout.activity_shoot_large);
+        else
+            setContentView(R.layout.activity_shoot);
 
         setResult(RESULT_CANCELED);
 
@@ -279,19 +284,22 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
     @UiThread(delay = 800)
     void delayAccept(File file) {
         File newFile = FileUtil.getVideoCacheFile(this);
-        new VideoConvert(this).setFiles(file, newFile).setListener(new VideoCommand.VideoCommandListener() {
-            @Override
-            public void onSuccess(VideoCommand.VideoCommandType type) {
-                file.delete();
-                videoOK(newFile);
-                hideProgress();
-            }
+        new VideoConvert(this).setFiles(file, newFile,
+                isLargerSize ? 640 : 360,
+                isLargerSize ? 640 : 360).setListener(
+                new VideoCommand.VideoCommandListener() {
+                    @Override
+                    public void onSuccess(VideoCommand.VideoCommandType type) {
+                        file.delete();
+                        videoOK(newFile);
+                        hideProgress();
+                    }
 
-            @Override
-            public void onFail(VideoCommand.VideoCommandType type) {
-                hideProgress();
-            }
-        }).start();
+                    @Override
+                    public void onFail(VideoCommand.VideoCommandType type) {
+                        hideProgress();
+                    }
+                }).start();
 
     }
 

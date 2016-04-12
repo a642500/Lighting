@@ -285,7 +285,7 @@ public class ShootView extends TextureView implements IShootView, MediaRecorder.
         mRecorder.setOutputFile(mFile.getPath());//TODO set output file
         mRecorder.setProfile(profile);
         mRecorder.setOrientationHint(isBackCamera() ? 90 : 270);
-        mRecorder.setMaxDuration(1200);
+        mRecorder.setMaxDuration(Constants.VIDEO_MAX_DURATION);
         mRecorder.setOnInfoListener(this);
         try {
             mRecorder.prepare();
