@@ -65,6 +65,10 @@
         <activity
             android:name=".ui.account.AccountActivity_"
             android:parentActivityName=".ui.LoginActivity_" />
+        <activity
+            android:name=".ui.PlayActivity_"
+            android:parentActivityName=".ui.IntegrateInfoActivity_" />
+
 
         <service
             android:name=".account.AuthenticatorService"

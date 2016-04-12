@@ -1,11 +1,11 @@
 package co.yishun.lighting.bean;
 
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.net.Uri;
 
 import java.io.File;
 
+import co.yishun.lighting.ui.PlayActivity_;
 import co.yishun.lighting.ui.ShootActivity_;
 import co.yishun.lighting.ui.view.QuestionView;
 import co.yishun.lighting.util.FileUtil;
@@ -17,7 +17,6 @@ public class VideoQuestion implements QuestionView.IQuestion {
     public final int mOrder;
     public final String mQuestion;
     public final Answer mAnswer;
-    private MediaPlayer mMediaPlayer;
 
     public VideoQuestion(int mOrder, String mQuestion, Answer mAnswer) {
         this.mOrder = mOrder;
@@ -49,28 +48,17 @@ public class VideoQuestion implements QuestionView.IQuestion {
         return FileUtil.getAudioStoreFile(context, mOrder);
     }
 
+    private Uri getAnswerUri(Context context) {
+        return Uri.fromFile(getAnswerFile(context));
+    }
+
     @Override
     public void onPlayAnswer(Context context) {
-        if (mMediaPlayer == null) {
-            File audio = getAnswerFile(context);
-            if (audio.length() > 0) {
-                mMediaPlayer = MediaPlayer.create(context, Uri.fromFile(audio));
-            }
-        }
-        if (mMediaPlayer != null) {
-            if (mMediaPlayer.isPlaying())
-                mMediaPlayer.pause();
-            else
-                mMediaPlayer.start();
-        }
+        PlayActivity_.intent(context).uri(getAnswerUri(context)).start();
     }
 
     @Override
     public void onDeleteAnswer(Context context) {
-        if (mMediaPlayer != null) {
-            mMediaPlayer.release();
-            mMediaPlayer = null;
-        }
         getAnswerFile(context).delete();
     }
 

@@ -7,7 +7,7 @@ import android.view.View;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
@@ -17,13 +17,14 @@ import co.yishun.lighting.api.Procedure;
 import co.yishun.lighting.api.model.Question;
 import co.yishun.lighting.bean.AudioQuestion;
 import co.yishun.lighting.bean.VideoQuestion;
+import co.yishun.lighting.ui.common.BaseFragment;
 import co.yishun.lighting.ui.view.QuestionView;
 
 /**
  * Created by carlos on 3/28/16.
  */
 @EFragment(R.layout.fragment_basic_info)
-public class QuestionFragment extends co.yishun.lighting.ui.common.QuestionFragment {
+public class QuestionFragment extends BaseFragment {
     public static final String TAG = "QuestionFragment";
 
     @ViewById
@@ -34,7 +35,7 @@ public class QuestionFragment extends co.yishun.lighting.ui.common.QuestionFragm
     QuestionView question2;
     @ViewById
     View progressBar;
-    @Extra
+    @FragmentArg
     @Procedure.QuestionType
     String type = Procedure.QUESTION_TYPE_INFO;
 
@@ -66,7 +67,6 @@ public class QuestionFragment extends co.yishun.lighting.ui.common.QuestionFragm
         MainActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
     }
 
-    @Override
     public void setQuestions(List<Question> questions) {
         for (int i = 0; i < questionViews.length && i < questions.size(); i++) {
             Question question = questions.get(i);
@@ -82,6 +82,7 @@ public class QuestionFragment extends co.yishun.lighting.ui.common.QuestionFragm
                 return new AudioQuestion(order, question.content, null);
             case Procedure.QUESTION_TYPE_EXPERIENCE:
             case Procedure.QUESTION_TYPE_VALUES:
+            default:
                 return new VideoQuestion(order, question.content, null);
         }
     }
