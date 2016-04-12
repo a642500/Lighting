@@ -26,6 +26,7 @@ public class Constants {
 
     public static final int VIDEO_FPS = 30;
     public static final String HYBRD_UNZIP_DIR = "hybrd";
+    public static final int AUDIO_MAX_DURATION = 60;
 
 
     public static final String BASE_URL;
@@ -47,5 +48,7 @@ public class Constants {
         public static final String PREFERENCE_HYBRID_LENGTH = "hybrid_length";
         public static final String PREFERENCE_HYBRID_UNZIP_TIME = "hybrd_unzip_time";
         public static final String DEFAULT_SPLASH_COVER_NAME = "splash_cover_0.png";
+
+        public static final String PREFERENCE_TOKEN = "token";
     }
 }

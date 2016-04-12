@@ -82,13 +82,6 @@ public class User extends JsonBean implements Serializable {
         return user;
     }
 
-    public Token getToken() {
-        Token token = new Token();
-        token.userId = id;
-        token.accessToken = accessToken;
-        return token;
-    }
-
     public Account.Gender getSex() {
         return Account.Gender.MALE;
     }

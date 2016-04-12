@@ -289,13 +289,16 @@ public class UserInfoFragment extends BaseFragment
 
     @Background(id = CANCEL_WHEN_DESTROY)
     void updateUserInfo(final User user, boolean exitWhenSuccess) {
-        safelyDoWithContextToken((context, newToken) -> {
-            token = newToken;
+        safelyDoWithContext((context) -> {
             Call<Void> call = APIFactory.getAccountAPI().changePersonalInfo(token.userId, token.accessToken,
                     user);
             Response<Void> response = call.execute();
             if (response.isSuccessful()) {
-                AccountManager.updateOrCreateUserInfo(context, user);
+                AccountManager.saveUserToken(context, user.accessToken);
+                if (exitWhenSuccess)
+                    AccountManager.saveAccount(context, user);// for sign up
+                else
+                    AccountManager.updateOrCreateUserInfo(context, user);// for update user info
                 if (exitWhenSuccess) {
                     MainActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TASK |
                             Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
