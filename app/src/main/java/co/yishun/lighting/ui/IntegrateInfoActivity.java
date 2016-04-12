@@ -30,7 +30,7 @@ public class IntegrateInfoActivity extends BaseActivity {
     @Extra
     @Procedure.QuestionType
     String type = Procedure.QUESTION_TYPE_INFO;
-    private BasicInfoFragment mFragment = BasicInfoFragment_.builder().build();
+    private QuestionFragment mFragment = BasicInfoFragment_.builder().build();
 
     @Override
     public String getPageInfo() {
