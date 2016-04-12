@@ -1,6 +1,7 @@
 package co.yishun.lighting.ui;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
@@ -244,9 +245,9 @@ public class LoginActivity extends BaseActivity {
                 showSnackMsg(R.string.activity_login_msg_success);
                 AccountManager.saveUserToken(activity, user.accessToken);
                 AccountManager.saveAccount(activity, user);
-                IntegrateInfoActivity_.intent(this).start();
-//                MainActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TASK |
-// Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
+
+                MainActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                        Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
             } else {
                 runOnUiThread(() -> {
                     passwordEditText.setError(getString(R.string.activity_login_error_incorrect_password));
