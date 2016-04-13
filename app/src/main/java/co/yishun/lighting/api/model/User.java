@@ -83,7 +83,7 @@ public class User extends JsonBean implements Serializable {
     }
 
     public Account.Gender getSex() {
-        return Account.Gender.MALE;
+        return Account.Gender.format(sex);
     }
 
     public void setSex(Account.Gender gender) {
@@ -91,7 +91,7 @@ public class User extends JsonBean implements Serializable {
     }
 
     public Account.Gender getSexuality() {
-        return Account.Gender.FEMALE;
+        return Account.Gender.format(sexuality);
     }
 
     public void setSexuality(Account.Gender gender) {

@@ -94,11 +94,11 @@ public interface Account {
 
 
     enum Gender {
-        @SerializedName("f")
+        @SerializedName("female")
         FEMALE,
-        @SerializedName("m")
+        @SerializedName("male")
         MALE,
-        @SerializedName("n")
+        @SerializedName("other")
         OTHER,;
         @StringRes
         public static final int DISPLAY_TEXT_RES[] = new int[]{
@@ -109,9 +109,9 @@ public interface Account {
 
         public static Gender format(String s) {
             switch (s) {
-                case "f":
+                case "female":
                     return FEMALE;
-                case "m":
+                case "male":
                     return MALE;
                 default:
                     return OTHER;
