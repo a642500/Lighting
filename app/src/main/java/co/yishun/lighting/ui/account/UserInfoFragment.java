@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
@@ -46,6 +47,7 @@ import co.yishun.lighting.api.Account;
 import co.yishun.lighting.api.model.Token;
 import co.yishun.lighting.api.model.User;
 import co.yishun.lighting.ui.MainActivity_;
+import co.yishun.lighting.ui.SplashActivity_;
 import co.yishun.lighting.ui.common.BaseActivity;
 import co.yishun.lighting.ui.common.BaseFragment;
 import co.yishun.lighting.ui.view.LocationChooseDialog;
@@ -262,9 +264,18 @@ public class UserInfoFragment extends BaseFragment
     void finishBtnClicked(View view) {
 
         if (TextUtils.isEmpty(lastFillUser.nickname)) {
-
+            //TODO check
         }
         updateUserInfo(lastFillUser, true);
+    }
+
+    @Click
+    void signOutBtnClicked(View view) {
+        AccountManager.deleteAccount(view.getContext());
+        Toast.makeText(view.getContext(), R.string.fragment_user_info_msg_sign_out
+                , Toast.LENGTH_SHORT).show();
+        SplashActivity_.intent(this).action(Intent.ACTION_MAIN)
+                .flags(Intent.FLAG_ACTIVITY_CLEAR_TASK).start();
     }
 
     @Override
