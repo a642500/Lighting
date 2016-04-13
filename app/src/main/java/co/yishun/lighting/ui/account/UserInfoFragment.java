@@ -33,7 +33,6 @@ import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -205,17 +204,15 @@ public class UserInfoFragment extends BaseFragment
 
     void birthDayClicked(View view) {
         Date birthday;
-        final SimpleDateFormat dateFormat = getTimeFormat();
-
         try {
-            birthday = dateFormat.parse(lastFillUser.birthday);
-        } catch (ParseException | NullPointerException e) {
+            birthday = new Date(Long.parseLong(lastFillUser.birthday) * 1000);
+        } catch (NumberFormatException | NullPointerException e) {
             birthday = new Date();
         }
 
         final Calendar calendar = Calendar.getInstance(Locale.CHINA);
         calendar.setTime(birthday);
-        int oYear = calendar.get(Calendar.YEAR);
+        int oYear = calendar.get(Calendar.YEAR) - 18;
         int oMonth = calendar.get(Calendar.MONTH);
         int oDay = calendar.get(Calendar.DAY_OF_MONTH);
         new DatePickerDialog(view.getContext(), (view1, year, monthOfYear, dayOfMonth) -> {
@@ -224,7 +221,7 @@ public class UserInfoFragment extends BaseFragment
                 calendar.set(Calendar.MONTH, monthOfYear);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 User newUser = new User();
-                newUser.birthday = dateFormat.format(calendar.getTime());
+                newUser.birthday = String.valueOf(calendar.getTime().getTime() / 1000);
                 commit(newUser);
             }
         }, oYear, oMonth, oDay).show();
@@ -354,10 +351,16 @@ public class UserInfoFragment extends BaseFragment
         sexualityFragment.setContent(sexuality);
 
 
-        String birthday = lastFillUser.birthday;
-        if (TextUtils.isEmpty(birthday)) {
+        String birthday;
+        try {
+            birthday = getTimeFormat().format(new Date(Long.parseLong(lastFillUser.birthday)));
+        } catch (NumberFormatException e) {
+            birthday = null;
+        }
+        if (TextUtils.isEmpty(lastFillUser.birthday)) {
             birthday = getString(R.string.fragment_user_info_birthday_default);
         }
+
         birthDayFragment.setContent(birthday);
 
         locationFragment.setContent(lastFillUser.location);
