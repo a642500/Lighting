@@ -2,6 +2,7 @@
 <resources>
     <string name="fragment_user_info_title">Integrate Information</string>
     <string name="fragment_user_info_btn_finish">Finish</string>
+    <string name="fragment_user_info_btn_sign_out">Sign Out</string>
     <string name="fragment_user_info_sexuality">Sexuality</string>
     <string name="fragment_user_info_birthday">BirthDay</string>
     <string name="fragment_user_info_msg_update_info_fail">Update Info failed.</string>

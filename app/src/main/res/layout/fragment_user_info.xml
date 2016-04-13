@@ -122,4 +122,19 @@
         android:text="@string/fragment_user_info_btn_finish"
         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
+    <TextView
+        android:id="@+id/signOutBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_btn_pink"
+        android:gravity="center"
+        android:minHeight="48dp"
+        android:padding="12dp"
+        android:stateListAnimator="@drawable/btn_elevation"
+        android:text="@string/fragment_user_info_btn_sign_out"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:visibility="invisible" />
+
 </RelativeLayout>

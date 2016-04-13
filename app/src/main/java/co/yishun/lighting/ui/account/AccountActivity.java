@@ -26,7 +26,10 @@ public class AccountActivity extends BaseActivity {
     protected void goToUserInfo(String phone, Token token) {
         AnimUtil.alpha(getSupportFragmentManager())
                 .replace(R.id.container, UserInfoFragment_
-                        .builder().phone(phone).token(token).build()).commitAllowingStateLoss();
+                        .builder().phone(phone)
+                        .token(token)
+                        .editMode(UserInfoFragment.EDIT_MODE_COMMIT_LAST)
+                        .build()).commitAllowingStateLoss();
     }
 
     protected void goToPassword(String phone, Token token) {

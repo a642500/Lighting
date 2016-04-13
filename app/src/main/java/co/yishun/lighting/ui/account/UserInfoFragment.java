@@ -65,6 +65,7 @@ public class UserInfoFragment extends BaseFragment
     public static final String TAG = "UserInfoFragment";
     public static final int EDIT_MODE_COMMIT_LAST = 0;
     public static final int EDIT_MODE_COMMIT_EVERY_TIME = 1;
+    public static final int EDIT_MODE_COMMIT_EVERY_TIME_WITH_SIGN_OUT = 2;
     @ViewById
     Toolbar toolbar;
     @ViewById
@@ -85,6 +86,8 @@ public class UserInfoFragment extends BaseFragment
     ItemFragment locationFragment;
     @ViewById
     View finishBtn;
+    @ViewById
+    View signOutBtn;
 
     @FragmentArg
     Token token;
@@ -92,6 +95,7 @@ public class UserInfoFragment extends BaseFragment
     String phone;
     @FragmentArg
     int editMode = EDIT_MODE_COMMIT_LAST;
+
     User lastFillUser;
     private Uri croppedProfileUri;
 
@@ -138,6 +142,8 @@ public class UserInfoFragment extends BaseFragment
         locationFragment.setOnClickListener(this::locationClicked);
 
         finishBtn.setVisibility(editMode == EDIT_MODE_COMMIT_LAST ? View.VISIBLE : View.INVISIBLE);
+        signOutBtn.setVisibility(editMode == EDIT_MODE_COMMIT_EVERY_TIME_WITH_SIGN_OUT ?
+                View.VISIBLE : View.INVISIBLE);
 
         invalidateUserInfo(null);
     }
@@ -376,7 +382,9 @@ public class UserInfoFragment extends BaseFragment
         invalidateUserInfo(info);
     }
 
-    @IntDef({EDIT_MODE_COMMIT_LAST, EDIT_MODE_COMMIT_EVERY_TIME})
+    @IntDef({EDIT_MODE_COMMIT_LAST,
+            EDIT_MODE_COMMIT_EVERY_TIME,
+            EDIT_MODE_COMMIT_EVERY_TIME_WITH_SIGN_OUT})
     public @interface EditMode {
     }
 
