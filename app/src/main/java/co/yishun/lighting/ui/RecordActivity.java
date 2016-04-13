@@ -21,7 +21,7 @@ import java.io.IOException;
 import co.yishun.lighting.Constants;
 import co.yishun.lighting.R;
 import co.yishun.lighting.ui.common.BaseActivity;
-import co.yishun.lighting.ui.view.AnimationUtil;
+import co.yishun.lighting.ui.view.AnimUtil;
 import co.yishun.lighting.util.FileUtil;
 
 /**
@@ -162,8 +162,8 @@ public class RecordActivity extends BaseActivity implements MediaRecorder.OnInfo
     }
 
     private void onRecorded() {
-        AnimationUtil.alphaShow(redoBtn);
-        AnimationUtil.alphaShow(finishBtn);
+        AnimUtil.alphaShow(redoBtn);
+        AnimUtil.alphaShow(finishBtn);
     }
 
     @Click
@@ -179,8 +179,8 @@ public class RecordActivity extends BaseActivity implements MediaRecorder.OnInfo
         initRecorder();
 
 
-        AnimationUtil.alphaHide(redoBtn);
-        AnimationUtil.alphaHide(finishBtn);
+        AnimUtil.alphaHide(redoBtn);
+        AnimUtil.alphaHide(finishBtn);
     }
 
     @Override
