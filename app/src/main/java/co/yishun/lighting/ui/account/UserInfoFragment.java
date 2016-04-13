@@ -48,7 +48,6 @@ import co.yishun.lighting.api.model.Token;
 import co.yishun.lighting.api.model.User;
 import co.yishun.lighting.ui.MainActivity_;
 import co.yishun.lighting.ui.SplashActivity_;
-import co.yishun.lighting.ui.common.BaseActivity;
 import co.yishun.lighting.ui.common.BaseFragment;
 import co.yishun.lighting.ui.view.LocationChooseDialog;
 import co.yishun.lighting.util.LogUtil;
@@ -322,11 +321,6 @@ public class UserInfoFragment extends BaseFragment
                 showSnackMsg(R.string.fragment_user_info_msg_update_info_fail);
             }
         });
-    }
-
-    @Nullable
-    private BaseActivity getBaseActivity() {
-        return (BaseActivity) getActivity();
     }
 
     @UiThread
