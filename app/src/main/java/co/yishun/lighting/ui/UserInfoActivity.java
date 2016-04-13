@@ -39,7 +39,8 @@ public class UserInfoActivity extends PickCropActivity {
                 setCustomAnimations(R.anim.fragment_fade_in, R.anim.fragment_fade_out)
                 .replace(R.id.container, UserInfoFragment_
                         .builder().phone(user.phoneNumber).token(AccountManager.getUserToken(this))
-                        .editMode(UserInfoFragment.EDIT_MODE_COMMIT_EVERY_TIME).build())
+                        .editMode(UserInfoFragment.EDIT_MODE_COMMIT_EVERY_TIME_WITH_SIGN_OUT)
+                        .build())
                 .commitAllowingStateLoss();
     }
 
