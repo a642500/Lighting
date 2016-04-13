@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.Theme;
 import com.soundcloud.android.crop.Crop;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.androidannotations.annotations.AfterViews;
@@ -286,13 +287,35 @@ public class UserInfoFragment extends BaseFragment
     public void onPictureCropped(Uri uri) {
         croppedProfileUri = uri;
         //TODO commit
-//        updateAvatar(AccountManager.getUserInfo(getContext()).id);
-//        Picasso.with(this).load(uri).memoryPolicy(MemoryPolicy.NO_STORE).memoryPolicy(MemoryPolicy.NO_CACHE).into(avatarImage);
+        doIfContextNotNull(context -> {
+//            updateAvatar(AccountManager.getUserInfo(getContext()).id);
+            Picasso.with(context).load(uri).memoryPolicy(MemoryPolicy.NO_STORE)
+                    .memoryPolicy(MemoryPolicy.NO_CACHE).into(avatarImage);
+        });
     }
 
     @Background(id = CANCEL_WHEN_DESTROY)
     void updateAvatar(@NonNull String userId) {
         if (croppedProfileUri == null) return;
+//
+//        File file = new File(croppedProfileUri.getPath());
+//
+//
+//        UploadManager.getInstance().formUpload();
+//        UploadManager.getInstance().formUpload(file, null, new SignatureListener() {
+//            @Override
+//            public String getSignature(String policy) {
+//                return null;
+//            }
+//        }, new UpCompleteListener() {
+//            @Override
+//            public void onComplete(boolean isSuccess, String result) {
+//
+//            }
+//        }, (bytesWrite, contentLength) -> {
+//
+//        });
+
         String uriString = croppedProfileUri.toString();
         String path = uriString.substring(uriString.indexOf(":") + 1);
         String qiNiuKey = Constants.PROFILE_PREFIX + userId + Constants.URL_HYPHEN + Util.unixTimeStamp() + Constants.PROFILE_SUFFIX;
