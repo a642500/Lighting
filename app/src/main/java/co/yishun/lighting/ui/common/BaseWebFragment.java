@@ -31,9 +31,12 @@ import java.util.Map;
 import co.yishun.lighting.Constants;
 import co.yishun.lighting.R;
 import co.yishun.lighting.account.AccountManager;
+import co.yishun.lighting.api.APIFactory;
+import co.yishun.lighting.api.model.OtherUser;
 import co.yishun.lighting.util.FileUtil;
 import co.yishun.lighting.util.GsonFactory;
 import co.yishun.lighting.util.LogUtil;
+import retrofit2.Response;
 
 
 /**
@@ -194,14 +197,30 @@ public class BaseWebFragment extends BaseFragment {
     }
 
     @UiThread
-    public void doWithWebViewInUIThread(WebViewCallable callable) {
+    void doWithWebViewInUIThread(WebViewCallable callable) {
         if (mWebView != null) {
             callable.call(mWebView);
         }
     }
 
-    private void webGetOthers(String call) {
-        //TODO
+    @Background
+    void webGetOthers(String call) {
+        safelyDoWithContextToken((context, token) -> {
+            String sexuality = AccountManager.getUserInfo(context).getSexuality().toString();
+            //noinspection WrongConstant
+            Response<OtherUser> response = APIFactory.getProcedureAPI().
+                    getOthers(token.userId, token.accessToken, sexuality).execute();
+
+            if (response.isSuccessful()) {
+                OtherUser otherUser = response.body();
+                doWithWebViewInUIThread(webView -> {
+                    String url = String.format(toJs(otherUser), false, true);
+                    mWebView.loadUrl(url);
+                });
+            } else {
+                showSnackMsg(R.string.error_server);
+            }
+        });
     }
 
     public void sendFinish() {
