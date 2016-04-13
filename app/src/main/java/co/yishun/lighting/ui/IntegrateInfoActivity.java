@@ -31,7 +31,7 @@ public class IntegrateInfoActivity extends BaseActivity {
     @Extra
     @Procedure.QuestionType
     String type = Procedure.QUESTION_TYPE_INFO;
-    private QuestionFragment mFragment = QuestionFragment_.builder().build();
+    private QuestionFragment mFragment;
 
     @Override
     public String getPageInfo() {
@@ -71,6 +71,10 @@ public class IntegrateInfoActivity extends BaseActivity {
 
     @AfterViews
     void setViews() {
+        mFragment = (QuestionFragment) getSupportFragmentManager().findFragmentByTag(type);
+        if (mFragment != null) {
+            mFragment = QuestionFragment_.builder().type(type).build();
+        }
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, mFragment)
                 .commitAllowingStateLoss();
