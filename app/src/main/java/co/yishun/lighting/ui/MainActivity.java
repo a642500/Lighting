@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import co.yishun.lighting.R;
@@ -55,7 +56,14 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onNavigationItemClicked(View view) {
+        resideLayout.closePane();
+        delayNavigation(view);
+    }
+
+    @UiThread(delay = 300)
+    void delayNavigation(View view) {
         Fragment fragment;
+
         switch (view.getId()) {
             case R.id.navigation_item_lightup:
                 fragment = getSupportFragmentManager().findFragmentByTag("others");
@@ -89,7 +97,6 @@ public class MainActivity extends BaseActivity {
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
         }
-        resideLayout.closePane();
     }
 
     @Click
