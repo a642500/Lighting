@@ -93,6 +93,7 @@ public class UserInfoFragment extends BaseFragment
     Token token;
     @FragmentArg
     String phone;
+    @EditMode
     @FragmentArg
     int editMode = EDIT_MODE_COMMIT_LAST;
 
