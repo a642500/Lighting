@@ -10,6 +10,7 @@ import org.androidannotations.annotations.Extra;
 import co.yishun.lighting.R;
 import co.yishun.lighting.api.model.Token;
 import co.yishun.lighting.ui.common.BaseActivity;
+import co.yishun.lighting.ui.view.AnimUtil;
 
 /**
  * Created by carlos on 4/6/16.
@@ -21,15 +22,13 @@ public class AccountActivity extends BaseActivity {
     String phone;
 
     protected void goToUserInfo(String phone, Token token) {
-        getSupportFragmentManager().beginTransaction().
-                setCustomAnimations(R.anim.fragment_fade_in, R.anim.fragment_fade_out)
+        AnimUtil.alpha(getSupportFragmentManager())
                 .replace(R.id.container, UserInfoFragment_
                         .builder().phone(phone).token(token).build()).commitAllowingStateLoss();
     }
 
     protected void goToPassword(String phone, Token token) {
-        getSupportFragmentManager().beginTransaction().
-                setCustomAnimations(R.anim.fragment_fade_in, R.anim.fragment_fade_out)
+        AnimUtil.alpha(getSupportFragmentManager())
                 .replace(R.id.container, PasswordFragment_
                         .builder().phone(phone).token(token).build()).commitAllowingStateLoss();
     }

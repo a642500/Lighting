@@ -20,6 +20,7 @@ import co.yishun.lighting.R;
 import co.yishun.lighting.account.AccountManager;
 import co.yishun.lighting.ui.common.BaseActivity;
 import co.yishun.lighting.ui.common.BaseWebFragment_;
+import co.yishun.lighting.ui.view.AnimUtil;
 import co.yishun.lighting.ui.view.ResideLayout;
 
 
@@ -71,7 +72,8 @@ public class MainActivity extends BaseActivity {
                     fragment = BaseWebFragment_.builder().
                             mUrl("http://devlightup.yishun.co:61336/static/video_index.html").build();
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, "others")
+                AnimUtil.alpha(getSupportFragmentManager())
+                        .replace(R.id.container, fragment, "others")
                         .commitAllowingStateLoss();
                 break;
             case R.id.navigation_item_mssage:
@@ -80,7 +82,8 @@ public class MainActivity extends BaseActivity {
                     fragment = BaseWebFragment_.builder().
                             mUrl("http://devlightup.yishun.co:61336/static/message.html").build();
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, "message")
+                AnimUtil.alpha(getSupportFragmentManager())
+                        .replace(R.id.container, fragment, "message")
                         .commitAllowingStateLoss();
                 break;
             case R.id.navigation_item_profile:
@@ -89,7 +92,8 @@ public class MainActivity extends BaseActivity {
                     fragment = BaseWebFragment_.builder().
                             mUrl("http://devlightup.yishun.co:61336/static/personal.html").build();
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, "personal")
+                AnimUtil.alpha(getSupportFragmentManager())
+                        .replace(R.id.container, fragment, "personal")
                         .commitAllowingStateLoss();
 
                 break;
