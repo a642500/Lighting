@@ -84,6 +84,7 @@ public class AccountManager {
         context = context.getApplicationContext();
         account = getAccount(context);
         mUser = null;
+        mToken = null;
         deleteUserInfo(context);
         getAccountManager(context).removeAccount(account, null, null);
 //        SyncManager.disableSync();
