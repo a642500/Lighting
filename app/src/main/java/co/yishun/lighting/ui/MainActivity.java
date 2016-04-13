@@ -55,26 +55,40 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onNavigationItemClicked(View view) {
+        Fragment fragment;
         switch (view.getId()) {
             case R.id.navigation_item_lightup:
-                startActivity(new Intent(this, IntegrateInfoActivity_.class));
-                break;
-            case R.id.navigation_item_mssage:
-                ShootActivity_.intent(this).start();
-                break;
-            case R.id.navigation_item_profile:
-                Fragment fragment = getSupportFragmentManager().findFragmentByTag("main");
+                fragment = getSupportFragmentManager().findFragmentByTag("others");
                 if (fragment == null) {
                     fragment = BaseWebFragment_.builder().
-                            mUrl("http://devlightup.yishun.co/static/personal.html").build();
+                            mUrl("http://devlightup.yishun.co:61336/static/others.html").build();
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, "main")
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, "personal")
+                        .commitAllowingStateLoss();
+                break;
+            case R.id.navigation_item_mssage:
+                fragment = getSupportFragmentManager().findFragmentByTag("message");
+                if (fragment == null) {
+                    fragment = BaseWebFragment_.builder().
+                            mUrl("http://devlightup.yishun.co:61336/static/message.html").build();
+                }
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, "personal")
+                        .commitAllowingStateLoss();
+                break;
+            case R.id.navigation_item_profile:
+                fragment = getSupportFragmentManager().findFragmentByTag("personal");
+                if (fragment == null) {
+                    fragment = BaseWebFragment_.builder().
+                            mUrl("http://devlightup.yishun.co:61336/static/personal.html").build();
+                }
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, "personal")
                         .commitAllowingStateLoss();
                 break;
             case R.id.navigation_item_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
         }
+        resideLayout.closePane();
     }
 
     @Click
