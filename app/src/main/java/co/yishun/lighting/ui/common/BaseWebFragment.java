@@ -18,6 +18,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
 
 import org.androidannotations.annotations.AfterInject;
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
@@ -26,6 +27,7 @@ import java.io.File;
 import java.util.Map;
 
 import co.yishun.lighting.Constants;
+import co.yishun.lighting.R;
 import co.yishun.lighting.account.AccountManager;
 import co.yishun.lighting.util.FileUtil;
 import co.yishun.lighting.util.GsonFactory;
@@ -35,7 +37,7 @@ import co.yishun.lighting.util.LogUtil;
 /**
  * Created by Jinge on 2016/1/21.
  */
-@EFragment
+@EFragment(R.layout.fragment_web_view)
 public class BaseWebFragment extends BaseFragment {
     public static final String TAG_WEB = "web";
     private static final String TAG = "BaseWebFragment";
@@ -118,6 +120,7 @@ public class BaseWebFragment extends BaseFragment {
 
     @SuppressLint("SetJavaScriptEnabled")
     @CallSuper
+    @AfterViews
     protected void setUpWebView() {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setAllowFileAccess(true);
