@@ -11,33 +11,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <co.yishun.lighting.ui.view.shoot.CameraGLSurfaceView
+        <co.yishun.lighting.ui.view.shoot.ShootView
             android:id="@+id/shootView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:cgsv_height_px="360"
-            app:cgsv_width_px="360" />
+            android:layout_height="match_parent" />
 
         <co.yishun.lighting.ui.view.RadioCornerImageView
             android:id="@+id/maskImageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:rc_cornerRadio="0" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <co.yishun.lighting.ui.view.PageIndicatorDot
-                android:id="@+id/pageIndicator"
-                android:layout_width="match_parent"
-                android:layout_height="32dp"
-                android:layout_gravity="bottom"
-                android:fitsSystemWindows="true"
-                app:pid_dotRadius="3dp"
-                app:pid_interval="10dp"
-                app:pid_isStroke="true" />
-        </LinearLayout>
     </co.yishun.lighting.ui.view.SquareFrameLayout>
 
     <include layout="@layout/layout_record_btn" />

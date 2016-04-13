@@ -31,7 +31,7 @@ public class IntegrateInfoActivity extends BaseActivity {
     @Extra
     @Procedure.QuestionType
     String type = Procedure.QUESTION_TYPE_INFO;
-    private BasicInfoFragment mFragment = BasicInfoFragment_.builder().build();
+    private QuestionFragment mFragment = QuestionFragment_.builder().build();
 
     @Override
     public String getPageInfo() {
@@ -53,7 +53,7 @@ public class IntegrateInfoActivity extends BaseActivity {
             }
         });
 
-        List<Question> fakeQuestions = new ArrayList<Question>(3);
+        List<Question> fakeQuestions = new ArrayList<>(3);
         for (int i = 0; i < 3; i++) {
             Question question = new Question();
             question.content = "This is my question-" + i;

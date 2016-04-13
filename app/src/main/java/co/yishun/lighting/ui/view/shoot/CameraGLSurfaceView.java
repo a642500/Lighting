@@ -3,6 +3,7 @@ package co.yishun.lighting.ui.view.shoot;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
@@ -63,21 +64,28 @@ public class CameraGLSurfaceView extends SquareGLSurfaceView implements SurfaceT
 
     public CameraGLSurfaceView(Context context) {
         super(context);
-        init();
+        init(null);
     }
 
     public CameraGLSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(attrs);
     }
 
-    private void init() {
+    private void init(AttributeSet attrs) {
+        TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.CameraGLSurfaceView);
+        final int w = array.getInt(R.styleable.CameraGLSurfaceView_cgsv_width_px, 480);
+        final int h = array.getInt(R.styleable.CameraGLSurfaceView_cgsv_height_px, 480);
+
+        array.recycle();
+
+
         initHandler();
 
         setEGLContextClientVersion(2);
 
         file = FileUtil.getVideoCacheFile(getContext());
-        mCameraRenderer = new CameraRecordRender(getContext(), mBackgroundHandler, new EncoderConfig(file.getPath(), 480, 480, 1024 * 1024));
+        mCameraRenderer = new CameraRecordRender(getContext(), mBackgroundHandler, new EncoderConfig(file.getPath(), w, h, 1024 * 1024));
         setRenderer(mCameraRenderer);
         setRenderMode(RENDERMODE_WHEN_DIRTY);
 

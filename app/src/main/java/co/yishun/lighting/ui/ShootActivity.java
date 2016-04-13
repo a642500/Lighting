@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
@@ -15,8 +14,10 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.androidannotations.annotations.AfterExtras;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
@@ -40,7 +41,7 @@ import co.yishun.lighting.util.video.VideoConvert;
  */
 @EActivity
 public class ShootActivity extends BaseActivity implements Callback, Consumer<File>, IShootView.SecurityExceptionHandler {
-    public static final int STATUS_PERPARE = 0;
+    public static final int STATUS_PREPARE = 0;
     public static final int STATUS_RECORDING = 1;
     public static final int STATUS_RECORDED = 2;
     private static final String TAG = "ShootActivity";
@@ -61,6 +62,8 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
     View recordBtnBeginImageView;
     @ViewById
     View recordBtnStopImageView;
+    @Extra
+    boolean isLargerSize = false;
     private int status;
     @Nullable
     private CameraGLSurfaceView mCameraGLSurfaceView;
@@ -77,7 +80,7 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
             case STATUS_RECORDED:
                 finishBtnClicked(view);
                 break;
-            case STATUS_PERPARE:
+            case STATUS_PREPARE:
 //                importVideoBtnClicked(view);
 //                break;
             case STATUS_RECORDING:
@@ -138,10 +141,12 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
         return "ShootActivity";
     }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shoot);
+    @AfterExtras
+    void setViews() {
+        if (isLargerSize)
+            setContentView(R.layout.activity_shoot_large);
+        else
+            setContentView(R.layout.activity_shoot);
 
         setResult(RESULT_CANCELED);
 
@@ -279,19 +284,22 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
     @UiThread(delay = 800)
     void delayAccept(File file) {
         File newFile = FileUtil.getVideoCacheFile(this);
-        new VideoConvert(this).setFiles(file, newFile).setListener(new VideoCommand.VideoCommandListener() {
-            @Override
-            public void onSuccess(VideoCommand.VideoCommandType type) {
-                file.delete();
-                videoOK(newFile);
-                hideProgress();
-            }
+        new VideoConvert(this).setFiles(file, newFile,
+                isLargerSize ? 640 : 360,
+                isLargerSize ? 640 : 360).setListener(
+                new VideoCommand.VideoCommandListener() {
+                    @Override
+                    public void onSuccess(VideoCommand.VideoCommandType type) {
+                        file.delete();
+                        videoOK(newFile);
+                        hideProgress();
+                    }
 
-            @Override
-            public void onFail(VideoCommand.VideoCommandType type) {
-                hideProgress();
-            }
-        }).start();
+                    @Override
+                    public void onFail(VideoCommand.VideoCommandType type) {
+                        hideProgress();
+                    }
+                }).start();
 
     }
 
@@ -339,7 +347,7 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
         //TODO add help btn to guide user to how enable permission for three-party rom
     }
 
-    @IntDef({STATUS_PERPARE, STATUS_RECORDING, STATUS_RECORDED})
+    @IntDef({STATUS_PREPARE, STATUS_RECORDING, STATUS_RECORDED})
     private @interface Status {
     }
 }

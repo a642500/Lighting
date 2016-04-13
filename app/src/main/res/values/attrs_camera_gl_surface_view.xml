@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CameraGLSurfaceView">
+        <attr name="cgsv_width_px" format="integer" />
+        <attr name="cgsv_height_px" format="integer" />
+    </declare-styleable>
+</resources>

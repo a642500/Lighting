@@ -28,11 +28,11 @@ public class VideoConvert extends VideoCommand {
         return this;
     }
 
-    public VideoConvert setFiles(File input, File output) {
+    public VideoConvert setFiles(File input, File output, int w, int h) {
         mCommand.append(" -i ")
                 .append(input.getPath())
                 .append(" -vf")
-                .append(" crop='min(iw,ih)':'min(iw,ih)',scale=480:480,")
+                .append(" crop='min(iw,ih)':'min(iw,ih)',scale=" + w + ":" + h + ",")
                 .append("transpose=passthrough=portrait")
                 .append(" -t 1.2")
                 .append(" -y")
