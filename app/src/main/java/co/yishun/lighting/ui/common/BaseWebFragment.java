@@ -39,14 +39,12 @@ import co.yishun.lighting.util.LogUtil;
  */
 @EFragment(R.layout.fragment_web_view)
 public class BaseWebFragment extends BaseFragment {
-    public static final String TAG_WEB = "web";
     private static final String TAG = "BaseWebFragment";
     private static boolean needGlobalRefresh = false;
     @ViewById
     protected SwipeRefreshLayout swipeRefreshLayout;
     @ViewById
     protected WebView webView;
-    protected BaseActivity mActivity;
     protected MaterialDialog dialog;
     protected File mHybridDir;
     protected int posX;
@@ -58,30 +56,9 @@ public class BaseWebFragment extends BaseFragment {
     protected String mUrl;
     @FragmentArg
     protected String mArg;
-    private Context mApplicationContext;
 
     public static void invalidateWeb() {
         needGlobalRefresh = true;
-    }
-
-    @Override
-    public Context getContext() {
-        return super.getContext() == null ? mApplicationContext : super.getContext();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mActivity = (BaseActivity) getActivity();
-        if (mApplicationContext == null) {
-            mApplicationContext = mActivity.getApplicationContext();
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mActivity = null;
     }
 
     @Override
@@ -106,16 +83,19 @@ public class BaseWebFragment extends BaseFragment {
 
     @AfterInject
     void setDefault() {
-        mHybridDir = FileUtil.getInternalFile(getContext(), Constants.HYBRD_UNZIP_DIR);
-        if (TextUtils.isEmpty(mUrl)) {
-            mUrl = Constants.FILE_URL_PREFIX +
-                    new File(mHybridDir, "build/pages/world/world.html").getPath();
-            LogUtil.i(TAG, "url is null, load default");
-        }
+        safelyDoWithContext(context -> {
+            mHybridDir = FileUtil.getInternalFile(context, Constants.HYBRD_UNZIP_DIR);
+            if (TextUtils.isEmpty(mUrl)) {
+                mUrl = Constants.FILE_URL_PREFIX +
+                        new File(mHybridDir, "build/pages/world/world.html").getPath();
+                LogUtil.i(TAG, "url is null, load default");
+            }
 
-        int lastUpdateTime = getContext().getSharedPreferences(Constants.Perference.RUNTIME_PREFERENCE,
-                Context.MODE_PRIVATE).getInt(Constants.Perference.PREFERENCE_HYBRID_UPDATE_TIME, 0);
-        if (mUrl.startsWith(Constants.FILE_URL_PREFIX)) mUrl += "?time=" + lastUpdateTime;
+            int lastUpdateTime = context.getSharedPreferences(Constants.Perference.RUNTIME_PREFERENCE,
+                    Context.MODE_PRIVATE).getInt(Constants.Perference.PREFERENCE_HYBRID_UPDATE_TIME, 0);
+            if (mUrl.startsWith(Constants.FILE_URL_PREFIX)) mUrl += "?time=" + lastUpdateTime;
+        });
+
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -176,9 +156,8 @@ public class BaseWebFragment extends BaseFragment {
 //    }
 
     private void webGetAccount(String call) {
-        webView.loadUrl(String.format(
-                toJs(AccountManager.getUserInfo(getContext()), true, true),
-                call));
+        safelyDoWithContext(context -> webView.loadUrl(
+                String.format(toJs(AccountManager.getUserInfo(context), true, true), call)));
     }
 //
 //    private void webGetAccountId(Map<String,String args) {
@@ -200,8 +179,7 @@ public class BaseWebFragment extends BaseFragment {
     private void webGetAccessToken(Map<String, String> args, String call) {
         String id = args.get("user_id");
         //TODO
-        safelyDoWithToken((token) ->
-                webView.loadUrl(String.format(toJs(token, true, true), call)));
+        safelyDoWithToken((token) -> webView.loadUrl(String.format(toJs(token, true, true), call)));
     }
 
     private void webGetOthers(String call) {
