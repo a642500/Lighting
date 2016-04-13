@@ -5,19 +5,23 @@ import android.media.MediaRecorder;
 import android.os.SystemClock;
 import android.support.annotation.IntDef;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import java.io.File;
 import java.io.IOException;
 
 import co.yishun.lighting.Constants;
 import co.yishun.lighting.R;
 import co.yishun.lighting.ui.common.BaseActivity;
+import co.yishun.lighting.ui.view.AnimationUtil;
 import co.yishun.lighting.util.FileUtil;
 
 /**
@@ -36,7 +40,11 @@ public class RecordActivity extends BaseActivity implements MediaRecorder.OnInfo
     @Extra
     String questionName;
     @ViewById
-    View recordBtn;
+    ImageButton recordBtn;
+    @ViewById
+    View redoBtn;
+    @ViewById
+    View finishBtn;
     @ViewById
     ProgressBar progressBar;
     MediaRecorder mRecorder;
@@ -55,10 +63,19 @@ public class RecordActivity extends BaseActivity implements MediaRecorder.OnInfo
     void setViews() {
         progressBar.setMax(Constants.AUDIO_MAX_DURATION);
 
+        initRecorder();
+
+        recordBtn.setOnClickListener(this::btnClicked);
+    }
+
+    private void initRecorder() {
+        File cache = FileUtil.getAudioCacheFile(this);
+        if (cache.exists()) cache.delete();
+
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        mRecorder.setOutputFile(FileUtil.getAudioCacheFile(this).getPath());
+        mRecorder.setOutputFile(cache.getPath());
         mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         mRecorder.setOnInfoListener(this);
         mRecorder.setMaxDuration(Constants.AUDIO_MAX_DURATION * 1000);
@@ -70,7 +87,6 @@ public class RecordActivity extends BaseActivity implements MediaRecorder.OnInfo
             e.printStackTrace();
             status = STATUS_ERROR;
         }
-        recordBtn.setOnClickListener(this::btnClicked);
     }
 
     @UiThread(delay = 100)
@@ -107,8 +123,10 @@ public class RecordActivity extends BaseActivity implements MediaRecorder.OnInfo
             case STATUS_RECORDING:
                 mRecorder.stop();
                 mRecorder.release();
+                mRecorder = null;
                 updateProgress(true);
                 status = STATUS_RECORDED;
+                onRecorded();
                 break;
             case STATUS_RECORDED:
                 mMediaPlayer = new MediaPlayer();
@@ -143,6 +161,28 @@ public class RecordActivity extends BaseActivity implements MediaRecorder.OnInfo
         }
     }
 
+    private void onRecorded() {
+        AnimationUtil.alphaShow(redoBtn);
+        AnimationUtil.alphaShow(finishBtn);
+    }
+
+    @Click
+    void redoBtnClicked(View view) {
+        if (mMediaPlayer != null) {
+            if (mMediaPlayer.isPlaying()) {
+                mMediaPlayer.stop();
+            }
+            mMediaPlayer.reset();
+            recordBtn.setImageResource(R.drawable.ic_capture_begin);
+        }
+
+        initRecorder();
+
+
+        AnimationUtil.alphaHide(redoBtn);
+        AnimationUtil.alphaHide(finishBtn);
+    }
+
     @Override
     public void onInfo(MediaRecorder mr, int what, int extra) {
         switch (what) {
@@ -150,6 +190,7 @@ public class RecordActivity extends BaseActivity implements MediaRecorder.OnInfo
             case MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED:
                 if (status == STATUS_RECORDING) {
                     status = STATUS_RECORDED;
+                    onRecorded();
                 }
                 break;
             case MediaRecorder.MEDIA_RECORDER_INFO_UNKNOWN:

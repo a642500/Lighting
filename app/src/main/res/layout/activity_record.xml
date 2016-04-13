@@ -39,7 +39,9 @@
             android:minWidth="48dp"
             android:text="@string/activity_record_btn_redo"
             android:textColor="@color/colorAccent"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="invisible"
+            tools:visibility="invisible" />
 
         <ImageButton
             android:id="@+id/recordBtn"
@@ -48,7 +50,7 @@
             android:layout_weight="1"
             android:background="@drawable/bg_btn_transparent"
             android:padding="16dp"
-            android:src="@drawable/ic_basic_stop" />
+            android:src="@drawable/ic_basic_play" />
 
         <Button
             android:id="@+id/finishBtn"
@@ -61,7 +63,9 @@
             android:minWidth="48dp"
             android:text="@string/activity_record_btn_finish"
             android:textColor="@color/colorAccent"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="invisible"
+            tools:visibility="invisible" />
     </LinearLayout>
 
 
