@@ -3,7 +3,6 @@ package co.yishun.lighting.ui;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
 
 import co.yishun.lighting.R;
@@ -25,7 +24,7 @@ public class SettingsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        ((Toolbar) findViewById(R.id.toolbar)).setNavigationOnClickListener(v -> NavUtils.navigateUpFromSameTask(this));
+        ((Toolbar) findViewById(R.id.toolbar)).setNavigationOnClickListener(v -> finish());
 
         getFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
     }
