@@ -61,9 +61,9 @@ public class MainActivity extends BaseActivity {
                 fragment = getSupportFragmentManager().findFragmentByTag("others");
                 if (fragment == null) {
                     fragment = BaseWebFragment_.builder().
-                            mUrl("http://devlightup.yishun.co:61336/static/others.html").build();
+                            mUrl("http://devlightup.yishun.co:61336/static/video_index.html").build();
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, "personal")
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, "others")
                         .commitAllowingStateLoss();
                 break;
             case R.id.navigation_item_mssage:
@@ -72,7 +72,7 @@ public class MainActivity extends BaseActivity {
                     fragment = BaseWebFragment_.builder().
                             mUrl("http://devlightup.yishun.co:61336/static/message.html").build();
                 }
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, "personal")
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, "message")
                         .commitAllowingStateLoss();
                 break;
             case R.id.navigation_item_profile:
@@ -83,6 +83,7 @@ public class MainActivity extends BaseActivity {
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, "personal")
                         .commitAllowingStateLoss();
+
                 break;
             case R.id.navigation_item_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
