@@ -4,6 +4,7 @@ import android.support.annotation.StringDef;
 
 import java.util.List;
 
+import co.yishun.lighting.api.model.OtherUser;
 import co.yishun.lighting.api.model.Question;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -26,6 +27,12 @@ public interface Procedure {
             @Field("class") @QuestionType String type,
             @Field("limit") int limit
     );
+
+    @FormUrlEncoded
+    @POST("procedure/get_user_id_by_love_sex")
+    Call<OtherUser> getOthers(@Field("user_id") String userId,
+                              @Field("access_token") String accessToken,
+                              @Field("love_sex") @Account.SexualityType String loveSex);
 
     @StringDef({QUESTION_TYPE_INFO,
             QUESTION_TYPE_EXPERIENCE,

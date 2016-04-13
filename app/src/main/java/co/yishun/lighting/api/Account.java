@@ -133,11 +133,11 @@ public interface Account {
         public String toString() {
             switch (this) {
                 case FEMALE:
-                    return "f";
+                    return "female";
                 case MALE:
-                    return "m";
+                    return "male";
                 default:
-                    return "n";
+                    return "both";
             }
         }
 
@@ -160,5 +160,9 @@ public interface Account {
 
     @StringDef({"password", "access_token"})
     @interface LoginType {
+    }
+
+    @StringDef({"male", "female", "both"})
+    @interface SexualityType {
     }
 }

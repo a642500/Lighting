@@ -13,6 +13,7 @@ import java.util.List;
 
 import co.yishun.lighting.BuildConfig;
 import co.yishun.lighting.Constants;
+import co.yishun.lighting.api.model.OtherUser;
 import co.yishun.lighting.api.model.Token;
 import co.yishun.lighting.api.model.User;
 import okhttp3.OkHttpClient;
@@ -32,6 +33,7 @@ public class APIFactory {
             .registerTypeAdapter(List.class, new DataDeserializer<>())
             .registerTypeAdapter(User.class, new DataDeserializer<>())
             .registerTypeAdapter(Token.class, new DataDeserializer<>())
+            .registerTypeAdapter(OtherUser.class, new DataDeserializer<>())
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .create();
 
