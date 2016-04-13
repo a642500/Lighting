@@ -19,8 +19,10 @@ import com.google.gson.Gson;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
@@ -43,8 +45,8 @@ public class BaseWebFragment extends BaseFragment {
     private static boolean needGlobalRefresh = false;
     @ViewById
     protected SwipeRefreshLayout swipeRefreshLayout;
-    @ViewById
-    protected WebView webView;
+    @ViewById(R.id.webView)
+    protected WebView mWebView;
     protected MaterialDialog dialog;
     protected File mHybridDir;
     protected int posX;
@@ -64,7 +66,9 @@ public class BaseWebFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        webView.clearCache(false);
+        if (mWebView != null) {
+            mWebView.clearCache(false);
+        }
     }
 
     @Override
@@ -102,35 +106,35 @@ public class BaseWebFragment extends BaseFragment {
     @CallSuper
     @AfterViews
     protected void setUpWebView() {
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setAllowFileAccess(true);
-        webView.getSettings().setAllowContentAccess(true);
-        webView.getSettings().setAllowFileAccessFromFileURLs(true);
-        webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
-        webView.getSettings().setDomStorageEnabled(true);
-        webView.getSettings().setDatabaseEnabled(true);
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.getSettings().setAllowFileAccess(true);
+        mWebView.getSettings().setAllowContentAccess(true);
+        mWebView.getSettings().setAllowFileAccessFromFileURLs(true);
+        mWebView.getSettings().setAllowUniversalAccessFromFileURLs(true);
+        mWebView.getSettings().setDomStorageEnabled(true);
+        mWebView.getSettings().setDatabaseEnabled(true);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            webView.getSettings().setDatabasePath(FileUtil.getDatabasePath(getContext()));
+            mWebView.getSettings().setDatabasePath(FileUtil.getDatabasePath(getContext()));
         }
 
-        webView.setWebViewClient(new BaseWebClient());
+        mWebView.setWebViewClient(new BaseWebClient());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             if (0 != (getContext().getApplicationInfo().flags &= ApplicationInfo.FLAG_DEBUGGABLE)) {
                 WebView.setWebContentsDebuggingEnabled(true);
             }
         }
-        webView.setOnTouchListener((v, event) -> {
+        mWebView.setOnTouchListener((v, event) -> {
             touchX = event.getX();
             touchY = event.getY();
             return false;
         });
-        webView.post(() -> {
+        mWebView.post(() -> {
             int location[] = new int[2];
-            webView.getLocationOnScreen(location);
+            mWebView.getLocationOnScreen(location);
             posX = location[0];
             posY = location[1];
         });
-        webView.loadUrl(mUrl);
+        mWebView.loadUrl(mUrl);
 
         swipeRefreshLayout.setOnRefreshListener(() -> {
             if (mRefreshable) reload();
@@ -142,8 +146,8 @@ public class BaseWebFragment extends BaseFragment {
     }
 
     public void reload() {
-        if (webView != null)
-            webView.reload();
+        if (mWebView != null)
+            mWebView.reload();
     }
 
     private void loadOver() {
@@ -152,16 +156,18 @@ public class BaseWebFragment extends BaseFragment {
 
 //    private void webGetEnv(Map<String,String args) {
 //        @SuppressWarnings("ConstantConditions") String env = Constants.SANDBOX ? "development" : "production";
-//        webView.loadUrl(String.format(toJs(env), HybridUrlHandler.FUNC_GET_ENV));
+//        mWebView.loadUrl(String.format(toJs(env), HybridUrlHandler.FUNC_GET_ENV));
 //    }
 
-    private void webGetAccount(String call) {
-        safelyDoWithContext(context -> webView.loadUrl(
+
+    @Background
+    void webGetAccount(String call) {
+        safelyDoWithContext(context -> mWebView.loadUrl(
                 String.format(toJs(AccountManager.getUserInfo(context), true, true), call)));
     }
 //
 //    private void webGetAccountId(Map<String,String args) {
-//        webView.loadUrl(String.format(toJs(AccountManager.getUserInfo(getContext()).id),
+//        mWebView.loadUrl(String.format(toJs(AccountManager.getUserInfo(getContext()).id),
 //                HybridUrlHandler.FUNC_GET_ACCOUNT_ID));
 //    }
 
@@ -171,19 +177,37 @@ public class BaseWebFragment extends BaseFragment {
 
     private void webConfig(Map<String, String> args) {
         boolean h = Boolean.valueOf(args.get("h_scroll_indicator"));
-        webView.setHorizontalScrollBarEnabled(h);
+        mWebView.setHorizontalScrollBarEnabled(h);
         boolean v = Boolean.valueOf(args.get("v_scroll_indicator"));
-        webView.setVerticalScrollBarEnabled(v);
+        mWebView.setVerticalScrollBarEnabled(v);
     }
 
-    private void webGetAccessToken(Map<String, String> args, String call) {
+    @Background
+    void webGetAccessToken(Map<String, String> args, String call) {
         String id = args.get("user_id");
         //TODO
-        safelyDoWithToken((token) -> webView.loadUrl(String.format(toJs(token, true, true), call)));
+        safelyDoWithToken((token) -> doWithWebViewInUIThread(
+                webView -> {
+                    String url = String.format(toJs(token, false, true), call);
+                    mWebView.loadUrl(url);
+                }));
+    }
+
+    @UiThread
+    public void doWithWebViewInUIThread(WebViewCallable callable) {
+        if (mWebView != null) {
+            callable.call(mWebView);
+        }
     }
 
     private void webGetOthers(String call) {
         //TODO
+    }
+
+    public void sendFinish() {
+        String result = "javascript:ctx.finish()";
+        LogUtil.d(TAG, "load js : " + result);
+        mWebView.loadUrl(result);
     }
 
 //    private void webAlert(Map<String, String> args) {
@@ -222,19 +246,13 @@ public class BaseWebFragment extends BaseFragment {
 //    }
 
 //    private void webLoad(Map<String, String> args) {
-//        webView.loadUrl(String.format(toJs(mArg, false), HybridUrlHandler.FUNC_LOAD));
+//        mWebView.loadUrl(String.format(toJs(mArg, false), HybridUrlHandler.FUNC_LOAD));
 //    }
 
 //    private void webAuth(Map<String,String args) {
-//        webView.loadUrl(String.format(toJs(OneMomentClientV4.getAuthStr()),
+//        mWebView.loadUrl(String.format(toJs(OneMomentClientV4.getAuthStr()),
 //                HybridUrlHandler.FUNC_GET_BASIC_AUTH_HEADER));
 //    }
-
-    public void sendFinish() {
-        String result = "javascript:ctx.finish()";
-        LogUtil.d(TAG, "load js : " + result);
-        webView.loadUrl(result);
-    }
 
     public String toJs(Object o) {
         return toJs(o, true);
@@ -257,7 +275,7 @@ public class BaseWebFragment extends BaseFragment {
                 arg = arg.substring(0, arg.length() - 1);
         }
 
-        String result = "javascript:%sReturn(" + arg + ")";
+        String result = "javascript:%s(" + arg + ")";
         LogUtil.d(TAG, "load js : " + result);
         return result;
     }
@@ -268,8 +286,8 @@ public class BaseWebFragment extends BaseFragment {
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (webView.canGoBack()) {
-                webView.goBack();
+            if (mWebView.canGoBack()) {
+                mWebView.goBack();
                 return true;
             }
         }
@@ -277,15 +295,19 @@ public class BaseWebFragment extends BaseFragment {
     }
 
     public boolean canGoBack() {
-        return webView.canGoBack();
+        return mWebView.canGoBack();
     }
 
     public void goBack() {
-        webView.goBack();
+        mWebView.goBack();
     }
 
     public File getHybrdDir() {
         return mHybridDir;
+    }
+
+    public interface WebViewCallable {
+        void call(WebView webView);
     }
 
     public interface WebViewLoadListener {
@@ -346,8 +368,8 @@ public class BaseWebFragment extends BaseFragment {
         public boolean shouldOverrideKeyEvent(WebView view, KeyEvent event) {
             LogUtil.d(TAG, event.getKeyCode() + " " + event.getAction());
             if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-                if (webView.canGoBack()) {
-                    webView.goBack();
+                if (mWebView.canGoBack()) {
+                    mWebView.goBack();
                     return true;
                 }
                 return true;
