@@ -23,6 +23,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.EditorAction;
 import org.androidannotations.annotations.Fullscreen;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
 import co.yishun.lighting.R;
@@ -83,6 +84,21 @@ public class LoginActivity extends BaseActivity {
 
     public static boolean isPasswordValid(@NonNull String password) {
         return password.length() >= 6 && password.length() <= 30;
+    }
+
+    @Click
+    void forgetPasswordBtnClicked(View view) {
+        AccountActivity_.intent(this).phone(phoneEditText.getText().toString()).
+                isFindPassword(true).startForResult(0);
+    }
+
+    @OnActivityResult(0)
+    void onResetPasswordResult(Intent data) {
+        String newPhone = data.getStringExtra("phone");
+        if (!TextUtils.isEmpty(newPhone)) {
+            phoneEditText.setText(newPhone);
+            passwordEditText.requestFocus();
+        }
     }
 
     @EditorAction(R.id.passwordEditText)

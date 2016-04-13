@@ -28,6 +28,10 @@ public interface Account {
     @FormUrlEncoded
     Call<Void> register(@Field("phone_number") String phoneNum);
 
+    @FormUrlEncoded
+    @POST("account/change_password_request")
+    Call<Void> changePasswordRequest(@Field("phone_number") String phoneNum);
+
     @POST("account/validate_sms")
     @FormUrlEncoded
     Call<Token> validateSMS(@Field("phone_number") String phoneNum,

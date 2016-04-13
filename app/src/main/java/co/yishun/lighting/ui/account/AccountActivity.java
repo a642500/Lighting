@@ -20,6 +20,8 @@ public class AccountActivity extends BaseActivity {
     public static final String TAG = "AccountActivity";
     @Extra
     String phone;
+    @Extra("findPassword")
+    boolean isFindPassword = false;
 
     protected void goToUserInfo(String phone, Token token) {
         AnimUtil.alpha(getSupportFragmentManager())
@@ -30,7 +32,9 @@ public class AccountActivity extends BaseActivity {
     protected void goToPassword(String phone, Token token) {
         AnimUtil.alpha(getSupportFragmentManager())
                 .replace(R.id.container, PasswordFragment_
-                        .builder().phone(phone).token(token).build()).commitAllowingStateLoss();
+                        .builder().phone(phone).token(token)
+                        .isFindPassword(isFindPassword).build())
+                .commitAllowingStateLoss();
     }
 
     @Override
@@ -46,8 +50,12 @@ public class AccountActivity extends BaseActivity {
 
         findViewById(R.id.container);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, SignUpFragment_
-                .builder().phone(phone).build()).commitAllowingStateLoss();
+        getSupportFragmentManager().beginTransaction().
+                replace(R.id.container,
+                        SignUpFragment_
+                                .builder().phone(phone)
+                                .isFindPassword(isFindPassword).build())
+                .commitAllowingStateLoss();
     }
 
     public interface PictureCroppedHandler {

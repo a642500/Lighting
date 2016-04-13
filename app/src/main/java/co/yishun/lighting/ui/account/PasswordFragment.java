@@ -32,6 +32,8 @@ public class PasswordFragment extends BaseFragment {
     private static final String TAG = "PasswordFragment";
     @FragmentArg
     Token token;
+    @FragmentArg("findPassword")
+    boolean isFindPassword = false;
     @ViewById
     Toolbar toolbar;
     @ViewById
@@ -74,7 +76,10 @@ public class PasswordFragment extends BaseFragment {
             Response<Void> response = APIFactory.getAccountAPI().changePassword(phone, password).execute();
             if (response.isSuccessful()) {
                 accountActivity.showSnackMsg(R.string.fragment_password_msg_ok);
-                accountActivity.goToUserInfo(phone, token);
+                if (isFindPassword)
+                    accountActivity.exit();
+                else
+                    accountActivity.goToUserInfo(phone, token);
             } else {
                 accountActivity.showSnackMsg(R.string.fragment_password_msg_fail);
             }
