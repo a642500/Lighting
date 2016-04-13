@@ -10,4 +10,5 @@ import android.support.annotation.IntDef;
 public @interface UIStatus {
     int STATUS_NETWORKING = 1;
     int STATUS_NOTHING = 0;
+    int STATUS_SELF_START = 10;
 }

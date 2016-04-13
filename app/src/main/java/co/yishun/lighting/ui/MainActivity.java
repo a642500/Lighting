@@ -1,13 +1,10 @@
 package co.yishun.lighting.ui;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,9 +18,8 @@ import org.androidannotations.annotations.ViewById;
 import co.yishun.lighting.R;
 import co.yishun.lighting.account.AccountManager;
 import co.yishun.lighting.ui.common.BaseActivity;
+import co.yishun.lighting.ui.common.BaseWebFragment_;
 import co.yishun.lighting.ui.view.ResideLayout;
-import co.yishun.lighting.util.FileUtil;
-import co.yishun.lighting.web.LUWebViewClient;
 
 
 @EActivity
@@ -31,8 +27,6 @@ public class MainActivity extends BaseActivity {
 
     @ViewById
     Toolbar toolbar;
-    @ViewById
-    WebView webView;
     @ViewById
     ResideLayout resideLayout;
     @ViewById
@@ -46,7 +40,6 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         toolbar.setNavigationOnClickListener(v -> resideLayout.openPane());
-        setWebView();
     }
 
     @AfterViews
@@ -61,31 +54,6 @@ public class MainActivity extends BaseActivity {
         return "MainActivity";
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
-    private void setWebView() {
-
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setAllowFileAccess(true);
-        webView.getSettings().setAllowContentAccess(true);
-        webView.getSettings().setAllowFileAccessFromFileURLs(true);
-        webView.getSettings().setAllowUniversalAccessFromFileURLs(true);
-        webView.getSettings().setDomStorageEnabled(true);
-        webView.getSettings().setDatabaseEnabled(true);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            //noinspection deprecation
-            webView.getSettings().setDatabasePath(FileUtil.getDatabasePath(this));
-        }
-
-        webView.setWebViewClient(new LUWebViewClient());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            if (0 != (getApplicationInfo().flags &= ApplicationInfo.FLAG_DEBUGGABLE)) {
-                WebView.setWebContentsDebuggingEnabled(true);
-            }
-        }
-
-        webView.loadUrl("http://www.yishun.co/");
-    }
-
     public void onNavigationItemClicked(View view) {
         switch (view.getId()) {
             case R.id.navigation_item_lightup:
@@ -95,7 +63,13 @@ public class MainActivity extends BaseActivity {
                 ShootActivity_.intent(this).start();
                 break;
             case R.id.navigation_item_profile:
-                UserInfoActivity_.intent(this).start();
+                Fragment fragment = getSupportFragmentManager().findFragmentByTag("main");
+                if (fragment == null) {
+                    fragment = BaseWebFragment_.builder().
+                            mUrl("http://devlightup.yishun.co/static/personal.html").build();
+                }
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, "main")
+                        .commitAllowingStateLoss();
                 break;
             case R.id.navigation_item_settings:
                 startActivity(new Intent(this, SettingsActivity.class));

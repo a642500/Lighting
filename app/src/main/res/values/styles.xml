@@ -12,10 +12,10 @@
         <item name="android:textColorSecondary">#8b8b8b</item>
         <item name="android:textColorSecondaryInverse">#8b8b8b</item>
         <item name="android:colorBackground">#22252a</item>
-        <item name="android:windowBackground">?android:colorForeground</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
     </style>
 
     <style name="AppTheme.LoginActivity">
-        <item name="android:colorAccent">@android:color/white</item>
+        <item name="colorAccent">@android:color/white</item>
     </style>
 </resources>

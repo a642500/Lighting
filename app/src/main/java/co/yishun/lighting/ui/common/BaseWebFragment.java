@@ -36,7 +36,7 @@ import co.yishun.lighting.util.LogUtil;
  * Created by Jinge on 2016/1/21.
  */
 @EFragment
-public abstract class BaseWebFragment extends BaseFragment {
+public class BaseWebFragment extends BaseFragment {
     public static final String TAG_WEB = "web";
     private static final String TAG = "BaseWebFragment";
     private static boolean needGlobalRefresh = false;
@@ -86,6 +86,11 @@ public abstract class BaseWebFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         webView.clearCache(false);
+    }
+
+    @Override
+    public String getPageInfo() {
+        return TAG;
     }
 
     @Override

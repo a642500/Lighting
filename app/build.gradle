@@ -29,6 +29,10 @@ android {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
+
+    aaptOptions {
+        ignoreAssetsPattern 'x86:fonts:armeabi-v7a-neon'
+    }
 }
 apply plugin: 'android-apt'
 

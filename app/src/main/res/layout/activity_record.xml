@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorPrimary"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -28,53 +28,51 @@
         android:orientation="horizontal"
         android:padding="16dp">
 
-        <TextView
+        <Button
             android:id="@+id/redoBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/bg_btn_transparent"
             android:gravity="center"
             android:minHeight="48dp"
             android:minWidth="48dp"
             android:text="@string/activity_record_btn_redo"
             android:textColor="@color/colorAccent"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="invisible"
+            tools:visibility="invisible" />
 
         <ImageButton
-            android:layout_width="wrap_content"
+            android:id="@+id/recordBtn"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@drawable/bg_btn_transparent"
-            android:src="@drawable/ic_basic_stop" />
+            android:padding="16dp"
+            android:src="@drawable/ic_basic_play" />
 
-        <TextView
+        <Button
             android:id="@+id/finishBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/bg_btn_transparent"
             android:gravity="center"
             android:minHeight="48dp"
             android:minWidth="48dp"
             android:text="@string/activity_record_btn_finish"
             android:textColor="@color/colorAccent"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="invisible"
+            tools:visibility="invisible" />
     </LinearLayout>
-
-    <co.yishun.lighting.ui.view.PressButton
-        android:id="@+id/recordBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/controlBtn"
-        android:layout_marginLeft="64dp"
-        android:layout_marginRight="64dp"
-        android:background="@drawable/bg_btn_circular_white"
-        android:text="@string/activity_record_btn_record"
-        android:textColor="?attr/colorAccent" />
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/recordBtn"
+        android:layout_above="@id/controlBtn"
         android:layout_below="@id/toolbar">
 
         <ImageView
@@ -100,7 +98,9 @@
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:progress="20" />
+                android:progress="20"
+                android:visibility="invisible"
+                tools:visibility="visible" />
         </android.support.design.widget.CoordinatorLayout>
 
 
