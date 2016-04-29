@@ -33,7 +33,7 @@ public class Constants {
     public static final String BASE_URL;
 
     static {
-        BASE_URL = SANDBOX ? "http://devlightup.yishun.co:61336/v1/" : "http://devlightup.yishun.co:61336/v1/";
+        BASE_URL = SANDBOX ? "http://devlightup.yishun.co:61336/v1/" : "http://lightup.yishun.co:61336/v1/";
     }
 
 
