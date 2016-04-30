@@ -5,7 +5,7 @@ package co.yishun.lighting;
  */
 public class Constants {
     public static final boolean LOG_ENABLE = false;
-    public static final boolean SANDBOX = false;
+    public static final boolean SANDBOX = true;
 
     public static final String MIME_TYPE = "video/mp4";
     public static final String VIDEO_FILE_SUFFIX = ".mp4";
