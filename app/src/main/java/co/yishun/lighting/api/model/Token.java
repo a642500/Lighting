@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by carlos on 4/6/16.
  */
-public class Token implements Serializable {
+public class Token extends JsonBean implements Serializable {
     public String userId;
     public String accessToken;
 

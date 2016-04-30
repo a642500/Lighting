@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by carlos on 4/13/16.
  */
-public class OtherUser extends JsonBean {
+public class OtherUser extends Token {
     public String targetId;
     @SerializedName("have_light_number")
     public String lightNumber;
