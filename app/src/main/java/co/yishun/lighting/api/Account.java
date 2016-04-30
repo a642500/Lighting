@@ -87,9 +87,18 @@ public interface Account {
 
     @FormUrlEncoded
     @POST("account/refresh_device_token")
+    @Deprecated
     Call<Void> refreshDeviceToken(@Field("user_id") String userId,
                                   @Field("access_token") String accessToken,
                                   @Field("device_token") String deviceToken
+    );
+
+    @FormUrlEncoded
+    @POST("account/refresh_device_token_lib")
+    @Deprecated
+    Call<Void> refreshDeviceTokenLib(@Field("user_id") String userId,
+                                     @Field("access_token") String accessToken,
+                                     @Field("device_token") String deviceToken
     );
 
 

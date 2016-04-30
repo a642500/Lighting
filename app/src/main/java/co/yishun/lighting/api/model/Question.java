@@ -13,4 +13,13 @@ public class Question implements Serializable {
 
     @SerializedName("problem_id")
     public String id;
+
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "content='" + content + '\'' +
+                ", id='" + id + '\'' +
+                '}';
+    }
 }
