@@ -166,7 +166,7 @@ public class BaseWebFragment extends BaseFragment {
     @Background
     void webGetAccount(String call) {
         safelyDoWithContext(context -> mWebView.loadUrl(
-                String.format(toJs(AccountManager.getUserInfo(context), true, true), call)));
+                toJs(AccountManager.getUserInfo(context), true, true, call)));
     }
 //
 //    private void webGetAccountId(Map<String,String args) {
@@ -190,10 +190,7 @@ public class BaseWebFragment extends BaseFragment {
         String id = args.get("user_id");
         //TODO
         safelyDoWithToken((token) -> doWithWebViewInUIThread(
-                webView -> {
-                    String url = String.format(toJs(token, false, true), call);
-                    mWebView.loadUrl(url);
-                }));
+                webView -> mWebView.loadUrl(toJs(token, false, true, call))));
     }
 
     @UiThread
@@ -209,14 +206,14 @@ public class BaseWebFragment extends BaseFragment {
             String sexuality = AccountManager.getUserInfo(context).getSexuality().toString();
             //noinspection WrongConstant
             Response<OtherUser> response = APIFactory.getProcedureAPI().
-                    getOthers(token.userId, token.accessToken, sexuality).execute();
+                    getAUser(token.userId, token.accessToken, sexuality).execute();
 
             if (response.isSuccessful()) {
                 OtherUser otherUser = response.body();
-                doWithWebViewInUIThread(webView -> {
-                    String url = String.format(toJs(otherUser), false, true);
-                    mWebView.loadUrl(url);
-                });
+                otherUser.userId = token.userId;
+                otherUser.accessToken = token.accessToken;
+                doWithWebViewInUIThread(webView ->
+                        mWebView.loadUrl(toJs(otherUser, false, true, call)));
             } else {
                 showSnackMsg(R.string.error_server);
             }
@@ -273,11 +270,7 @@ public class BaseWebFragment extends BaseFragment {
 //                HybridUrlHandler.FUNC_GET_BASIC_AUTH_HEADER));
 //    }
 
-    public String toJs(Object o) {
-        return toJs(o, true);
-    }
-
-    public String toJs(Object o, boolean encode, boolean naming) {
+    public String toJs(Object o, boolean encode, boolean naming, Object... stringArgs) {
         String arg;
         Gson gson;
         if (naming)
@@ -294,13 +287,9 @@ public class BaseWebFragment extends BaseFragment {
                 arg = arg.substring(0, arg.length() - 1);
         }
 
-        String result = "javascript:%s(" + arg + ")";
+        String result = String.format("javascript:%s(" + arg + ")", stringArgs);
         LogUtil.d(TAG, "load js : " + result);
         return result;
-    }
-
-    public String toJs(Object o, boolean encode) {
-        return toJs(o, encode, false);
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {

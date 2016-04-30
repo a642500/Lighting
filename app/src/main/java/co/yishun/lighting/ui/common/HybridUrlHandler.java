@@ -84,20 +84,27 @@ public abstract class HybridUrlHandler {
             UrlModel urlModel = new UrlModel();
 
             JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
-            urlModel.type = jsonObject.get("type").getAsString();
-            urlModel.call = jsonObject.get("call").getAsString();
-            urlModel.args = new HashMap<>();
 
-            Set<Map.Entry<String, JsonElement>> argMap = jsonObject.getAsJsonObject("args").entrySet();
-            for (Map.Entry<String, JsonElement> entry : argMap) {
-                String value = entry.getValue().toString();
+            if (jsonObject.has("type")) {
+                urlModel.type = jsonObject.get("type").getAsString();
+            }
+            if (jsonObject.has("call")) {
+                urlModel.call = jsonObject.get("call").getAsString();
+            }
 
-                value = value.replace("\\n", "\n");
-                // Gson escape every splash, so restore newline
-                if (value.startsWith("\"") && value.endsWith("\""))
-                    value = value.substring(1, value.length() - 1);
+            if (jsonObject.has("args")) {
+                urlModel.args = new HashMap<>();
+                Set<Map.Entry<String, JsonElement>> argMap = jsonObject.getAsJsonObject("args").entrySet();
+                for (Map.Entry<String, JsonElement> entry : argMap) {
+                    String value = entry.getValue().toString();
 
-                urlModel.args.put(entry.getKey(), value);
+                    value = value.replace("\\n", "\n");
+                    // Gson escape every splash, so restore newline
+                    if (value.startsWith("\"") && value.endsWith("\""))
+                        value = value.substring(1, value.length() - 1);
+
+                    urlModel.args.put(entry.getKey(), value);
+                }
             }
 
             if (TextUtils.equals(urlModel.type, FUNC_JUMP)) {
@@ -116,6 +123,16 @@ public abstract class HybridUrlHandler {
 
         if (TextUtils.equals(des, "update_profile")) {
             UserInfoActivity_.intent(context).start();
+        } else if (TextUtils.equals(des, "play_video")) {
+
+        } else if (TextUtils.equals(des, "play_audio")) {
+
+        } else if (TextUtils.equals(des, "other_profile")) {
+
+        } else if (TextUtils.equals(des, "audio_question_list")) {
+
+        } else if (TextUtils.equals(des, "video_question_list")) {
+
         }
         return true;
     }
