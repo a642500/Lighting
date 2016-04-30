@@ -42,7 +42,7 @@ public class IntegrateInfoActivity extends BaseActivity {
     void loadQuestions() {
         safelyDoWithToken((token) -> {
             Response<List<Question>> response = APIFactory.getProcedureAPI().
-                    getQuestions(token.userId, token.accessToken, type, 3).execute();
+                    getQuestions(token.userId, token.accessToken, type).execute();
 
             if (response.isSuccessful()) {
                 showQuestions(response.body());
