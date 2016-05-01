@@ -71,6 +71,7 @@ public class VideoQuestion implements QuestionView.IQuestion {
     @Override
     public void onDeleteAnswer(Context context) {
         getAnswerFile(context).delete();
+        mAnswer = null;
     }
 
 

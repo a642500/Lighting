@@ -74,6 +74,7 @@ public class AudioQuestion implements QuestionView.IQuestion {
             mMediaPlayer = null;
         }
         mAnswer.getAnswerFile(context).delete();
+        mAnswer = null;
     }
 
     public class AudioAnswer implements Answer {
