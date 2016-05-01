@@ -76,7 +76,7 @@ public class AudioQuestion implements QuestionView.IQuestion {
         mAnswer.getAnswerFile(context).delete();
     }
 
-    class AudioAnswer implements Answer {
+    public class AudioAnswer implements Answer {
         public File getAnswerFile(Context context) {
             return FileUtil.getAudioStoreFile(context, mOrder);
         }

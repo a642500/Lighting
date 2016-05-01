@@ -98,6 +98,8 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
         if (video != null && video.length() > 0) {
             setResult(RESULT_OK, new Intent().setData(Uri.fromFile(video)));
             this.finish();
+        } else {
+            setResult(RESULT_FIRST_USER);
         }
     }
 

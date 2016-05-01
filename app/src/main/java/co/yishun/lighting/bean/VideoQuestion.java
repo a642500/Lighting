@@ -18,10 +18,14 @@ public class VideoQuestion implements QuestionView.IQuestion {
     public static final int REQUEST_VIDEO = 2;
     public final int mOrder;
     public final String mQuestion;
+    @Procedure.QuestionType
+    public final String mType;
     private Answer mAnswer;
 
-    public VideoQuestion(int mOrder, String mQuestion, Answer mAnswer) {
+    public VideoQuestion(int mOrder, @Procedure.QuestionType
+    String type, String mQuestion, Answer mAnswer) {
         this.mOrder = mOrder;
+        mType = type;
         this.mQuestion = mQuestion;
         this.mAnswer = mAnswer;
     }
@@ -52,7 +56,7 @@ public class VideoQuestion implements QuestionView.IQuestion {
     }
 
     private File getAnswerFile(Context context) {
-        return FileUtil.getAudioStoreFile(context, mOrder);
+        return FileUtil.getVideoStoreFile(context, mType, mOrder);
     }
 
     private Uri getAnswerUri(Context context) {
@@ -70,13 +74,11 @@ public class VideoQuestion implements QuestionView.IQuestion {
     }
 
 
-    public abstract class VideoAnswer implements Answer {
+    public class VideoAnswer implements Answer {
         public File getAnswerFile(Context context) {
-            return FileUtil.getVideoStoreFile(context, getType(), mOrder);
+            return FileUtil.getVideoStoreFile(context, mType, mOrder);
         }
 
-        @Procedure.QuestionType
-        public abstract String getType();
     }
 
 }

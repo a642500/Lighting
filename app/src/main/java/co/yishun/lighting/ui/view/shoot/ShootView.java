@@ -387,6 +387,8 @@ public class ShootView extends TextureView implements IShootView, MediaRecorder.
                     break;
                 case RecordHandler.STOP:
                     mRecorder.stop();
+                    mRecorder.reset();
+                    mRecorder.release();
 
                     this.removeCallbacksAndMessages(null);
                     if (!mHandlerThread.isInterrupted()) {

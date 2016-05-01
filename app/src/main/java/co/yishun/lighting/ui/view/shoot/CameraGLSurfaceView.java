@@ -36,7 +36,7 @@ import static co.yishun.lighting.util.LogUtil.i;
 @TargetApi(18)
 public class CameraGLSurfaceView extends SquareGLSurfaceView implements SurfaceTexture.OnFrameAvailableListener, IShootView {
     private static final String TAG = "CameraGLSurfaceView";
-    private final Object mLock = new Object();
+    private final Object mCameraLock = new Object();
     protected boolean mHasFrontCamera;
     protected boolean mHasFlash;
     protected boolean mIsBackCamera = false;
@@ -199,7 +199,7 @@ public class CameraGLSurfaceView extends SquareGLSurfaceView implements SurfaceT
     private void innerReleaseCamera() {
         i(TAG, "release camera:" + camera);
         if (camera != null) {
-            synchronized (mLock) {
+            synchronized (mCameraLock) {
                 try {
                     camera.setPreviewCallback(null);
                     camera.stopPreview();
@@ -244,7 +244,7 @@ public class CameraGLSurfaceView extends SquareGLSurfaceView implements SurfaceT
     }
 
     protected void setupCamera(SurfaceTexture surfaceTexture) {
-        synchronized (mLock) {
+        synchronized (mCameraLock) {
             try {
                 i(TAG, "locked to setup camera");
                 innerReleaseCamera();

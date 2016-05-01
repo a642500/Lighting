@@ -13,6 +13,7 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.FragmentArg;
 import org.androidannotations.annotations.ViewById;
 
+import java.io.File;
 import java.util.List;
 
 import co.yishun.lighting.R;
@@ -22,6 +23,7 @@ import co.yishun.lighting.bean.AudioQuestion;
 import co.yishun.lighting.bean.VideoQuestion;
 import co.yishun.lighting.ui.common.BaseFragment;
 import co.yishun.lighting.ui.view.QuestionView;
+import co.yishun.lighting.util.FileUtil;
 
 /**
  * Created by carlos on 3/28/16.
@@ -84,17 +86,23 @@ public class QuestionFragment extends BaseFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK && requestCode <= 3) {
             Uri videoUri = data.getData();
+            File file = new File(videoUri.getPath());
+
             int index = requestCode - 1;
-            mQuestions[index].setAnswer(
-                    ((VideoQuestion) mQuestions[index]).new
-                            VideoAnswer() {
-                                @Override
-                                public String getType() {
-                                    return type;
-                                }
-                            });
-            questionViews[index].notifyQuestionChanged();
+            final QuestionView.IQuestion question = mQuestions[index];
+            if (file.renameTo(FileUtil.getVideoStoreFile(getContext(), type, requestCode))) {
+                question.setAnswer(((VideoQuestion) mQuestions[index]).new VideoAnswer());
+                questionViews[index].notifyQuestionChanged();
+            } else {
+                onShootError();
+            }
+        } else if (resultCode != Activity.RESULT_CANCELED) {
+            onShootError();
         }
+    }
+
+    private void onShootError() {
+        //TODO msg error
     }
 
     private QuestionView.IQuestion buildIQuestion(final Question question, final int order) {
@@ -104,7 +112,7 @@ public class QuestionFragment extends BaseFragment {
             case Procedure.QUESTION_TYPE_EXPERIENCE:
             case Procedure.QUESTION_TYPE_VALUES:
             default:
-                return new VideoQuestion(order, question.content, null);
+                return new VideoQuestion(order, type, question.content, null);
         }
     }
 }
