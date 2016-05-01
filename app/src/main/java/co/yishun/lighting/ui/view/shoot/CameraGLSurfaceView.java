@@ -39,7 +39,7 @@ public class CameraGLSurfaceView extends SquareGLSurfaceView implements SurfaceT
     private final Object mLock = new Object();
     protected boolean mHasFrontCamera;
     protected boolean mHasFlash;
-    protected boolean mIsBackCamera = true;
+    protected boolean mIsBackCamera = false;
     private HandlerThread mHandlerThread;
     private CameraRecordRender mCameraRenderer;
     private CameraHandler mBackgroundHandler;

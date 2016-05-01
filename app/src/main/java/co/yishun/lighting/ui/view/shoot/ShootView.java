@@ -46,7 +46,7 @@ public class ShootView extends TextureView implements IShootView, MediaRecorder.
     private boolean mHasFrontCamera;
     private CameraId mCameraId;
     private boolean mHasFlash;
-    private boolean mIsBackCamera = true;
+    private boolean mIsBackCamera = false;
     private Consumer<File> mRecordEndConsumer;
     private Callback mRecordStartCallback;
     private File mFile = FileUtil.getVideoCacheFile(getContext());
@@ -229,7 +229,7 @@ public class ShootView extends TextureView implements IShootView, MediaRecorder.
         mHasFrontCamera = mHasFrontCamera && mCameraId.front != -1;
         e(TAG, "front camera enable: " + mHasFrontCamera);
 
-        innerSwitchCamera(true);// load camera first
+        innerSwitchCamera(mIsBackCamera);// load camera first
         this.setSurfaceTextureListener(new SurfaceTextureListener() {
             @Override
             public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
