@@ -1,6 +1,8 @@
 package co.yishun.lighting.ui;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -76,6 +78,23 @@ public class QuestionFragment extends BaseFragment {
             questionViews[i].setQuestion(mQuestions[i]);
         }
         progressBar.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK && requestCode <= 3) {
+            Uri videoUri = data.getData();
+            int index = requestCode - 1;
+            mQuestions[index].setAnswer(
+                    ((VideoQuestion) mQuestions[index]).new
+                            VideoAnswer() {
+                                @Override
+                                public String getType() {
+                                    return type;
+                                }
+                            });
+            questionViews[index].notifyQuestionChanged();
+        }
     }
 
     private QuestionView.IQuestion buildIQuestion(final Question question, final int order) {

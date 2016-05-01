@@ -5,6 +5,7 @@ import android.net.Uri;
 
 import java.io.File;
 
+import co.yishun.lighting.api.Procedure;
 import co.yishun.lighting.ui.PlayActivity_;
 import co.yishun.lighting.ui.ShootActivity_;
 import co.yishun.lighting.ui.view.QuestionView;
@@ -14,9 +15,10 @@ import co.yishun.lighting.util.FileUtil;
  * Created by carlos on 3/29/16.
  */
 public class VideoQuestion implements QuestionView.IQuestion {
+    public static final int REQUEST_VIDEO = 2;
     public final int mOrder;
     public final String mQuestion;
-    public final Answer mAnswer;
+    private Answer mAnswer;
 
     public VideoQuestion(int mOrder, String mQuestion, Answer mAnswer) {
         this.mOrder = mOrder;
@@ -26,7 +28,12 @@ public class VideoQuestion implements QuestionView.IQuestion {
 
     @Override
     public void onRecordAnswer(Context context) {
-        ShootActivity_.intent(context).start();
+        ShootActivity_.intent(context).startForResult(mOrder);
+    }
+
+    @Override
+    public void setAnswer(Answer answer) {
+        mAnswer = answer;
     }
 
     @Override
@@ -62,7 +69,14 @@ public class VideoQuestion implements QuestionView.IQuestion {
         getAnswerFile(context).delete();
     }
 
-    public class Answer {
+
+    public abstract class VideoAnswer implements Answer {
+        public File getAnswerFile(Context context) {
+            return FileUtil.getVideoStoreFile(context, getType(), mOrder);
+        }
+
+        @Procedure.QuestionType
+        public abstract String getType();
     }
 
 }

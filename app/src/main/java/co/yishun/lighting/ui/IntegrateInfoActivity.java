@@ -1,5 +1,6 @@
 package co.yishun.lighting.ui;
 
+import android.content.Intent;
 import android.widget.FrameLayout;
 
 import org.androidannotations.annotations.AfterViews;
@@ -67,6 +68,14 @@ public class IntegrateInfoActivity extends BaseActivity {
     @UiThread
     void showQuestions(List<Question> questions) {
         mFragment.setQuestions(questions);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mFragment.onActivityResult(requestCode, resultCode, data);
+        // disable origin forwarding implement, because we didn't call startForResult from
+        // Fragment, so activity's implementation does not work
+//        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @AfterViews

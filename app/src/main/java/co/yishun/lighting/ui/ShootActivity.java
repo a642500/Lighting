@@ -73,6 +73,7 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
     private CameraGLSurfaceView mCameraGLSurfaceView;
     private boolean flashOn = false;
     private long lastStartTime = 0;
+    private File video;
 
     @Click
     void leftBtnClicked(View view) {
@@ -94,7 +95,10 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
     }
 
     private void finishBtnClicked(View view) {
-
+        if (video != null && video.length() > 0) {
+            setResult(RESULT_OK, new Intent().setData(Uri.fromFile(video)));
+            this.finish();
+        }
     }
 
     private void redoBtnClicked(View view) {
@@ -267,8 +271,8 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
 
     @UiThread
     void videoOK(File file) {
-        setResult(RESULT_OK, new Intent().setData(Uri.fromFile(file)));
-
+        video = file;
+        status = STATUS_RECORDED;
     }
 
     @Override

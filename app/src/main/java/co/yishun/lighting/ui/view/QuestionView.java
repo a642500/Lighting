@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import co.yishun.lighting.R;
+import co.yishun.lighting.bean.Answer;
 
 /**
  * Created by carlos on 3/24/16.
@@ -109,6 +110,8 @@ public class QuestionView extends RelativeLayout {
         void onDeleteAnswer(Context context);
 
         void onRecordAnswer(Context context);
+
+        void setAnswer(Answer answer);
     }
 
 }

@@ -14,10 +14,10 @@ import co.yishun.lighting.util.FileUtil;
  * Created by carlos on 3/29/16.
  */
 public class AudioQuestion implements QuestionView.IQuestion {
-    public static final int REQUEST_RECORDING = 0;
+    public static final int REQUEST_RECORDING = 2;
     public final int mOrder;
     public final String mQuestion;
-    public final Answer mAnswer;
+    private Answer mAnswer;
     private MediaPlayer mMediaPlayer;
 
     public AudioQuestion(int mOrder, String mQuestion, Answer mAnswer) {
@@ -29,6 +29,11 @@ public class AudioQuestion implements QuestionView.IQuestion {
     @Override
     public void onRecordAnswer(Context context) {
         RecordActivity_.intent(context).questionName(this.getQuestionName()).startForResult(REQUEST_RECORDING);
+    }
+
+    @Override
+    public void setAnswer(Answer answer) {
+        mAnswer = answer;
     }
 
     @Override
@@ -46,14 +51,10 @@ public class AudioQuestion implements QuestionView.IQuestion {
         return mQuestion;
     }
 
-    private File getAnswerFile(Context context) {
-        return FileUtil.getAudioStoreFile(context, mOrder);
-    }
-
     @Override
     public void onPlayAnswer(Context context) {
         if (mMediaPlayer == null) {
-            File audio = getAnswerFile(context);
+            File audio = mAnswer.getAnswerFile(context);
             if (audio.length() > 0) {
                 mMediaPlayer = MediaPlayer.create(context, Uri.fromFile(audio));
             }
@@ -72,10 +73,13 @@ public class AudioQuestion implements QuestionView.IQuestion {
             mMediaPlayer.release();
             mMediaPlayer = null;
         }
-        getAnswerFile(context).delete();
+        mAnswer.getAnswerFile(context).delete();
     }
 
-    public class Answer {
+    class AudioAnswer implements Answer {
+        public File getAnswerFile(Context context) {
+            return FileUtil.getAudioStoreFile(context, mOrder);
+        }
     }
 
 }

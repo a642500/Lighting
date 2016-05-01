@@ -13,6 +13,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import co.yishun.lighting.Constants;
+import co.yishun.lighting.api.Procedure;
 
 /**
  * Created by Carlos on 2016/3/22.
@@ -31,12 +32,19 @@ public class FileUtil {
         return new File(getCacheDirectory(context, false), "video-" + System.currentTimeMillis() + ".mp4");
     }
 
+    public static File getVideoStoreFile(Context context, @Procedure.QuestionType String type, int order) {
+        return new File(getCacheDirectory(context, false), "videoq" + Constants.URL_HYPHEN + type
+                + Constants.URL_HYPHEN + order + Constants.VIDEO_FILE_SUFFIX);
+    }
+
     public static File getAudioStoreFile(Context context, int order) {
-        return new File(getCacheDirectory(context, false), "audioq" + Constants.URL_HYPHEN + order + Constants.AUDIO_FILE_SUFFIX);
+        return new File(getCacheDirectory(context, false), "audioq" + Constants.URL_HYPHEN
+                + order + Constants.AUDIO_FILE_SUFFIX);
     }
 
     public static File getAudioCacheFile(Context context) {
-        return new File(getCacheDirectory(context, false), "audioq" + Constants.URL_HYPHEN + "cache" + Constants.AUDIO_FILE_SUFFIX);
+        return new File(getCacheDirectory(context, false), "audioq" + Constants.URL_HYPHEN
+                + "cache" + Constants.AUDIO_FILE_SUFFIX);
     }
 
 
