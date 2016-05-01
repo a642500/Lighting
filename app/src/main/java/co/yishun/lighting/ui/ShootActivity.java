@@ -168,8 +168,12 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
 
     @Click
     void shootBtnClicked() {
-        status = STATUS_RECORDING;
-        shootView.record(this, this);
+        if (status == STATUS_PREPARE) {
+            status = STATUS_RECORDING;
+            shootView.record(this, this);
+        } else if (status == STATUS_RECORDING) {
+            shootView.stop();
+        }
     }
 
     private void setControlBtn() {
