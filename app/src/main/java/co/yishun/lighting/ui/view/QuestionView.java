@@ -12,8 +12,9 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.File;
+
 import co.yishun.lighting.R;
-import co.yishun.lighting.bean.Answer;
 
 /**
  * Created by carlos on 3/24/16.
@@ -77,7 +78,7 @@ public class QuestionView extends RelativeLayout {
     public void setQuestion(@NonNull IQuestion question) {
         mQuestion = question;
         questionTextView.setText(question.getQuestionName());
-        orderTextView.setText(String.valueOf(question.getQuestionOrder()));
+        orderTextView.setText(String.valueOf(question.getQuestionIndex() + 1));
         deleteBtn.setOnClickListener(v -> {
             mQuestion.onDeleteAnswer(getContext());
             notifyQuestionChanged();
@@ -104,7 +105,7 @@ public class QuestionView extends RelativeLayout {
     }
 
     public interface IQuestion {
-        int getQuestionOrder();
+        int getQuestionIndex();
 
         boolean isAnswered();
 
@@ -116,7 +117,7 @@ public class QuestionView extends RelativeLayout {
 
         void onRecordAnswer(Context context);
 
-        void setAnswer(Answer answer);
+        boolean buildAnswer(Context context, File file);
     }
 
 }

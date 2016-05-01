@@ -15,16 +15,15 @@ import co.yishun.lighting.util.FileUtil;
  * Created by carlos on 3/29/16.
  */
 public class VideoQuestion implements QuestionView.IQuestion {
-    public static final int REQUEST_VIDEO = 2;
-    public final int mOrder;
+    public final int mIndex;
     public final String mQuestion;
     @Procedure.QuestionType
     public final String mType;
     private Answer mAnswer;
 
-    public VideoQuestion(int mOrder, @Procedure.QuestionType
+    public VideoQuestion(int index, @Procedure.QuestionType
     String type, String mQuestion, Answer mAnswer) {
-        this.mOrder = mOrder;
+        this.mIndex = index;
         mType = type;
         this.mQuestion = mQuestion;
         this.mAnswer = mAnswer;
@@ -32,17 +31,13 @@ public class VideoQuestion implements QuestionView.IQuestion {
 
     @Override
     public void onRecordAnswer(Context context) {
-        ShootActivity_.intent(context).startForResult(mOrder);
+        ShootActivity_.intent(context).startForResult(
+                mIndex);
     }
 
     @Override
-    public void setAnswer(Answer answer) {
-        mAnswer = answer;
-    }
-
-    @Override
-    public int getQuestionOrder() {
-        return mOrder;
+    public int getQuestionIndex() {
+        return mIndex;
     }
 
     @Override
@@ -56,7 +51,7 @@ public class VideoQuestion implements QuestionView.IQuestion {
     }
 
     private File getAnswerFile(Context context) {
-        return FileUtil.getVideoStoreFile(context, mType, mOrder);
+        return FileUtil.getVideoStoreFile(context, mType, mIndex);
     }
 
     private Uri getAnswerUri(Context context) {
@@ -74,10 +69,18 @@ public class VideoQuestion implements QuestionView.IQuestion {
         mAnswer = null;
     }
 
+    @Override
+    public boolean buildAnswer(Context context, File file) {
+        if (file.renameTo(FileUtil.getVideoStoreFile(context, mType, mIndex))) {
+            mAnswer = new VideoAnswer();
+            return true;
+        } else
+            return false;
+    }
 
     public class VideoAnswer implements Answer {
         public File getAnswerFile(Context context) {
-            return FileUtil.getVideoStoreFile(context, mType, mOrder);
+            return FileUtil.getVideoStoreFile(context, mType, mIndex);
         }
 
     }

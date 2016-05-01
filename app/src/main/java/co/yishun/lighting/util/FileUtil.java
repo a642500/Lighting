@@ -32,9 +32,9 @@ public class FileUtil {
         return new File(getCacheDirectory(context, false), "video-" + System.currentTimeMillis() + ".mp4");
     }
 
-    public static File getVideoStoreFile(Context context, @Procedure.QuestionType String type, int order) {
+    public static File getVideoStoreFile(Context context, @Procedure.QuestionType String type, int index) {
         return new File(getCacheDirectory(context, false), "videoq" + Constants.URL_HYPHEN + type
-                + Constants.URL_HYPHEN + order + Constants.VIDEO_FILE_SUFFIX);
+                + Constants.URL_HYPHEN + index + Constants.VIDEO_FILE_SUFFIX);
     }
 
     public static File getAudioStoreFile(Context context, int order) {

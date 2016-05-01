@@ -23,7 +23,6 @@ import co.yishun.lighting.bean.AudioQuestion;
 import co.yishun.lighting.bean.VideoQuestion;
 import co.yishun.lighting.ui.common.BaseFragment;
 import co.yishun.lighting.ui.view.QuestionView;
-import co.yishun.lighting.util.FileUtil;
 
 /**
  * Created by carlos on 3/28/16.
@@ -76,7 +75,7 @@ public class QuestionFragment extends BaseFragment {
     public void setQuestions(List<Question> questions) {
         for (int i = 0; i < questionViews.length && i < questions.size(); i++) {
             Question question = questions.get(i);
-            mQuestions[i] = buildIQuestion(question, i + 1);
+            mQuestions[i] = buildIQuestion(question, i);
             questionViews[i].setQuestion(mQuestions[i]);
         }
         progressBar.setVisibility(View.INVISIBLE);
@@ -84,35 +83,33 @@ public class QuestionFragment extends BaseFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK && requestCode <= 3) {
-            Uri videoUri = data.getData();
-            File file = new File(videoUri.getPath());
+        if (resultCode == Activity.RESULT_OK && requestCode < 3) {
+            Uri mediaUri = data.getData();
+            File file = new File(mediaUri.getPath());
 
-            int index = requestCode - 1;
-            final QuestionView.IQuestion question = mQuestions[index];
-            if (file.renameTo(FileUtil.getVideoStoreFile(getContext(), type, requestCode))) {
-                question.setAnswer(((VideoQuestion) mQuestions[index]).new VideoAnswer());
+            final int index = requestCode;
+            if (mQuestions[index].buildAnswer(getContext(), file)) {
                 questionViews[index].notifyQuestionChanged();
             } else {
-                onShootError();
+                onResultError();
             }
         } else if (resultCode != Activity.RESULT_CANCELED) {
-            onShootError();
+            onResultError();
         }
     }
 
-    private void onShootError() {
+    private void onResultError() {
         //TODO msg error
     }
 
-    private QuestionView.IQuestion buildIQuestion(final Question question, final int order) {
+    private QuestionView.IQuestion buildIQuestion(final Question question, final int index) {
         switch (type) {
             case Procedure.QUESTION_TYPE_INFO:
-                return new AudioQuestion(order, question.content, null);
+                return new AudioQuestion(index, question.content, null);
             case Procedure.QUESTION_TYPE_EXPERIENCE:
             case Procedure.QUESTION_TYPE_VALUES:
             default:
-                return new VideoQuestion(order, type, question.content, null);
+                return new VideoQuestion(index, type, question.content, null);
         }
     }
 }

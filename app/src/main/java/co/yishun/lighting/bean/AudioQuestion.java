@@ -14,31 +14,35 @@ import co.yishun.lighting.util.FileUtil;
  * Created by carlos on 3/29/16.
  */
 public class AudioQuestion implements QuestionView.IQuestion {
-    public static final int REQUEST_RECORDING = 2;
-    public final int mOrder;
+    public final int mIndex;
     public final String mQuestion;
     private Answer mAnswer;
     private MediaPlayer mMediaPlayer;
 
-    public AudioQuestion(int mOrder, String mQuestion, Answer mAnswer) {
-        this.mOrder = mOrder;
+    public AudioQuestion(int index, String mQuestion, Answer mAnswer) {
+        this.mIndex = index;
         this.mQuestion = mQuestion;
         this.mAnswer = mAnswer;
     }
 
+
     @Override
     public void onRecordAnswer(Context context) {
-        RecordActivity_.intent(context).questionName(this.getQuestionName()).startForResult(REQUEST_RECORDING);
+        RecordActivity_.intent(context).questionName(this.getQuestionName()).startForResult(mIndex);
     }
 
     @Override
-    public void setAnswer(Answer answer) {
-        mAnswer = answer;
+    public boolean buildAnswer(Context context, File file) {
+        if (file.renameTo(FileUtil.getAudioStoreFile(context, mIndex))) {
+            mAnswer = new AudioAnswer();
+            return true;
+        } else
+            return false;
     }
 
     @Override
-    public int getQuestionOrder() {
-        return mOrder;
+    public int getQuestionIndex() {
+        return mIndex;
     }
 
     @Override
@@ -79,7 +83,7 @@ public class AudioQuestion implements QuestionView.IQuestion {
 
     public class AudioAnswer implements Answer {
         public File getAnswerFile(Context context) {
-            return FileUtil.getAudioStoreFile(context, mOrder);
+            return FileUtil.getAudioStoreFile(context, mIndex);
         }
     }
 
