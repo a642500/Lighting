@@ -2,11 +2,9 @@ package co.yishun.lighting.api;
 
 import android.support.annotation.StringDef;
 
-import java.util.List;
-
 import co.yishun.lighting.api.model.AudioMedia;
 import co.yishun.lighting.api.model.OtherUser;
-import co.yishun.lighting.api.model.Question;
+import co.yishun.lighting.api.model.QuestionList;
 import co.yishun.lighting.api.model.VideoMedia;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -21,12 +19,13 @@ public interface Procedure {
     String QUESTION_TYPE_EXPERIENCE = "emotion_experience";
     String QUESTION_TYPE_VALUES = "value_concept";
 
-    @POST("procedure/get_questions")
+    @POST("procedure/get_random_questions")
     @FormUrlEncoded
-    Call<List<Question>> getQuestions(
+    Call<QuestionList> getQuestions(
             @Field("user_id") String userId,
             @Field("access_token") String accessToken,
-            @Field("class") @QuestionType String type
+            @Field("class") @QuestionType String type,
+            @Field("limit") int limit
     );
 
 

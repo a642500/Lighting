@@ -44,7 +44,7 @@ import co.yishun.lighting.api.APIFactory;
 import co.yishun.lighting.api.Media;
 import co.yishun.lighting.api.Procedure;
 import co.yishun.lighting.api.model.OtherUser;
-import co.yishun.lighting.ui.QuestionActivity_;
+import co.yishun.lighting.ui.IntegrateInfoActivity_;
 import co.yishun.lighting.ui.ShootActivity_;
 import co.yishun.lighting.ui.UserInfoActivity_;
 import co.yishun.lighting.util.FileUtil;
@@ -415,8 +415,11 @@ public class BaseWebFragment extends BaseFragment {
         } else if (TextUtils.equals(des, "other_profile")) {
 
         } else if (TextUtils.equals(des, "audio_question_list")) {
-            QuestionActivity_.intent(context).type(Procedure.QUESTION_TYPE_INFO).start();
+            //TODO edit mode or view mode
+//            QuestionActivity_.intent(context).type(Procedure.QUESTION_TYPE_INFO).start();
+            IntegrateInfoActivity_.intent(context).type(Procedure.QUESTION_TYPE_INFO).start();
         } else if (TextUtils.equals(des, "video_question_list")) {
+            //TODO edit mode or view mode
 
             final String typeArgs = args.get("type");
             @Media.VideoType String type;
@@ -428,7 +431,8 @@ public class BaseWebFragment extends BaseFragment {
             } else
                 return false;
 
-            QuestionActivity_.intent(context).type(type).start();
+//            QuestionActivity_.intent(context).type(type).start();
+            IntegrateInfoActivity_.intent(context).type(type).start();
         }
         return true;
     }

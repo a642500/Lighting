@@ -9,13 +9,13 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import co.yishun.lighting.R;
 import co.yishun.lighting.api.APIFactory;
 import co.yishun.lighting.api.Procedure;
 import co.yishun.lighting.api.model.Question;
+import co.yishun.lighting.api.model.QuestionList;
 import co.yishun.lighting.ui.common.BaseActivity;
 import retrofit2.Response;
 
@@ -41,26 +41,26 @@ public class IntegrateInfoActivity extends BaseActivity {
     @Background(id = CANCEL_WHEN_DESTROY)
     void loadQuestions() {
         safelyDoWithToken((token) -> {
-            Response<List<Question>> response = APIFactory.getProcedureAPI().
-                    getQuestions(token.userId, token.accessToken, type).execute();
+            Response<QuestionList> response = APIFactory.getProcedureAPI().
+                    getQuestions(token.userId, token.accessToken, type, 3).execute();
 
             if (response.isSuccessful()) {
-                showQuestions(response.body());
+                showQuestions(response.body().questions);
             } else {
                 showSnackMsg(R.string.activity_integrate_info_msg_get_question_fail);
                 //TODO remove test code
                 exit();
             }
         });
-
-        List<Question> fakeQuestions = new ArrayList<>(3);
-        for (int i = 0; i < 3; i++) {
-            Question question = new Question();
-            question.content = "This is my question-" + i;
-            question.id = "" + i;
-            fakeQuestions.add(question);
-        }
-        showQuestions(fakeQuestions);
+//
+//        List<Question> fakeQuestions = new ArrayList<>(3);
+//        for (int i = 0; i < 3; i++) {
+//            Question question = new Question();
+//            question.content = "This is my question-" + i;
+//            question.id = "" + i;
+//            fakeQuestions.add(question);
+//        }
+//        showQuestions(fakeQuestions);
 
     }
 
@@ -72,7 +72,7 @@ public class IntegrateInfoActivity extends BaseActivity {
     @AfterViews
     void setViews() {
         mFragment = (QuestionFragment) getSupportFragmentManager().findFragmentByTag(type);
-        if (mFragment != null) {
+        if (mFragment == null) {
             mFragment = QuestionFragment_.builder().type(type).build();
         }
         getSupportFragmentManager().beginTransaction()
