@@ -68,6 +68,9 @@
         <activity
             android:name=".ui.PlayActivity_"
             android:parentActivityName=".ui.IntegrateInfoActivity_" />
+        <activity
+            android:name=".ui.QuestionActivity_"
+            android:parentActivityName=".ui.MainActivity_" />
 
 
         <service
