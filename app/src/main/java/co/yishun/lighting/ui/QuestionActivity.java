@@ -27,6 +27,6 @@ public class QuestionActivity extends BaseActivity {
     void setUp() {
         getSupportFragmentManager().beginTransaction().replace(R.id.container,
                 QuestionFragment_.builder().type(type).build())
-                .addToBackStack("home").commitAllowingStateLoss();
+                .commitAllowingStateLoss();
     }
 }
