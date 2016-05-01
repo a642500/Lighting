@@ -69,7 +69,7 @@ public class RecordActivity extends BaseActivity implements MediaRecorder.OnInfo
     }
 
     private void initRecorder() {
-        File cache = FileUtil.getAudioCacheFile(this);
+        File cache = FileUtil.getRecordedAudioFile(this);
         if (cache.exists()) cache.delete();
 
         mRecorder = new MediaRecorder();
@@ -131,7 +131,7 @@ public class RecordActivity extends BaseActivity implements MediaRecorder.OnInfo
             case STATUS_RECORDED:
                 mMediaPlayer = new MediaPlayer();
                 try {
-                    mMediaPlayer.setDataSource(FileUtil.getAudioCacheFile(this).getPath());
+                    mMediaPlayer.setDataSource(FileUtil.getRecordedAudioFile(this).getPath());
                     mMediaPlayer.setOnCompletionListener(mp -> status = STATUS_PLAYED);
                     status = STATUS_PLAYING;
                     mMediaPlayer.prepare();

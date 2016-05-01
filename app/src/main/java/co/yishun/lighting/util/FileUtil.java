@@ -14,6 +14,7 @@ import java.util.zip.ZipInputStream;
 
 import co.yishun.lighting.Constants;
 import co.yishun.lighting.api.Procedure;
+import co.yishun.lighting.ui.RecordActivity;
 
 /**
  * Created by Carlos on 2016/3/22.
@@ -42,7 +43,12 @@ public class FileUtil {
                 + order + Constants.AUDIO_FILE_SUFFIX);
     }
 
-    public static File getAudioCacheFile(Context context) {
+    /**
+     * This method always return the same path. Take care of overwriting.
+     *
+     * @return File what is the {@link RecordActivity} recorded.
+     */
+    public static File getRecordedAudioFile(Context context) {
         return new File(getCacheDirectory(context, false), "audioq" + Constants.URL_HYPHEN
                 + "cache" + Constants.AUDIO_FILE_SUFFIX);
     }
