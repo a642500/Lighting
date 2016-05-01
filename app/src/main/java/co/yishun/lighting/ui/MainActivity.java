@@ -41,6 +41,12 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Fragment fragment = BaseWebFragment_.builder().
+                mUrl("http://devlightup.yishun.co:61336/static/video_index.html").build();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, fragment, "others")
+                .commitAllowingStateLoss();
+
         toolbar.setNavigationOnClickListener(v -> resideLayout.openPane());
     }
 
