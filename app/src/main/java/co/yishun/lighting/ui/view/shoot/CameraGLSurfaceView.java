@@ -85,7 +85,8 @@ public class CameraGLSurfaceView extends SquareGLSurfaceView implements SurfaceT
         setEGLContextClientVersion(2);
 
         file = FileUtil.getVideoCacheFile(getContext());
-        mCameraRenderer = new CameraRecordRender(getContext(), mBackgroundHandler, new EncoderConfig(file.getPath(), w, h, 1024 * 1024));
+        mCameraRenderer = new CameraRecordRender(getContext(), mBackgroundHandler,
+                new EncoderConfig(file.getPath(), w, h, 1024 * 1024));
         setRenderer(mCameraRenderer);
         setRenderMode(RENDERMODE_WHEN_DIRTY);
 
@@ -124,15 +125,20 @@ public class CameraGLSurfaceView extends SquareGLSurfaceView implements SurfaceT
                 mMoved = false;
                 return true;
             case MotionEvent.ACTION_MOVE:
-                if (Math.abs(event.getX() - mPressedX) > mMoveLimit || Math.abs(event.getY() - mPressedY) > mMoveLimit)
+                if (Math.abs(event.getX() - mPressedX) > mMoveLimit ||
+                        Math.abs(event.getY() - mPressedY) > mMoveLimit)
                     mMoved = true;
                 return true;
             case MotionEvent.ACTION_UP:
                 if (!mMoved) {
                     float x = event.getX();
                     float y = event.getY();
-                    Rect touchRect = new Rect((int) (x - 100), (int) (y - 100), (int) (x + 100), (int) (y + 100));
-                    final Rect targetFocusRect = new Rect(touchRect.left * 2000 / this.getWidth() - 1000, touchRect.top * 2000 / this.getHeight() - 1000, touchRect.right * 2000 / this.getWidth() - 1000, touchRect.bottom * 2000 / this.getHeight() - 1000);
+                    Rect touchRect = new Rect((int) (x - 100), (int) (y - 100),
+                            (int) (x + 100), (int) (y + 100));
+                    final Rect targetFocusRect = new Rect(touchRect.left * 2000 /
+                            this.getWidth() - 1000, touchRect.top * 2000 / this.getHeight()
+                            - 1000, touchRect.right * 2000 / this.getWidth() - 1000,
+                            touchRect.bottom * 2000 / this.getHeight() - 1000);
                     doTouchFocus(targetFocusRect);
                 } else {
                     if (event.getX() - mPressedX > mSlideLimit) {
@@ -244,7 +250,8 @@ public class CameraGLSurfaceView extends SquareGLSurfaceView implements SurfaceT
                 innerReleaseCamera();
                 camera = Camera.open(mIsBackCamera ? mCameraId.back : mCameraId.front);
                 final Camera.Parameters parameters = camera.getParameters();
-                mSize = CameraUtil.getOptimalPreviewSize(parameters.getSupportedPreviewSizes(), Constants.VIDEO_WIDTH, Constants.VIDEO_HEIGHT);
+                mSize = CameraUtil.getOptimalPreviewSize(parameters.getSupportedPreviewSizes(),
+                        Constants.VIDEO_WIDTH, Constants.VIDEO_HEIGHT);
 
                 parameters.setPreviewSize(mSize.width, mSize.height);
                 camera.setParameters(parameters);
@@ -283,19 +290,23 @@ public class CameraGLSurfaceView extends SquareGLSurfaceView implements SurfaceT
     }
 
     @Override
-    public void record(Callback recordStartCallback, Consumer<File> recordEndConsumer) {
+    public void record(final Callback recordStartCallback, final Consumer<File> recordEndConsumer) {
         Handler uiHandler = new Handler(Looper.getMainLooper());
-        //        file = new File(getCacheDirectory(getContext(), true), "video-" + System.currentTimeMillis() + ".mp4");
+        onEndListener = recordEndConsumer;
+
         i(TAG, file.toString());
-        //        queueEvent(() -> mCameraRenderer.setEncoderConfig(new EncoderConfig(file, 480, 480, 1024 * 1024)));
         queueEvent(() -> {
             mCameraRenderer.setRecordingEnabled(true);
             uiHandler.post(recordStartCallback::call);
             postDelayed(() -> {
                 mCameraRenderer.setRecordingEnabled(false);
-                onEndListener = recordEndConsumer;
-            }, 1200);
+            }, Constants.VIDEO_MAX_DURATION);
         });
+    }
+
+    @Override
+    public void stop() {
+        queueEvent(() -> mCameraRenderer.setRecordingEnabled(false));
     }
 
     @Override

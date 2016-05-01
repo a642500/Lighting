@@ -23,6 +23,8 @@ public interface IShootView {
 
     void record(Callback recordStartCallback, Consumer<File> recordEndConsumer);
 
+    void stop();
+
     void setSecurityExceptionHandler(SecurityExceptionHandler exceptionHandler);
 
     interface SecurityExceptionHandler {

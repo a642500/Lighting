@@ -314,6 +314,14 @@ public class ShootView extends TextureView implements IShootView, MediaRecorder.
     }
 
     @Override
+    public void stop() {
+
+        mBackgroundHandler.sendEmptyMessage(RecordHandler.STOP);
+        onRecordEnd(mFile);
+    }
+
+
+    @Override
     public void setSecurityExceptionHandler(SecurityExceptionHandler exceptionHandler) {
         mExceptionHandler = exceptionHandler;
     }
@@ -378,7 +386,7 @@ public class ShootView extends TextureView implements IShootView, MediaRecorder.
                     onRecordStart();
                     break;
                 case RecordHandler.STOP:
-                    mRecorder.release();
+                    mRecorder.stop();
 
                     this.removeCallbacksAndMessages(null);
                     if (!mHandlerThread.isInterrupted()) {

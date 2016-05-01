@@ -36,7 +36,8 @@ public class CameraRecordRender implements GLSurfaceView.Renderer {
     private static final int RECORDING_RESUMED = 2;
     private static final String TAG = "CameraRecordRender";
     private static final String DIR_NAME = "AVRecSample";
-    private static final SimpleDateFormat mDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.getDefault());
+    private static final SimpleDateFormat mDateTimeFormat =
+            new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.getDefault());
 
     private final Context mApplicationContext;
     private final CameraGLSurfaceView.CameraHandler mCameraHandler;
@@ -61,7 +62,8 @@ public class CameraRecordRender implements GLSurfaceView.Renderer {
     private MediaAudioEncoder mAudioEncoder;
     private FilterType[] types = FilterType.values();
 
-    public CameraRecordRender(Context context, CameraGLSurfaceView.CameraHandler cameraHandler, EncoderConfig config) {
+    public CameraRecordRender(Context context, CameraGLSurfaceView.CameraHandler cameraHandler,
+                              EncoderConfig config) {
         mApplicationContext = context.getApplicationContext();
         mCameraHandler = cameraHandler;
         mCurrentFilterType = mNewFilterType = FilterType.Normal;
@@ -73,7 +75,8 @@ public class CameraRecordRender implements GLSurfaceView.Renderer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        mVideoEncoder = new TextureMovieEncoder(context.getApplicationContext(), mEncoderConfig, mMediaMuxerWrapper);
+        mVideoEncoder = new TextureMovieEncoder(context.getApplicationContext(),
+                mEncoderConfig, mMediaMuxerWrapper);
         mAudioEncoder = new MediaAudioEncoder(mMediaMuxerWrapper);
         mMediaMuxerWrapper.setAudioEncoder(mAudioEncoder);
         mMediaMuxerWrapper.setVideoEncoder(mVideoEncoder);
@@ -194,7 +197,8 @@ public class CameraRecordRender implements GLSurfaceView.Renderer {
                 case RECORDING_RESUMED:
                     LogUtil.i(TAG, "else RECORDING_RESUME");
 //                    mVideoEncoder.stopRecording(() -> mCameraHandler.sendEmptyMessage(CameraGLSurfaceView.CameraHandler.END));
-                    mMediaMuxerWrapper.stopRecording(() -> mCameraHandler.sendEmptyMessage(CameraGLSurfaceView.CameraHandler.END));
+                    mMediaMuxerWrapper.stopRecording(() -> mCameraHandler.
+                            sendEmptyMessage(CameraGLSurfaceView.CameraHandler.END));
                     mRecordingStatus = RECORDING_OFF;
                     break;
                 case RECORDING_OFF:
