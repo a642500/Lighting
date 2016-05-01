@@ -16,6 +16,9 @@ import android.webkit.WebViewClient;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.AfterViews;
@@ -26,13 +29,23 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import co.yishun.lighting.Constants;
 import co.yishun.lighting.R;
 import co.yishun.lighting.account.AccountManager;
 import co.yishun.lighting.api.APIFactory;
+import co.yishun.lighting.api.Procedure;
 import co.yishun.lighting.api.model.OtherUser;
+import co.yishun.lighting.ui.QuestionFragment_;
+import co.yishun.lighting.ui.ShootActivity_;
+import co.yishun.lighting.ui.UserInfoActivity_;
 import co.yishun.lighting.util.FileUtil;
 import co.yishun.lighting.util.GsonFactory;
 import co.yishun.lighting.util.LogUtil;
@@ -44,6 +57,13 @@ import retrofit2.Response;
  */
 @EFragment(R.layout.fragment_web_view)
 public class BaseWebFragment extends BaseFragment {
+    public static final String URL_PREFIX = Constants.APP_URL_PREFIX;
+    public static final String FUNC_GET_ACCOUNT = "getAccount";
+    public static final String FUNC_JUMP = "jump";
+    public static final String FUNC_LOG = "log";
+    public static final String FUNC_GET_OTHERS = "getOthers";
+    public static final String FUNC_GET_ACCESS_TOKEN = "getAccessToken";
+    public static final String FUNC_CONFIG = "config";
     private static final String TAG = "BaseWebFragment";
     private static boolean needGlobalRefresh = false;
     @ViewById
@@ -62,8 +82,42 @@ public class BaseWebFragment extends BaseFragment {
     @FragmentArg
     protected String mArg;
 
+    @SuppressWarnings("unused")
     public static void invalidateWeb() {
         needGlobalRefresh = true;
+    }
+
+    public static String urlDecode(String raw) {
+        String result;
+        try {
+            result = URLDecoder.decode(raw, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            result = "decoder error";
+            LogUtil.e(TAG, "decoder error : " + raw);
+        }
+        return result;
+    }
+
+    @SuppressWarnings("unused")
+    public static List<String> urlDecode(List<String> rawStrings) {
+        List<String> results = new ArrayList<>();
+        for (String s : rawStrings) results.add(urlDecode(s));
+        return results;
+    }
+
+    @SuppressWarnings("unused")
+    public void setRefreshable(boolean refreshable) {
+        mRefreshable = refreshable;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mRefreshable && needGlobalRefresh) {
+            needGlobalRefresh = false;
+            reload();
+        }
     }
 
     @Override
@@ -77,15 +131,6 @@ public class BaseWebFragment extends BaseFragment {
     @Override
     public String getPageInfo() {
         return TAG;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mRefreshable && needGlobalRefresh) {
-            needGlobalRefresh = false;
-            reload();
-        }
     }
 
     @AfterInject
@@ -105,9 +150,9 @@ public class BaseWebFragment extends BaseFragment {
 
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
     @CallSuper
     @AfterViews
+    @SuppressLint("SetJavaScriptEnabled")
     protected void setUpWebView() {
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setAllowFileAccess(true);
@@ -144,10 +189,6 @@ public class BaseWebFragment extends BaseFragment {
         });
     }
 
-    public void setRefreshable(boolean refreshable) {
-        mRefreshable = refreshable;
-    }
-
     public void reload() {
         if (mWebView != null)
             mWebView.reload();
@@ -155,75 +196,6 @@ public class BaseWebFragment extends BaseFragment {
 
     private void loadOver() {
         swipeRefreshLayout.setRefreshing(false);
-    }
-
-//    private void webGetEnv(Map<String,String args) {
-//        @SuppressWarnings("ConstantConditions") String env = Constants.SANDBOX ? "development" : "production";
-//        mWebView.loadUrl(String.format(toJs(env), HybridUrlHandler.FUNC_GET_ENV));
-//    }
-
-
-    @Background
-    void webGetAccount(String call) {
-        safelyDoWithContext(context -> mWebView.loadUrl(
-                toJs(AccountManager.getUserInfo(context), true, true, call)));
-    }
-//
-//    private void webGetAccountId(Map<String,String args) {
-//        mWebView.loadUrl(String.format(toJs(AccountManager.getUserInfo(getContext()).id),
-//                HybridUrlHandler.FUNC_GET_ACCOUNT_ID));
-//    }
-
-    private void webLog(Map<String, String> args) {
-        LogUtil.i(TAG, "js log : " + args.get("text"));
-    }
-
-    private void webConfig(Map<String, String> args) {
-        boolean h = Boolean.valueOf(args.get("h_scroll_indicator"));
-        mWebView.setHorizontalScrollBarEnabled(h);
-        boolean v = Boolean.valueOf(args.get("v_scroll_indicator"));
-        mWebView.setVerticalScrollBarEnabled(v);
-    }
-
-    @Background
-    void webGetAccessToken(Map<String, String> args, String call) {
-        String id = args.get("user_id");
-        //TODO
-        safelyDoWithToken((token) -> doWithWebViewInUIThread(
-                webView -> mWebView.loadUrl(toJs(token, false, true, call))));
-    }
-
-    @UiThread
-    void doWithWebViewInUIThread(WebViewCallable callable) {
-        if (mWebView != null) {
-            callable.call(mWebView);
-        }
-    }
-
-    @Background
-    void webGetOthers(String call) {
-        safelyDoWithContextToken((context, token) -> {
-            String sexuality = AccountManager.getUserInfo(context).getSexuality().toString();
-            //noinspection WrongConstant
-            Response<OtherUser> response = APIFactory.getProcedureAPI().
-                    getAUser(token.userId, token.accessToken, sexuality).execute();
-
-            if (response.isSuccessful()) {
-                OtherUser otherUser = response.body();
-                otherUser.userId = token.userId;
-                otherUser.accessToken = token.accessToken;
-                doWithWebViewInUIThread(webView ->
-                        mWebView.loadUrl(toJs(otherUser, false, true, call)));
-            } else {
-                showSnackMsg(R.string.error_server);
-            }
-        });
-    }
-
-    public void sendFinish() {
-        String result = "javascript:ctx.finish()";
-        LogUtil.d(TAG, "load js : " + result);
-        mWebView.loadUrl(result);
     }
 
 //    private void webAlert(Map<String, String> args) {
@@ -270,7 +242,59 @@ public class BaseWebFragment extends BaseFragment {
 //                HybridUrlHandler.FUNC_GET_BASIC_AUTH_HEADER));
 //    }
 
-    public String toJs(Object o, boolean encode, boolean naming, Object... stringArgs) {
+    @UiThread
+    void doWithWebViewInUIThread(WebViewCallable callable) {
+        if (mWebView != null) {
+            callable.call(mWebView);
+        }
+    }
+
+    @Background
+    void webGetAccount(String call) {
+        safelyDoWithContext(context -> mWebView.loadUrl(
+                toJs(AccountManager.getUserInfo(context), true, true, call)));
+    }
+
+    private void webLog(Map<String, String> args) {
+        LogUtil.i(TAG, "js log : " + args.get("text"));
+    }
+
+    private void webConfig(Map<String, String> args) {
+        boolean h = Boolean.valueOf(args.get("h_scroll_indicator"));
+        mWebView.setHorizontalScrollBarEnabled(h);
+        boolean v = Boolean.valueOf(args.get("v_scroll_indicator"));
+        mWebView.setVerticalScrollBarEnabled(v);
+    }
+
+    @Background
+    void webGetAccessToken(Map<String, String> args, String call) {
+        String id = args.get("user_id");
+        //TODO
+        safelyDoWithToken((token) -> doWithWebViewInUIThread(
+                webView -> mWebView.loadUrl(toJs(token, false, true, call))));
+    }
+
+    @Background
+    void webGetOthers(String call) {
+        safelyDoWithContextToken((context, token) -> {
+            String sexuality = AccountManager.getUserInfo(context).getSexuality().toString();
+            //noinspection WrongConstant
+            Response<OtherUser> response = APIFactory.getProcedureAPI().
+                    getAUser(token.userId, token.accessToken, sexuality).execute();
+
+            if (response.isSuccessful()) {
+                OtherUser otherUser = response.body();
+                otherUser.userId = token.userId;
+                otherUser.accessToken = token.accessToken;
+                doWithWebViewInUIThread(webView ->
+                        mWebView.loadUrl(toJs(otherUser, false, true, call)));
+            } else {
+                showSnackMsg(R.string.error_server);
+            }
+        });
+    }
+
+    private String toJs(Object o, boolean encode, boolean naming, Object... stringArgs) {
         String arg;
         Gson gson;
         if (naming)
@@ -310,39 +334,103 @@ public class BaseWebFragment extends BaseFragment {
         mWebView.goBack();
     }
 
-    public File getHybrdDir() {
-        return mHybridDir;
+    private boolean handleUrl(UrlModel urlModel) {
+        if (TextUtils.equals(urlModel.type, FUNC_CONFIG)) {
+            webConfig(urlModel.args);
+        } else if (TextUtils.equals(urlModel.type, FUNC_GET_ACCOUNT)) {
+            webGetAccount(urlModel.call);
+        } else if (TextUtils.equals(urlModel.type, FUNC_GET_ACCESS_TOKEN)) {
+            webGetAccessToken(urlModel.args, urlModel.call);
+        } else if (TextUtils.equals(urlModel.type, FUNC_LOG)) {
+            webLog(urlModel.args);
+        } else if (TextUtils.equals(urlModel.type, FUNC_GET_OTHERS)) {
+            webGetOthers(urlModel.call);
+        } else {
+            LogUtil.i(TAG, "unknown type");
+        }
+        return true;
+    }
+
+    /**
+     * This can be used in hybrd Activities and fragment, and also can be used with other kind of
+     * url, such as when click a banner, jump to a certain world.
+     *
+     * @param url  : use the same format as hybrd.
+     * @param posX : the X position for transition. For example, when you want start {@link
+     *             ShootActivity_}, you need to specify {@param posX} and {@param posY}, or the
+     *             {@link ShootActivity_} with start from the center of the screen.
+     * @return True, if we handle the url.
+     */
+    private boolean parseHandleUrl(Context context, String url, int posX, int posY) {
+        if (url.startsWith(URL_PREFIX)) {
+            String json = url.substring(URL_PREFIX.length());
+
+            UrlModel urlModel = new UrlModel();
+
+            JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
+
+            if (jsonObject.has("type")) {
+                urlModel.type = jsonObject.get("type").getAsString();
+            }
+            if (jsonObject.has("call")) {
+                urlModel.call = jsonObject.get("call").getAsString();
+            }
+
+            if (jsonObject.has("args")) {
+                urlModel.args = new HashMap<>();
+                Set<Map.Entry<String, JsonElement>> argMap = jsonObject.getAsJsonObject("args").entrySet();
+                for (Map.Entry<String, JsonElement> entry : argMap) {
+                    String value = entry.getValue().toString();
+
+                    value = value.replace("\\n", "\n");
+                    // Gson escape every splash, so restore newline
+                    if (value.startsWith("\"") && value.endsWith("\""))
+                        value = value.substring(1, value.length() - 1);
+
+                    urlModel.args.put(entry.getKey(), value);
+                }
+            }
+
+            if (TextUtils.equals(urlModel.type, FUNC_JUMP)) {
+                return webJumpWithPosition(context, urlModel.args, posX, posY);
+            }
+            return handleUrl(urlModel);
+        }
+        return false;
+    }
+
+    private boolean webJumpWithPosition(Context context, Map<String, String> args, int posX, int posY) {
+        String des = args.get("page");
+        if (des == null) {
+            return false;
+        }
+
+        if (TextUtils.equals(des, "update_profile")) {
+            UserInfoActivity_.intent(context).start();
+        } else if (TextUtils.equals(des, "play_video")) {
+
+        } else if (TextUtils.equals(des, "play_audio")) {
+
+        } else if (TextUtils.equals(des, "other_profile")) {
+
+        } else if (TextUtils.equals(des, "audio_question_list")) {
+            QuestionFragment_.builder().type(Procedure.QUESTION_TYPE_INFO).build();
+        } else if (TextUtils.equals(des, "video_question_list")) {
+
+        }
+        return true;
     }
 
     public interface WebViewCallable {
         void call(WebView webView);
     }
 
+    @SuppressWarnings("unused")
     public interface WebViewLoadListener {
         void loadOver();
     }
 
     private class BaseWebClient extends WebViewClient {
-
-        private HybridUrlHandler urlHandler = new HybridUrlHandler() {
-            @Override
-            protected boolean handleInnerUrl(UrlModel urlModel) {
-                if (TextUtils.equals(urlModel.type, FUNC_CONFIG)) {
-                    webConfig(urlModel.args);
-                } else if (TextUtils.equals(urlModel.type, FUNC_GET_ACCOUNT)) {
-                    webGetAccount(urlModel.call);
-                } else if (TextUtils.equals(urlModel.type, FUNC_GET_ACCESS_TOKEN)) {
-                    webGetAccessToken(urlModel.args, urlModel.call);
-                } else if (TextUtils.equals(urlModel.type, FUNC_LOG)) {
-                    webLog(urlModel.args);
-                } else if (TextUtils.equals(urlModel.type, FUNC_GET_OTHERS)) {
-                    webGetOthers(urlModel.call);
-                } else {
-                    LogUtil.i(TAG, "unknown type");
-                }
-                return true;
-            }
-        };
 
         @Override
         public void onPageFinished(WebView view, String url) {
@@ -352,9 +440,9 @@ public class BaseWebFragment extends BaseFragment {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            url = HybridUrlHandler.urlDecode(url);
+            url = urlDecode(url);
             LogUtil.d(TAG, url);
-            return urlHandler.handleUrl(getContext(), url, (int) (touchX + posX), (int) (touchY + posY))
+            return parseHandleUrl(getContext(), url, (int) (touchX + posX), (int) (touchY + posY))
                     || super.shouldOverrideUrlLoading(view, url);
         }
 
@@ -384,5 +472,11 @@ public class BaseWebFragment extends BaseFragment {
             }
             return super.shouldOverrideKeyEvent(view, event);
         }
+    }
+
+    class UrlModel {
+        String type;
+        String call;
+        Map<String, String> args;
     }
 }
