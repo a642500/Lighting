@@ -1,7 +1,9 @@
 package co.yishun.lighting.ui;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.SystemClock;
 import android.support.annotation.IntDef;
 import android.view.View;
@@ -61,6 +63,7 @@ public class RecordActivity extends BaseActivity implements MediaRecorder.OnInfo
 
     @AfterViews
     void setViews() {
+        setResult(RESULT_CANCELED);
         progressBar.setMax(Constants.AUDIO_MAX_DURATION);
 
         initRecorder();
@@ -181,6 +184,13 @@ public class RecordActivity extends BaseActivity implements MediaRecorder.OnInfo
 
         AnimUtil.alphaHide(redoBtn);
         AnimUtil.alphaHide(finishBtn);
+    }
+
+    @Click
+    void finishBtnClicked(View view) {
+        setResult(RESULT_OK, new Intent().setData(
+                Uri.fromFile(FileUtil.getRecordedAudioFile(this))));
+        this.finish();
     }
 
     @Override
