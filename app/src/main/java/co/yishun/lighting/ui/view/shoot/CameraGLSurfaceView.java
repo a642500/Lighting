@@ -300,7 +300,7 @@ public class CameraGLSurfaceView extends SquareGLSurfaceView implements SurfaceT
             uiHandler.post(recordStartCallback::call);
             postDelayed(() -> {
                 mCameraRenderer.setRecordingEnabled(false);
-            }, Constants.VIDEO_MAX_DURATION);
+            }, Constants.VIDEO_MAX_DURATION * 1000);
         });
     }
 

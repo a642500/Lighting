@@ -1,15 +1,15 @@
 package co.yishun.lighting.ui;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.SystemClock;
 import android.provider.Settings;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageSwitcher;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -23,10 +23,12 @@ import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
 
+import co.yishun.lighting.Constants;
 import co.yishun.lighting.R;
 import co.yishun.lighting.function.Callback;
 import co.yishun.lighting.function.Consumer;
 import co.yishun.lighting.ui.common.BaseActivity;
+import co.yishun.lighting.ui.view.AnimUtil;
 import co.yishun.lighting.ui.view.PageIndicatorDot;
 import co.yishun.lighting.ui.view.shoot.CameraGLSurfaceView;
 import co.yishun.lighting.ui.view.shoot.IShootView;
@@ -62,12 +64,15 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
     View recordBtnBeginImageView;
     @ViewById
     View recordBtnStopImageView;
+    @ViewById
+    ProgressBar progressBar;
     @Extra
     boolean isLargerSize = false;
     private int status;
     @Nullable
     private CameraGLSurfaceView mCameraGLSurfaceView;
     private boolean flashOn = false;
+    private long lastStartTime = 0;
 
     @Click
     void leftBtnClicked(View view) {
@@ -93,43 +98,13 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
     }
 
     private void redoBtnClicked(View view) {
-        leftBtn.animate().alpha(0).setDuration(getResources()
-                .getInteger(android.R.integer.config_shortAnimTime))
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        leftBtn.setVisibility(View.INVISIBLE);
-                    }
-                }).start();
+        AnimUtil.alphaShow(leftBtn);
+        AnimUtil.alphaShow(rightBtn);
 
-        rightBtn.animate().alpha(0).setDuration(getResources()
-                .getInteger(android.R.integer.config_shortAnimTime))
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        rightBtn.setVisibility(View.INVISIBLE);
-                    }
-                }).start();
+        //TODO redo
 
-
-        recordBtnBeginImageView.animate().alpha(1).setDuration(getResources().
-                getInteger(android.R.integer.config_shortAnimTime))
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        recordBtnBeginImageView.setVisibility(View.VISIBLE);
-                    }
-                }).start();
-        recordBtnStopImageView.setVisibility(View.VISIBLE);
-        recordBtnStopImageView.animate().alpha(0).setDuration(getResources().
-                getInteger(android.R.integer.config_shortAnimTime))
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        recordBtnStopImageView.setAlpha(0);
-                        recordBtnStopImageView.setVisibility(View.INVISIBLE);
-                    }
-                }).start();
+        AnimUtil.alphaShow(recordBtnBeginImageView);
+        AnimUtil.alphaHide(recordBtnStopImageView);
     }
 
     private void importVideoBtnClicked(View view) {
@@ -170,6 +145,7 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
     void shootBtnClicked() {
         if (status == STATUS_PREPARE) {
             status = STATUS_RECORDING;
+            AnimUtil.alphaShow(progressBar);
             shootView.record(this, this);
         } else if (status == STATUS_RECORDING) {
             shootView.stop();
@@ -229,51 +205,33 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
     @Override
     public void call() {
         //TODO animation btn
-        recordBtnBeginImageView.animate().alpha(0).setDuration(getResources().
-                getInteger(android.R.integer.config_shortAnimTime))
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        recordBtnBeginImageView.setVisibility(View.INVISIBLE);
-                    }
-                }).start();
-        recordBtnStopImageView.setAlpha(0);
-        recordBtnStopImageView.setVisibility(View.VISIBLE);
-        recordBtnStopImageView.animate().alpha(1).setDuration(getResources().
-                getInteger(android.R.integer.config_shortAnimTime))
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        recordBtnStopImageView.setAlpha(1);
-                    }
-                }).start();
+        AnimUtil.alphaHide(recordBtnBeginImageView);
+        AnimUtil.alphaShow(recordBtnStopImageView);
+        progressBar.setMax(Constants.VIDEO_MAX_DURATION);
+
+        lastStartTime = SystemClock.elapsedRealtime();
+        updateProgress();
+
         LogUtil.i(TAG, "start record callback");
+    }
+
+    @UiThread(delay = 100)
+    void updateProgress() {
+        int d = (int) (SystemClock.elapsedRealtime() - lastStartTime) / 1000;
+        if (d < Constants.VIDEO_MAX_DURATION) {
+            progressBar.setProgress(d);
+            updateProgress();
+        } else {
+            progressBar.setProgress(Constants.VIDEO_MAX_DURATION);
+        }
     }
 
     @Override
     @UiThread
     public void accept(File file) {
         LogUtil.i(TAG, "accept: " + file);
-        leftBtn.setVisibility(View.VISIBLE);
-        rightBtn.setVisibility(View.VISIBLE);
-        rightBtn.setAlpha(0);
-        leftBtn.setAlpha(0);
-        leftBtn.animate().alpha(1).setDuration(getResources().
-                getInteger(android.R.integer.config_shortAnimTime)).
-                setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        leftBtn.setAlpha(1);
-                    }
-                }).start();
-        rightBtn.animate().alpha(1).setDuration(getResources().
-                getInteger(android.R.integer.config_shortAnimTime)).
-                setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        rightBtn.setAlpha(1);
-                    }
-                }).start();
+        AnimUtil.alphaShow(leftBtn);
+        AnimUtil.alphaShow(rightBtn);
 
         recordBtnStopImageView.setEnabled(false);
 
@@ -316,7 +274,11 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
     @Override
     public void onHandler(SecurityException e) {
         LogUtil.e(TAG, "", e);
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(this).positiveText(R.string.activity_shoot_permission_error_ok).content(R.string.activity_shoot_permission_error_msg).title(R.string.activity_shoot_permission_error_title).cancelable(false);
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
+                .positiveText(R.string.activity_shoot_permission_error_ok)
+                .content(R.string.activity_shoot_permission_error_msg)
+                .title(R.string.activity_shoot_permission_error_title)
+                .cancelable(false);
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             builder.negativeText(R.string.activity_shoot_permission_error_settings);
             builder.callback(new MaterialDialog.ButtonCallback() {
@@ -329,7 +291,8 @@ public class ShootActivity extends BaseActivity implements Callback, Consumer<Fi
                 public void onNegative(MaterialDialog dialog) {
                     try {
                         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + getPackageName()));
+                            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                    Uri.parse("package:" + getPackageName()));
                             intent.addCategory(Intent.CATEGORY_DEFAULT);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);

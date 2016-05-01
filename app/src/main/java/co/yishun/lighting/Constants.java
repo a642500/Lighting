@@ -27,7 +27,7 @@ public class Constants {
     public static final int VIDEO_FPS = 30;
     public static final String HYBRD_UNZIP_DIR = "hybrd";
     public static final int AUDIO_MAX_DURATION = 60;//s
-    public static final int VIDEO_MAX_DURATION = 60 * 1000;//ms
+    public static final int VIDEO_MAX_DURATION = 60;//s
 
 
     public static final String BASE_URL;
