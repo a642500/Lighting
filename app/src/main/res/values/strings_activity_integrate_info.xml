@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="activity_integrate_info_msg_get_question_fail">Fail to load question…</string>
+    <string name="activity_integrate_info_msg_not_full">You must finish all the three questions.</string>
+    <string name="activity_integrate_info_text_uploading">Uploading…</string>
+    <string name="activity_integrate_info_error_uploading">Uploading Failed.</string>
 </resources>

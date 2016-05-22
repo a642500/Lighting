@@ -67,11 +67,6 @@ public class QuestionFragment extends BaseFragment {
 
     }
 
-    @Click
-    void finishBtnClicked(View view) {
-        MainActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_SINGLE_TOP).start();
-    }
-
     public void setQuestions(List<Question> questions) {
         for (int i = 0; i < questionViews.length && i < questions.size(); i++) {
             Question question = questions.get(i);
@@ -110,6 +105,18 @@ public class QuestionFragment extends BaseFragment {
             case Procedure.QUESTION_TYPE_VALUES:
             default:
                 return new VideoQuestion(index, type, question.content, null);
+        }
+    }
+
+    @Click(R.id.finishBtn)
+    void onUploadClick(View view) {
+        boolean result = true;
+        for (QuestionView.IQuestion question : mQuestions) {
+            result &= question.isAnswered();
+        }
+        if (result) {
+        } else {
+            showSnackMsg(R.string.activity_integrate_info_msg_not_full);
         }
     }
 }
